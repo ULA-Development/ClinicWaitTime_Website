@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app"
 import { getDatabase, ref, set, onValue } from "firebase/database"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
 import firebaseConfig from './config';
-import './App.css';
+import './App.css'; 
 
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
