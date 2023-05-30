@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+.Button {
+  padding: 10px 20px;
+  border-radius: 22px;
+  font-weight: bold;
+  font-size: 29.6px;
+  color: white;
+  background-color: #4AC1F3;
+  transition: backgroundcolor 0.5s ease;
+  text-align: center;
+}
+
+.Button-clicked {
+  animation: button-click 1.0s;
+}
+
+@keyframes button-click {
+  0% { background-color: #4AC1F3; }
+  50% { background-color: #40b5e7d0; }
+  100% { background-color: #4AC1F3; }
+}

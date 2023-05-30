@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import firebaseConfig from "./data/firebaseConfig";
+import Button from "./components/Button";
 import "./App.css";
 
 const app = initializeApp(firebaseConfig);
@@ -43,6 +44,7 @@ function App() {
         <button onClick={writeToDatabase}>Write </button>
         <button onClick={readDatabase}>Read </button>
         <button onClick={createUser}>Create user </button>
+        <Button onClick={() => console.log("clicked")}>Sign in</Button>
       </header>
     </div>
   );
