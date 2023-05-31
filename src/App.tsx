@@ -3,7 +3,8 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import firebaseConfig from "./data/firebaseConfig";
-import "./App.css";
+import TextInput from "./components/TextInput";
+import Button from "./components/Button";
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -38,12 +39,8 @@ function createUser() {
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={writeToDatabase}>Write </button>
-        <button onClick={readDatabase}>Read </button>
-        <button onClick={createUser}>Create user </button>
-      </header>
+    <div>
+      <Button onClick={() => console.log("clicked")}>Sign in</Button>
     </div>
   );
 }
