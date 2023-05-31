@@ -4,6 +4,7 @@ import { getDatabase, ref, set, onValue } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import firebaseConfig from "./data/firebaseConfig";
 import TextInput from "./components/TextInput";
+import Button from "./components/Button";
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -38,8 +39,9 @@ function createUser() {
 
 function App() {
   return (
-    <TextInput/>
-    
+    <div>
+      <Button onClick={() => console.log("clicked")}>Sign in</Button>
+    </div>
   );
 }
 
