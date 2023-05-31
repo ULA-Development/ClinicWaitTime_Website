@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { ReactComponent as RightArrow} from "../assets/icons/arrow-right-solid.svg"
-import { Interface } from "readline";
 import "./Button.css";
 
 interface Props {
