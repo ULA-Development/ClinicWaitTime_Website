@@ -1,4 +1,4 @@
-import { ReactComponent as InputIcon } from '../assets/envelope-solid.svg'
+import { ReactComponent as InputIcon } from '../assets/icons/envelope-solid.svg'
 import './TextInput.css'
 
 const TextInput = () => {
