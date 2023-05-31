@@ -1,21 +1,23 @@
+@import url("../assets/colours.css");
+
 .Button {
     padding: 10px 20px;
     border-radius: 22px;
     font-weight: bold;
     font-size: 29.6px;
     color: white;
-    background-color: #4AC1F3;
+    background-color: var(--main);
     transition: backgroundcolor 0.5s ease;
     text-align: center;
     border: none;
   }
-  
+
   .Button-clicked {
     animation: button-click 0.6s;
   }
   
   @keyframes button-click {
-    0% { background-color: #4AC1F3; }
-    50% { background-color: #0072a3d0; }
-    100% { background-color: #4AC1F3; }
+    0% { background-color: var(--main); }
+    50% { background-color: var(--main-dark); }
+    100% { background-color: var(--main); }
   }
