@@ -1,4 +1,49 @@
-@import url("../assets/colours.css");
+@import url("../assets/common.css");
+
+@keyframes slideUp {
+    from{top: 17.5px; left:51.5px; scale: 1; }
+    to{top:-14px; left: 23.5px; scale: 0.6; }
+}
+
+@keyframes slideDown {
+    from{top:-10px; left: 23.5px; scale: 0.6; }
+    to{top: 17.5px; left:51.5px; scale: 1; }
+}
+.background{
+    animation-name: slideDown;
+    animation-duration: 200ms;
+    background-color: transparent;
+    padding-left: 5px;
+    padding-right: 5px;
+    position: absolute;
+    height: 20px;
+    left: 51.5px;
+    top: 17.5px;
+    width: fit-content;
+    height: auto;
+    
+}
+.background-focus{
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: white;
+    position: absolute;
+    padding:5px;
+    left: 23.5px;
+    top: -14px;
+    height: auto;
+    width: fit-content;
+    scale: 0.6;
+    animation-name: slideUp;
+    animation-duration: 200ms;
+}
+
+.label{
+    color: var(--grey);
+    font-size: 17px;
+    width: fit-content;
+}
+
 .input{
     width: 100%;
     border-radius: 10px;
@@ -8,21 +53,22 @@
     padding-left: 55px;
     font-size: 17px;
     position: absolute;
-    color: rgb(90,90,90);
-    
+    color: var(--grey-text);
+    background-color: rgba(255, 255, 255, 0);
 }
+
 .container{
     width: 40%;
     position: absolute;
     left:20px;
     top:20px;
 }
+
 .icon{
     width: 25px;
     height: auto;
-    fill: var(--main-grey);
+    fill: var(--grey);
     position: absolute;
-    top: 16px;
+    top: 14.3px;
     left: 18px;
-
 }
