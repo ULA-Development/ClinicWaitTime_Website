@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { ReactComponent as RightArrow} from "../assets/icons/arrow-right-solid.svg"
+import icon from "../assets/icons/arrow-right-solid.svg";
 import "./Button.css";
 
 interface Props {
@@ -22,7 +22,13 @@ const Button = ({ children, onClick, width = 541.6, height = 76.5 }: Props) => {
       style={{ width: `${width}px`, height: `${height}px` }}
     >
       {children}{" "}
-      <RightArrow/>
+      <img
+        src={icon}
+        alt="Icon"
+        width="23"
+        height="22"
+        style={{ filter: "invert(100%)" }}
+      />
     </button>
   );
 };
