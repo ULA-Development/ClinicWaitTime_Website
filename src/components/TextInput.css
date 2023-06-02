@@ -1,74 +1,105 @@
 @import url("../assets/common.css");
 
 @keyframes slideUp {
-    from{top: 17.5px; left:51.5px; scale: 1; }
-    to{top:-14px; left: 23.5px; scale: 0.6; }
+  from {
+    top: 17.5px;
+    left: 40px;
+    scale: 1;
+  }
+  to {
+    top: -10px;
+    left: 23.5px;
+    scale: 0.6;
+  }
 }
 
 @keyframes slideDown {
-    from{top:-10px; left: 23.5px; scale: 0.6; }
-    to{top: 17.5px; left:51.5px; scale: 1; }
-}
-.background{
-    animation-name: slideDown;
-    animation-duration: 200ms;
-    background-color: transparent;
-    padding-left: 5px;
-    padding-right: 5px;
-    position: absolute;
-    height: 20px;
-    left: 51.5px;
-    top: 17.5px;
-    width: fit-content;
-    height: auto;
-    
-}
-.background-focus{
-    padding-left: 5px;
-    padding-right: 5px;
-    background-color: white;
-    position: absolute;
-    padding:5px;
+  from {
+    top: -10px;
     left: 23.5px;
-    top: -14px;
-    height: auto;
-    width: fit-content;
     scale: 0.6;
-    animation-name: slideUp;
-    animation-duration: 200ms;
+  }
+  to {
+    top: 17.5px;
+    left: 40px;
+    scale: 1;
+  }
 }
 
-.label{
-    color: var(--grey);
-    font-size: 17px;
-    width: fit-content;
+.container {
+  width: 60%;
+  position: relative;
+  display: flex;
+  height: 50px;
+  left: 20px;
+  top: 20px;
+  border-radius: 8px;
+  outline: 1.5px solid var(--grey);
+  transition: outline 100ms linear;
+  margin-bottom: 10px;
+  display: flex;
+}
+.container.focus, .container:hover {
+  outline-width: 2px;
 }
 
-.input{
-    width: 100%;
-    border-radius: 10px;
-    border: 2px solid var(--grey);
-    outline-width: 0;
-    height: 50px;
-    padding-left: 55px;
-    font-size: 17px;
-    position: absolute;
-    color: var(--grey-text);
-    background-color: rgba(255, 255, 255, 0);
+.input {
+  width: 100%;
+  border-radius: 7px;
+  border-color: transparent;
+  outline-width: 0;
+  height: auto;
+  padding-left: 40px;
+  font-size: 17px;
+  color: var(--grey-text);
+  position: relative;
+  background-color: transparent;
+  
 }
 
-.container{
-    width: 40%;
-    position: absolute;
-    left:20px;
-    top:20px;
+.label {
+  color: var(--grey-text);
+  font-size: 17px;
+  width: fit-content;
+  position: relative;
+  top: -2px;
 }
 
-.icon{
-    width: 25px;
-    height: auto;
-    fill: var(--grey);
-    position: absolute;
-    top: 14.3px;
-    left: 18px;
+.icon {
+  width: auto;
+  height: 16px;
+  fill: var(--grey);
+  position: absolute;
+  left: 15px;
+  align-self: center;
+}
+.visible-eye{
+  width: auto;
+  height: 16px;
+  fill: var(--grey);
+  position: absolute;
+  left: 410px;
+  align-self: center;
+}
+
+.background {
+  animation-name: slideDown;
+  animation-duration: 200ms;
+  background-color: transparent;
+  padding-left: 5px;
+  padding-right: 5px;
+  position: absolute;
+  height: 20px;
+  left: 40px;
+  top: 17.5px;
+  width: fit-content;
+  height: auto;
+}
+
+.background.focus {
+  left: 23.5px;
+  top: -10px;
+  scale: 0.6;
+  background-color: white;
+  animation-name: slideUp;
 }
