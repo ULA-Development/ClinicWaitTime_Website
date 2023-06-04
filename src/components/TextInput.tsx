@@ -93,6 +93,8 @@ const TextInput = ({ onChange, value, type, errorMessage = null, setError}: Prop
   useEffect(function handleError() {
     if(errorMessage != null){
       setIconClass('icon error')
+      onChange('')
+      setFocus(false)
     }else{
       setIconClass('icon')
     }
