@@ -5,78 +5,79 @@ import { ReactComponent as NameIcon } from "../assets/icons/user-solid.svg";
 import { ReactComponent as EyeIcon } from "../assets/icons/eye-slash-solid.svg";
 import { ReactComponent as NPIIcon } from "../assets/icons/slack-hash.svg";
 import { ReactComponent as ReferIcon } from "../assets/icons/user-friends-solid.svg";
+import {ReactComponent as ErrorIcon } from "../assets/icons/exclamation-circle-solid.svg"
 import "./TextInput.css";
 
 interface Props {
   onChange: (arg0: string) => void;
   value: string;
   type: string;
+  errorMessage: string | null;
+  setError: (arg0: any) => void;
 }
 
-const TextInput = ({ onChange, value, type }: Props) => {
+const TextInput = ({ onChange, value, type, errorMessage = null, setError}: Props) => {
   const [focus, setFocus] = useState(false);
-  const [inputInfo, setInputInfo] = useState({
-    placeholder: "Email",
-    icon: <EmailIcon />,
-    type: "text",
-  });
-
-  useEffect(function loadData() {
+  const [iconClass, setIconClass] = useState('icon')
+  const inputInfo = () => {
     switch (type) {
       case "Name": {
-        setInputInfo({
+        return {
           placeholder: "Name",
-          icon: <NameIcon className="icon"/>,
+          icon: <NameIcon className={iconClass} />,
           type: "text",
-        });
-        break;
+        }
       }
       case "Password": {
-        setInputInfo({
+        return{
           placeholder: "Password",
-          icon: <PasswordIcon className="icon"/>,
+          icon: <PasswordIcon className={iconClass} />,
           type: "password",
-        });
-        break;
+        }
       }
       case "Confirm Password": {
-        setInputInfo({
+        return {
           placeholder: "Confirm password",
-          icon: <PasswordIcon className="icon"/>,
+          icon: <PasswordIcon className={iconClass} />,
           type: "password",
-        });
-        break;
+        }
       }
       case "NPI": {
-        setInputInfo({
+        return{
           placeholder: "NPI",
-          icon: <NPIIcon className="icon"/>,
+          icon: <NPIIcon className={iconClass} />,
           type: "text",
-        });
-        break;
+        }
       }
       case "Referral": {
-        setInputInfo({
+        return{
           placeholder: "Referral code (optional)",
-          icon: <ReferIcon className="icon"/>,
+          icon: <ReferIcon className={iconClass} />,
           type: "text",
-        });
-        break;
+        }
       }
       default: {
-        setInputInfo({
+        return{
           placeholder: "Email",
-          icon: <EmailIcon className="icon"/>,
-          type: "text",
-        });
-        break;
+          icon: <EmailIcon className={iconClass} />,
+          type: "email",
+        }
       }
     }
-  }, []);
+  }
+  const ErrorMessage = () => {
+    return (
+      <div className="error-container">
+        <ErrorIcon className='error-icon'/>
+        <span className="error-message">{errorMessage}</span>
+      </div>
+    )
+  }
 
-  const handleFocus = () => {
-    console.log(value);
-    // If text in field, don't loose focus
+  function handleFocus() {
+    if(errorMessage != null && focus == false){
+      setError(null)
+    }
     if (focus == true && value == "") {
       setFocus(false);
     } else {
@@ -84,18 +85,24 @@ const TextInput = ({ onChange, value, type }: Props) => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+  function handleChange(input: React.ChangeEvent<HTMLInputElement>){
+    const { value } = input.target;
     onChange(value);
   };
 
+  useEffect(function handleError() {
+    if(errorMessage != null){
+      setIconClass('icon error')
+    }else{
+      setIconClass('icon')
+    }
+  }, [errorMessage]);
+
   return (
-    <div className={focus != true ? "container" : "container focus"}>
-      <div className={focus != true ? "background" : "background focus"}>
-        <span className="label">{inputInfo.placeholder}</span>
-      </div>
-      {inputInfo.icon}
-      {inputInfo.type === "password" ? (
+    <div className={errorMessage === null ? (focus === false ? "container" : "container focus") : 'container error' }>
+      <span className={errorMessage === null ? (focus === false ? "label" : "label focus") : 'label error' }>{inputInfo().placeholder}</span>
+      {inputInfo().icon}
+      {inputInfo().type === "password" ? (
         <EyeIcon className="visible-eye" />
       ) : null}
       <input
@@ -103,11 +110,12 @@ const TextInput = ({ onChange, value, type }: Props) => {
         onFocus={handleFocus}
         onChange={handleChange}
         onBlur={handleFocus}
-        type={inputInfo.type}
+        type={inputInfo().type}
         id={type}
-        className="input"
+        className={errorMessage === null ? 'input ': "input error"}
         autoComplete="off"
       />
+      {errorMessage === null ? null : <ErrorMessage/>}
     </div>
   );
 };

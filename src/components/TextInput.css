@@ -2,29 +2,59 @@
 
 @keyframes slideUp {
   from {
-    top: 17.5px;
+    top: 14.5px;
     left: 40px;
-    scale: 1;
+    font-size: 17px;
   }
   to {
-    top: -10px;
-    left: 23.5px;
-    scale: 0.6;
+    top: -7px;
+    left: 10.5px;
+    font-size: 10px;
   }
 }
 
 @keyframes slideDown {
   from {
-    top: -10px;
-    left: 23.5px;
-    scale: 0.6;
+    top: -7px;
+    left: 10.5px;
+    font-size: 10px;
   }
   to {
-    top: 17.5px;
+    top: 14.5px;
     left: 40px;
-    scale: 1;
+    font-size: 17px;
   }
 }
+.label {
+  animation-name: slideDown;
+  animation-duration: 200ms;
+  height: auto;
+  color: var(--grey-text);
+  font-size: 17px;
+  width: fit-content;
+  position: absolute;
+  left: 40px;
+  top: 14.5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: transparent;
+}
+
+.label.error{
+  color: var(--error-red);
+}
+
+.label.focus{
+  animation-name: slideUp;
+  animation-duration: 200ms;
+  left: 10.5px;
+  top: -7px;
+  font-size: 10px;
+  position: absolute;
+  background-color: white;
+  animation-name: slideUp;
+}
+
 
 .container {
   width: 60%;
@@ -36,11 +66,17 @@
   border-radius: 8px;
   outline: 1.5px solid var(--grey);
   transition: outline 100ms linear;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   display: flex;
+  justify-content: right;
 }
 .container.focus, .container:hover {
   outline-width: 2px;
+}
+
+.container.error{
+  outline-width: 2px;
+  outline-color: var(--error-red);
 }
 
 .input {
@@ -54,16 +90,12 @@
   color: var(--grey-text);
   position: relative;
   background-color: transparent;
-  
 }
 
-.label {
-  color: var(--grey-text);
-  font-size: 17px;
-  width: fit-content;
-  position: relative;
-  top: -2px;
+.input.error{
+  color: var(--error-red);
 }
+
 
 .icon {
   width: auto;
@@ -73,33 +105,39 @@
   left: 15px;
   align-self: center;
 }
-.visible-eye{
+
+.icon.error {
+  fill: var(--error-red);
+  opacity: 80%;
+}
+.error-icon{
   width: auto;
-  height: 16px;
-  fill: var(--grey);
-  position: absolute;
-  left: 410px;
+  height: 11px;
+  fill: var(--error-red);
+  position: relative;
+  left: -3px;
   align-self: center;
 }
-
-.background {
-  animation-name: slideDown;
-  animation-duration: 200ms;
-  background-color: transparent;
-  padding-left: 5px;
-  padding-right: 5px;
+.error-message{
+  color: var(--error-red);
+  font-size: 10px;
+  align-self: center;
+}
+.error-container{
   position: absolute;
-  height: 20px;
-  left: 40px;
-  top: 17.5px;
-  width: fit-content;
-  height: auto;
+  bottom: -17px;
+  display: flex;
+  left: 8px;
+  vertical-align: middle;
+}
+.visible-eye{
+  width: auto;
+  height: 11px;
+  fill: var(--grey);
+  position: abslute;
+  align-self: center;
+  position: absolute;
+  padding-right: 12px;
 }
 
-.background.focus {
-  left: 23.5px;
-  top: -10px;
-  scale: 0.6;
-  background-color: white;
-  animation-name: slideUp;
-}
+
