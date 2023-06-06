@@ -1,0 +1,54 @@
+@import url("../assets/common.css");
+
+.footer {
+    display: flex;;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1%;
+    background: linear-gradient(to right, var(--main-dark2), var(--main));
+    flex-shrink: 0;
+    height: 8vh;
+    box-sizing: border-box;
+
+}
+
+.footer-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 2vw;
+}
+
+.footer-button {
+    padding: 2% 2%;
+    background-color: transparent;
+    font-size: min(2vh, 1vw);
+    border: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.851);
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.885);
+    text-decoration: none;
+    width: 8vw;
+    height: 50%;
+    text-align: center;
+
+}
+
+.footer-button:last-child {
+    border-right: none;
+}
+
+.footer-button:hover {
+    color: white;
+    font-weight:bold;
+}
+
+.footer-logo {
+    height: 50%;
+    width: auto;
+    padding-right: 2vw;
+}
