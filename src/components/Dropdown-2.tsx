@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./Dropdown-2.css";
+import { ReactComponent as ChevronDown } from "../assets/icons/chevron-down-solid.svg";
+import { ReactComponent as MinusSign } from "../assets/icons/minus-solid.svg";
 
 interface DropdownProps {
   options: string[];
@@ -24,11 +26,6 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
     setOpened(!opened);
   };
 
-  const handleOptionSelect = (option: string) => {
-    setSelectedOption(option);
-    setOpened(false);
-  };
-
   return (
     <div className="dropdown-wrapper">
       <div
@@ -41,30 +38,9 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
       >
         <p>{selectedOption || "Select a healthcare option"}</p>
         {opened ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            className="bi bi-dash-lg"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fillRule="evenodd"
-              d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"
-            />
-          </svg>
+          <MinusSign className="minus-sign" />
         ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            className="bi bi-caret-down"
-            viewBox="0 0 16 16"
-          >
-            <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z" />
-          </svg>
+          <ChevronDown className="chevron-down" />
         )}
       </div>
       <div className={`dropdown-menu-option-panel ${opened ? "opened" : ""}`}>
@@ -95,7 +71,7 @@ const DropdownOption: React.FC<DropdownOptionProps> = ({
     <p
       className="dropdown-menu-option"
       style={{
-        backgroundColor: hover ? "#DCDCDC" : "white",
+        backgroundColor: hover ? "#f0f0f0" : "#FAF9F6",
       }}
       onMouseEnter={() => {
         setHover(true);
