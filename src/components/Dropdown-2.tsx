@@ -70,9 +70,6 @@ const DropdownOption: React.FC<DropdownOptionProps> = ({
   return (
     <p
       className="dropdown-menu-option"
-      style={{
-        backgroundColor: hover ? "#f0f0f0" : "#FAF9F6",
-      }}
       onMouseEnter={() => {
         setHover(true);
       }}

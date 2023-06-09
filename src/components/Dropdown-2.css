@@ -48,6 +48,7 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+
 }
 
 .dropdown-menu-option-panel.opened {
@@ -57,10 +58,22 @@
   }
 
 .dropdown-menu-option-panel > p {
-    margin: 5px 20px;
+    margin: 0px 20px;
     cursor: pointer;
-    border-radius: 4px;
-    padding: 4px;
-    transition: background-color 0.5s ease;
-    font-size: 16px;
+    font-size: 15px;
+    border-top: .5px solid #E5E4E3;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    
 }
+
+.dropdown-menu-option-panel > p:hover {
+    background-color: #f0f0f0;
+    /* Extend the hover section to both sides */
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 20px;
+    padding-right: 0px;
+    border-top: 0px solid #E5E4E3;
+    border-bottom: 2px solid #E5E4E3;
+  }
