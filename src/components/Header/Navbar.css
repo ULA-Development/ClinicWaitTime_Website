@@ -9,7 +9,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 30px;
   color: var(--grey-text);
   text-decoration: inherit;
   outline: none;
