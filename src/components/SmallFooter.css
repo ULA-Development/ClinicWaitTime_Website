@@ -1,8 +1,8 @@
 @import url("../assets/common.css");
 
 .footer {
-    display: flex;;
-    position: fixed;
+    display: flex;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100vw;
@@ -11,7 +11,7 @@
     padding: 1%;
     background: linear-gradient(to right, var(--main-dark2), var(--main));
     flex-shrink: 0;
-    height: 8vh;
+    height: 70px;
     box-sizing: border-box;
 
 }
@@ -26,13 +26,13 @@
 .footer-button {
     padding: 2% 2%;
     background-color: transparent;
-    font-size: min(2vh, 1vw);
+    font-size: 15px;
     border: none;
     border-right: 1px solid rgba(255, 255, 255, 0.851);
     cursor: pointer;
     color: rgba(255, 255, 255, 0.885);
     text-decoration: none;
-    width: 8vw;
+    width: min(20vw, 120px);
     height: 50%;
     text-align: center;
 
@@ -48,7 +48,17 @@
 }
 
 .footer-logo {
-    height: 50%;
+    margin-right: 10px;
+    height: 40px;
     width: auto;
-    padding-right: 2vw;
+    filter: invert();
+    transition: 0.5s;
+}
+.footer-logo:hover{
+    transform: rotate(180deg);
+}
+
+.copyright {
+    text-align: center;
+    border: 1px solid white;
 }

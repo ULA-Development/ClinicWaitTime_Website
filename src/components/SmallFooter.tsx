@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SmallFooter.css";
-import HomePage from "../pages/Home/HomePage";
+import logo from "../assets/icons/umbrella-solid.svg";
 
 const SmallFooter = () => {
   const [showAnotherPage, setShowAnotherPage] = useState(false);
@@ -8,23 +8,19 @@ const SmallFooter = () => {
   return (
     <div className="footer">
       <div className="footer-buttons">
-        <button className="footer-button">COMPANY</button>
-        <button className="footer-button">ABOUT US</button>
-        <button className="footer-button">SERVICES</button>
+        <a href="/About-Us" className="footer-button">
+          About Us
+        </a>
+        <a href="/Contact" className="footer-button">
+          Contact
+        </a>
+        <a href="Terms-of-Use" className="footer-button">
+          Terms of Use
+        </a>
       </div>
-      <span style={{ color: "white" }} className="footer-logo">
-        ULA LOGO
-      </span>
+      <img className="footer-logo" src={logo} alt="ULA LOGO" />
     </div>
   );
 };
 
 export default SmallFooter;
-
-{
-  /* <img
-        src="assets/icons/user-solid.png"
-        alt="Logo"
-        className="footer-logo"
-      /> */
-}
