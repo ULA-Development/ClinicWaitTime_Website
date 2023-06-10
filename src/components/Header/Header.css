@@ -8,20 +8,17 @@
 
 .header-logo {
   display: flex;
-  align-items: right;
+  align-items: center; /* Align logo vertically */
   margin-right: 20px;
+  padding-left: 80px; /* Add a left padding to push the logo to the right */
+}
+
+.header-logo img {
+  width: 40px; /* Adjust the width to fit your desired size */
+  height: 40px; /* Adjust the height to fit your desired size */
 }
 
 .header-navbar {
-  display: flex;
-  flex: 1;
-  justify-content: flex-end;
-  overflow-x: auto;
-  padding-right: 20px;
+  margin-left: 40px; /* TODO: Fix this */
 }
 
-.header-navbar .navbar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}

@@ -1,3 +1,5 @@
+@import "../../assets/common.css";
+
 .navbar {
   display: flex;
   flex-direction: row;
@@ -8,18 +10,23 @@
   justify-content: center;
   align-items: center;
   margin-left: 30px;
-  color: inherit;
+  color: var(--grey-text);
   text-decoration: inherit;
-  text-transform: uppercase;
   outline: none;
   white-space: nowrap;
   background-color: transparent;
   width: 100px; /* Set a fixed width for the navbar items */
+  border: 2px solid transparent; /* Add a transparent border to compensate for the selected item's border */
+  box-sizing: border-box; /* Ensure the border is included in the item's width */
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .navbar-item.selected {
-  background-color: blue;
+  background-color: var(--main-dark);
+  background: linear-gradient(to right, var(--main-dark), var(--main));
   border-radius: 20px;
   padding: 8px 16px;
-  color: white;
+  color: var(--secondary);
+  border: 1px solid var(--main-dark);
 }

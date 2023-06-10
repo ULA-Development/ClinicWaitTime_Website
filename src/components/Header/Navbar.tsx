@@ -55,10 +55,10 @@ function Navbar() {
         } ${previousSelectedItem === "contact" ? "prev-selected" : ""}`}
         onClick={() => handleItemClick("contact")}
       >
-        Contact Us
+        Contact
       </a>
       <a
-        href="/home"
+        href="/"
         className={`navbar-item ${selectedItem === "home" ? "selected" : ""} ${
           previousSelectedItem === "home" ? "prev-selected" : ""
         }`}
