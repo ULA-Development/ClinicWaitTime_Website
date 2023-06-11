@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "../../components/Header/Header";
 import TextInput from "../../components/TextInput";
+import SmallFooter from "../../components/SmallFooter";
 import { ReactComponent as SigninIcon } from "../../assets/icons/sign-in-alt-solid.svg"
 import "./SigninPage.css";
 
@@ -40,6 +41,7 @@ const SigninPage = () => {
           <span>Forogt your password?</span>
         </div>
       </div>
+      <SmallFooter/>
     </div>
   );
 };
