@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "./Dropdown-2.css";
-import { ReactComponent as ChevronDown } from "../assets/icons/chevron-down-solid.svg";
-import { ReactComponent as MinusSign } from "../assets/icons/minus-solid.svg";
+import "./Dropdown.css";
+import { ReactComponent as ChevronDown } from "../../assets/icons/chevron-down-solid.svg";
+import { ReactComponent as MinusSign } from "../../assets/icons/minus-solid.svg";
 
 interface DropdownProps {
   options: string[];

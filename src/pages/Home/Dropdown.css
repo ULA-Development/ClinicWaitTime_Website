@@ -1,3 +1,4 @@
+@import url("../../assets/common.css");
 .dropdown-wrapper {
     position: relative;
 }
@@ -26,7 +27,7 @@
     margin: auto 30px auto auto;
     width: 22px;
     height: 22px;
-    fill: #3FB0FB;
+    fill: var(--main);
     transition: color 0.5s ease;
 }
 
@@ -34,7 +35,7 @@
     margin: auto 30px auto auto;
     width: 22px;
     height: 22px;
-    fill: #3FB0FB;
+    fill: var(--main);
     transition: color 0.5s ease;
 }
 
