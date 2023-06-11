@@ -1,16 +1,25 @@
+@import url("../../assets/common.css");
 .header {
   display: flex;
   width: 100%;
   height: 80px;
   justify-content: space-between;
   align-items: center;
+  margin-left: -8px;
+  margin-top: -8px;
+  padding-right: 16px;
+  box-shadow: 0px 1px 7px var(--shadow-grey);
 }
-
+.logo{
+  fill: var(--main);
+  position: absolute;
+  width: 35px;
+  height: auto;
+}
 .header-logo {
   display: flex;
   align-items: center; /* Align logo vertically */
-  margin-right: 20px;
-  padding-left: 80px; /* Add a left padding to push the logo to the right */
+  padding-left: 50px; /* Add a left padding to push the logo to the right */
 }
 
 .header-logo img {
