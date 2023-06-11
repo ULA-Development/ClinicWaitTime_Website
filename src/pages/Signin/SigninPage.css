@@ -1,0 +1,39 @@
+@import url("../../assets/common.css");
+
+
+.content-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+.content{
+    width: 60%;
+    height: 300px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    padding: 50px 70px;
+    border-radius: 20px;
+    outline: 1.5px solid var(--shadow-grey);
+}
+.title{
+    color: var(--main);
+    font-weight: 670;
+    font-size: 40px;
+    padding-left:0px;
+    display: flex;
+    justify-content: left;
+    position: relative;
+}
+.logo{
+    height: 50px;
+    width: auto;
+    position: relative;
+    padding-right:14px;
+}
+span{
+    color: var(--shadow-grey);
+    font-size: 13px;
+
+}
