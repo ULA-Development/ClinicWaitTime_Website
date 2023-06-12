@@ -7,6 +7,9 @@ function App() {
   return (
     <div>
       <SmallFooter></SmallFooter>
+      <Button onClick={() => console.log("clocked")} width={400} height={50}>
+        Sign In
+      </Button>
     </div>
   );
 }
