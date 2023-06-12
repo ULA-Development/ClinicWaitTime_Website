@@ -2,16 +2,25 @@
 
 .Button {
   position: relative;
-  padding: 10px 20px;
   border-radius: 22px;
   font-weight: bold;
-  font-size: 29.6px;
   color: white;
   background-color: var(--main);
   transition: background-color 0.5s ease;
   text-align: center;
   border: none;
   overflow: hidden;
+  align-items: center;
+}
+img {
+  position: relative;
+  padding: 0;
+}
+.button-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 }
 
 .Button-clicked {
