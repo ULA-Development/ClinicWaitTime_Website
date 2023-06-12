@@ -36,7 +36,7 @@ const Button = ({ children, onClick, width = 541.6, height = 76.5 }: Props) => {
         <img
           src={icon}
           alt="Icon"
-          width={width / 18 + "px"}
+          width={width / 15 + "px"}
           height={height / 2.75 + "px"}
           style={{ filter: "invert(100%)" }}
         />
