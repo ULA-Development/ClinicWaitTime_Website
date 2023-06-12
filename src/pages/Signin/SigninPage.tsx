@@ -23,7 +23,7 @@ const SigninPage = () => {
             <SigninIcon className="logo"/>
             <span className="title">Sign into ULA</span>
           </div>
-          <span>Don't have an account? Create account</span>
+          <a href="/signup">Don't have an account? Create account</a>
           <TextInput
             value={emailText}
             onChange={setEmailText}
@@ -38,7 +38,7 @@ const SigninPage = () => {
             errorMessage={passErrorMessage}
             setError={setPassErrorMessage}
           />
-          <span>Forogt your password?</span>
+          <a href="/forogotpassword">Forogt your password?</a>
         </div>
       </div>
       <SmallFooter/>
