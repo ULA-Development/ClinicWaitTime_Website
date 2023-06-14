@@ -102,6 +102,10 @@ const HospitalComponent: React.FC<HospitalComponentProps> = ({
         <div className="dropdown-line">
           <div className="dropdown-left">
             <InfoScroll texts={["A", "B", "C"]} />
+            <button className="get-directions-button">
+              Get Directions
+            </button>{" "}
+            {/* Add the Get Directions button */}
           </div>
           <div className="dropdown-right">
             <InfoLine icon={emailIcon} text={email} />

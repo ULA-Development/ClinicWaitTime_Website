@@ -67,8 +67,12 @@
   margin-left: 50px;
 }
 
-.dropdow-left {
+.dropdown-left {
   text-align: left;
+}
+
+.dropdown-left > *:last-child {
+  margin-top: 30px;
 }
 
 .dropdown-right {
@@ -83,5 +87,14 @@
   width: 20px;
   height: 20px;
   margin-top: 10px;
+  cursor: pointer;
+}
+
+.get-directions-button {
+  background-color: #ccc;
+  border: none;
+  color: #000;
+  padding: 5px 10px;
+  font-size: 12px;
   cursor: pointer;
 }
