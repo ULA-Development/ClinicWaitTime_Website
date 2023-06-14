@@ -2,7 +2,7 @@
 
 .Button {
   position: relative;
-  border-radius: 22px;
+  border-radius: 15px;
   font-weight: bold;
   color: white;
   background-color: var(--main);
@@ -11,6 +11,7 @@
   border: none;
   overflow: hidden;
   align-items: center;
+  margin-top: 10px;
 }
 img {
   position: relative;
