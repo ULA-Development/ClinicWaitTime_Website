@@ -1,0 +1,22 @@
+.selection-panel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    width: 15%;
+}
+
+.selection-panel label {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+
+.panel-heading {
+    font-size: 18px;
+    margin-bottom: 5px;
+    grid-column: 1/ -1;
+    font-weight: normal;
+}
+
+  
+  
