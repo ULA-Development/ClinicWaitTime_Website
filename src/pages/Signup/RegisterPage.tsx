@@ -4,27 +4,58 @@ import TextInput from "../../components/TextInput";
 import SmallFooter from "../../components/SmallFooter";
 import Button from "../../components/Button";
 import { ReactComponent as SignupIcon } from "../../assets/icons/folder-plus-solid.svg";
-import "./SignupPage.css";
+import "./RegisterPage.css";
 
-const SignupPage = () => {
+const RegisterPage = () => {
+  const [radioSelect, setRadioSelect] = useState("Individual provider");
+
   const [emailText, setEmailText] = useState("");
-  const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(null);
+  const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
+    null
+  );
   const [passText, setPassText] = useState("");
   const [passErrorMessage, setPassErrorMessage] = useState<null | string>(null);
   const [nameText, setNameText] = useState("");
   const [nameErrorMessage, setNameErrorMessage] = useState<null | string>(null);
-  const [confirmText, setConfirmText] = useState("");
-  const [confirmErrorMessage, setConfirmErrorMessage] = useState<null | string>(null);
+  const [NPIText, setNPIText] = useState("");
+  const [NPIErrorMessage, setNPIErrorMessage] = useState<null | string>(null);
+  const [referralText, setReferralText] = useState("");
+  const [referralErrorMessage, setReferralErrorMessage] = useState<
+    null | string
+  >(null);
   return (
     <div>
       <Header />
-      <div className="content-container">
+      <div className="content-container-register">
         <div className="content">
           <div className="title">
             <SignupIcon className="sign-in-logo" />
-            <span className="title">Create new account</span>
+            <span className="title">Register your practice</span>
           </div>
-          <a href="/register">Register as a practice? Click here</a>
+          <div className="clinic-info">
+            <p>I am registered as: </p>
+            <label>
+              <input
+                className="radio-btn"
+                type="radio"
+                value="Inividual provider"
+                checked={radioSelect === "Inividual provider"}
+                onChange={() => setRadioSelect("Inividual provider")}
+              />
+              Inividual provider
+            </label>
+            <label>
+              <input
+              className="radio-btn"
+                type="radio"
+                value="Member clinic"
+                checked={radioSelect === "Member clinic"}
+                onChange={() => setRadioSelect("Member clinic")}
+              />
+              Member clinic
+            </label>
+          </div>
+
           <div className="input-fields">
             <TextInput
               value={nameText}
@@ -48,14 +79,21 @@ const SignupPage = () => {
               setError={setPassErrorMessage}
             />
             <TextInput
-              value={confirmText}
-              onChange={setConfirmText}
-              type="Confirm Password"
-              errorMessage={confirmErrorMessage}
-              setError={setConfirmErrorMessage}
+              value={NPIText}
+              onChange={setNPIText}
+              type="NPI"
+              errorMessage={NPIErrorMessage}
+              setError={setNPIErrorMessage}
+            />
+            <TextInput
+              value={referralText}
+              onChange={setReferralText}
+              type="Referral"
+              errorMessage={referralErrorMessage}
+              setError={setReferralErrorMessage}
             />
           </div>
-          <a href="/signin">Already have an account? Sign in</a>
+          <a href="/signup">Sign up as a user? Click here</a>
           <div style={{ alignSelf: "center" }}>
             <Button
               width={450}
@@ -72,4 +110,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default RegisterPage;

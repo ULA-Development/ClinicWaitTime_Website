@@ -5,7 +5,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 .content{
     width: 40%;
@@ -13,7 +13,6 @@
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
-    padding: 50px 70px;
     border-radius: 15px;
 }
 .title{
