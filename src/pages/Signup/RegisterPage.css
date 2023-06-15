@@ -1,7 +1,10 @@
 @import url("../../assets/common.css");
 
-
-.content-container{
+.clinic-info{
+    display: flex;
+    align-items: center;
+}
+.content-container-register{
     width: 100%;
     display: flex;
     justify-content: center;
@@ -9,7 +12,7 @@
 }
 .content{
     width: 40%;
-    height: 390px;
+    height: 650px;
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
@@ -36,13 +39,22 @@
     justify-content: space-between;
     display: flex;
     flex-direction: column;
-    height: 125px;
+    height: 360px;
     position: relative;
 
 }
 a{
     color: var(--shadow-grey);
     font-size: 13px;
-    
-
+}
+p, label{
+    color: var(--grey-text);
+    font-size: 13px;
+}
+label{
+    margin-left:7px;
+}
+.radio-btn{
+    top: 1px;
+    position: relative;
 }
