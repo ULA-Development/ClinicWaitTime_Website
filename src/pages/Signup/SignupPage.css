@@ -1,0 +1,49 @@
+@import url("../../assets/common.css");
+
+
+.content-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+.content{
+    width: 40%;
+    height: 550px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    padding: 50px 70px;
+    border-radius: 15px;
+}
+.title{
+    color: var(--main);
+    font-weight: 670;
+    font-size: 40px;
+    padding-left:0px;
+    display: flex;
+    position: relative;
+    width: fit-content;
+}
+.sign-in-logo{
+    align-self: left;
+    height: 50px;
+    width: 50px;
+    fill: var(--main);
+    position: relative;
+    padding-right:14px;
+}
+.input-fields{
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    height: 280px;
+    position: relative;
+
+}
+a{
+    color: var(--shadow-grey);
+    font-size: 13px;
+    
+
+}
