@@ -7,6 +7,7 @@ import { ReactComponent as NPIIcon } from "../assets/icons/slack-hash.svg";
 import VisEyeIcon from "../assets/icons/eye-solid.svg";
 import { ReactComponent as ReferIcon } from "../assets/icons/user-friends-solid.svg";
 import { ReactComponent as ErrorIcon } from "../assets/icons/exclamation-circle-solid.svg";
+import { ReactComponent as SearchIcon } from "../assets/icons/search-solid.svg";
 import "./TextInput.css";
 
 interface Props {
@@ -29,6 +30,12 @@ const TextInput = ({
   const [visibleText, setVisibleText] = useState(!type.includes("Password"));
   const inputInfo = () => {
     switch (type) {
+      case "Search": {
+        return {
+          placeholder: "Location",
+          icon: <SearchIcon className={iconClass} />,
+        };
+      }
       case "Name": {
         return {
           placeholder: "Name",
