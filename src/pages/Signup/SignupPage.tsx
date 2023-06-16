@@ -56,10 +56,8 @@ const SignupPage = () => {
             />
           </div>
           <a href="/signin">Already have an account? Sign in</a>
-          <div style={{ alignSelf: "center" }}>
+          <div style={{ alignSelf: "center", width: "70%" }}>
             <Button
-              width={450}
-              height={50}
               onClick={() => console.log("sign in")}
             >
               Create new account

@@ -46,7 +46,7 @@ const RegisterPage = () => {
             </label>
             <label>
               <input
-              className="radio-btn"
+                className="radio-btn"
                 type="radio"
                 value="Member clinic"
                 checked={radioSelect === "Member clinic"}
@@ -94,13 +94,11 @@ const RegisterPage = () => {
             />
           </div>
           <a href="/signup">Sign up as a user? Click here</a>
-          <div style={{ alignSelf: "center" }}>
+          <div style={{ alignSelf: "center", width: "70%" }}>
             <Button
-              width={450}
-              height={50}
               onClick={() => console.log("sign in")}
             >
-              Create new account
+              Register
             </Button>
           </div>
         </div>
