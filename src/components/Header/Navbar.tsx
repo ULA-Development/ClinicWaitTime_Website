@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 
-function Navbar() {
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  const [previousSelectedItem, setPreviousSelectedItem] = useState<
-    string | null
-  >(null);
+interface NavbarProps {
+  selectedItem: string | null;
+}
+
+function Navbar({ selectedItem }: NavbarProps) {
+  const [selectedPath, setSelectedPath] = useState<string | null>(null);
 
   useEffect(() => {
     const pathname = window.location.pathname;
-    setSelectedItem(getSelectedItem(pathname));
+    setSelectedPath(getSelectedItem(pathname));
   }, []);
 
-  useEffect(() => {
-    setPreviousSelectedItem(selectedItem);
-  }, [selectedItem]);
-
   const handleItemClick = (item: string) => {
-    setSelectedItem(item);
+    setSelectedPath(item);
   };
 
   const getSelectedItem = (pathname: string) => {
@@ -33,35 +30,33 @@ function Navbar() {
       <a
         href="/signup"
         className={`navbar-item ${
-          selectedItem === "signup" ? "selected" : ""
-        } ${previousSelectedItem === "signup" ? "prev-selected" : ""}`}
+          selectedPath === "signup" || selectedPath === "register"
+            ? "selected"
+            : ""
+        }`}
         onClick={() => handleItemClick("signup")}
       >
         Sign Up
       </a>
       <a
-        href="/login"
-        className={`navbar-item ${selectedItem === "login" ? "selected" : ""} ${
-          previousSelectedItem === "login" ? "prev-selected" : ""
-        }`}
+        href="/signin"
+        className={`navbar-item ${selectedPath === "signin" ? "selected" : ""}`}
         onClick={() => handleItemClick("login")}
       >
-        Log In
+        Sign In
       </a>
       <a
         href="/contact"
         className={`navbar-item ${
-          selectedItem === "contact" ? "selected" : ""
-        } ${previousSelectedItem === "contact" ? "prev-selected" : ""}`}
+          selectedPath === "contact" ? "selected" : ""
+        }`}
         onClick={() => handleItemClick("contact")}
       >
         Contact
       </a>
       <a
         href="/"
-        className={`navbar-item ${selectedItem === "home" ? "selected" : ""} ${
-          previousSelectedItem === "home" ? "prev-selected" : ""
-        }`}
+        className={`navbar-item ${selectedPath === "home" ? "selected" : ""}`}
         onClick={() => handleItemClick("home")}
       >
         Home

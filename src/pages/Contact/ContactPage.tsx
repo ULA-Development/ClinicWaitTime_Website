@@ -5,7 +5,7 @@ const index = () => {
   return (
     <div>
       <Header selectedItem={"Home"} />
-      Home
+      Contact
     </div>
   );
 };

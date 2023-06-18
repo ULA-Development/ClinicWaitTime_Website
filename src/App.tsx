@@ -1,16 +1,32 @@
-import React, { useState } from "react";
-import TextInput from "./components/TextInput";
-import Button from "./components/Button";
-import SmallFooter from "./components/SmallFooter";
-import Header from "./components/Header/Header";
-import SigninPage from "./pages/Signin/SigninPage"
+import React, { useEffect, useState } from "react";
+import HomePage from "./pages/Home/HomePage";
+import LoginPage from "./pages/Signin/SigninPage";
+import SignupPage from "./pages/Signup/SignupPage";
+import RegisterPage from "./pages/Signup/RegisterPage";
+import ContactPage from "./pages/Contact/ContactPage";
+
 function App() {
-  
-  return (
+  const [currentPath, setCurrentPath] = useState<string | null>(null);
 
-      <SigninPage/>
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+  }, []);
 
-  );
+  return <div>{renderContent(currentPath)}</div>;
+}
+
+function renderContent(path: string | null) {
+  if (path === "/signin") {
+    return <LoginPage />;
+  } else if (path === "/signup") {
+    return <SignupPage />;
+  } else if (path === "/register") {
+    return <RegisterPage />;
+  } else if (path === "/contact") {
+    return <ContactPage />;
+  } else {
+    return <HomePage />;
+  }
 }
 
 export default App;

@@ -8,16 +8,20 @@ import "./SignupPage.css";
 
 const SignupPage = () => {
   const [emailText, setEmailText] = useState("");
-  const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(null);
+  const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
+    null
+  );
   const [passText, setPassText] = useState("");
   const [passErrorMessage, setPassErrorMessage] = useState<null | string>(null);
   const [nameText, setNameText] = useState("");
   const [nameErrorMessage, setNameErrorMessage] = useState<null | string>(null);
   const [confirmText, setConfirmText] = useState("");
-  const [confirmErrorMessage, setConfirmErrorMessage] = useState<null | string>(null);
+  const [confirmErrorMessage, setConfirmErrorMessage] = useState<null | string>(
+    null
+  );
   return (
     <div>
-      <Header />
+      <Header selectedItem={"Signup"} />
       <div className="content-container">
         <div className="content">
           <div className="title">
@@ -57,9 +61,7 @@ const SignupPage = () => {
           </div>
           <a href="/signin">Already have an account? Sign in</a>
           <div style={{ alignSelf: "center", width: "70%" }}>
-            <Button
-              onClick={() => console.log("sign in")}
-            >
+            <Button onClick={() => console.log("sign in")}>
               Create new account
             </Button>
           </div>
