@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import Header from "../../components/Header/Header";
-import TextInput from "../../components/TextInput";
-import SmallFooter from "../../components/SmallFooter";
-import Button from "../../components/Button";
+import Header from "../components/Header/Header";
+import TextInput from "../components/TextInput";
+import SmallFooter from "../components/SmallFooter";
+import Button from "../components/Button";
 import { ReactComponent as SignupIcon } from "../../assets/icons/folder-plus-solid.svg";
 import "./RegisterPage.css";
 
 const RegisterPage = () => {
+  const [resetInput, setResetInput] = useState(false)
   const [radioSelect, setRadioSelect] = useState("Individual provider");
-
   const [emailText, setEmailText] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
     null
@@ -63,6 +63,8 @@ const RegisterPage = () => {
               type="Name"
               errorMessage={nameErrorMessage}
               setError={setNameErrorMessage}
+              reset={resetInput}
+              setReset={setResetInput}
             />
             <TextInput
               value={emailText}
@@ -70,6 +72,8 @@ const RegisterPage = () => {
               type="Email"
               errorMessage={emailErrorMessage}
               setError={setEmailErrorMessage}
+              reset={resetInput}
+              setReset={setResetInput}
             />
             <TextInput
               value={passText}
@@ -77,6 +81,8 @@ const RegisterPage = () => {
               type="Password"
               errorMessage={passErrorMessage}
               setError={setPassErrorMessage}
+              reset={resetInput}
+              setReset={setResetInput}
             />
             <TextInput
               value={NPIText}
@@ -84,6 +90,8 @@ const RegisterPage = () => {
               type="NPI"
               errorMessage={NPIErrorMessage}
               setError={setNPIErrorMessage}
+              reset={resetInput}
+              setReset={setResetInput}
             />
             <TextInput
               value={referralText}
@@ -91,6 +99,8 @@ const RegisterPage = () => {
               type="Referral"
               errorMessage={referralErrorMessage}
               setError={setReferralErrorMessage}
+              reset={resetInput}
+              setReset={setResetInput}
             />
           </div>
           <a href="/signup">Sign up as a user? Click here</a>

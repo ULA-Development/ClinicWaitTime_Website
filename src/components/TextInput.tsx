@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ReactComponent as EmailIcon } from "../assets/icons/envelope-solid.svg";
 import { ReactComponent as PasswordIcon } from "../assets/icons/lock-solid.svg";
 import { ReactComponent as NameIcon } from "../assets/icons/user-solid.svg";
@@ -9,6 +9,7 @@ import { ReactComponent as ReferIcon } from "../assets/icons/user-friends-solid.
 import { ReactComponent as ErrorIcon } from "../assets/icons/exclamation-circle-solid.svg";
 import { ReactComponent as SearchIcon } from "../assets/icons/search-solid.svg";
 import "./TextInput.css";
+import { set } from "firebase/database";
 
 interface Props {
   onChange: (arg0: string) => void;
@@ -16,6 +17,8 @@ interface Props {
   type: string;
   errorMessage: string | null;
   setError: (arg0: any) => void;
+  reset?: boolean;
+  setReset: (arg0: boolean) => void;
 }
 
 const TextInput = ({
@@ -24,7 +27,10 @@ const TextInput = ({
   type,
   errorMessage = null,
   setError,
+  reset = false,
+  setReset
 }: Props) => {
+  const inputRef = useRef<HTMLInputElement>(null)
   const [focus, setFocus] = useState(value !== "");
   const [iconClass, setIconClass] = useState("icon");
   const [visibleText, setVisibleText] = useState(!type.includes("Password"));
@@ -83,11 +89,20 @@ const TextInput = ({
     );
   };
 
+  useEffect(() => {
+    if(reset === true){
+      setFocus(false)
+      onChange("")
+      inputRef.current?.blur()
+      setReset(false)
+    }
+  }, [reset])
+
   function handleFocus() {
     if (errorMessage !== null && focus === false) {
       setError(null);
     }
-    if (focus === true && value === "") {
+    if (value === "" && focus === true) {
       setFocus(false);
     } else {
       setFocus(true);
@@ -140,6 +155,7 @@ const TextInput = ({
         onChange={handleChange}
         onBlur={handleFocus}
         type={visibleText ? "text" : "password"}
+        ref={inputRef}
         id={type}
         className={errorMessage === null ? "input " : "input error"}
         autoComplete="off"
