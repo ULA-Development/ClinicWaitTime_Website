@@ -25,7 +25,7 @@ const RegisterPage = () => {
   >(null);
   return (
     <div>
-      <Header />
+      <Header selectedItem={"Register"} />
       <div className="content-container-register">
         <div className="content">
           <div className="title">
@@ -95,11 +95,7 @@ const RegisterPage = () => {
           </div>
           <a href="/signup">Sign up as a user? Click here</a>
           <div style={{ alignSelf: "center", width: "70%" }}>
-            <Button
-              onClick={() => console.log("sign in")}
-            >
-              Register
-            </Button>
+            <Button onClick={() => console.log("sign in")}>Register</Button>
           </div>
         </div>
       </div>

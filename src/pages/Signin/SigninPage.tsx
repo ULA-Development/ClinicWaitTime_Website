@@ -15,7 +15,7 @@ const SigninPage = () => {
   const [passErrorMessage, setPassErrorMessage] = useState<null | string>(null);
   return (
     <div>
-      <Header />
+      <Header selectedItem={"Login"} />
       <div className="content-container">
         <div className="content">
           <div className="title">
@@ -41,11 +41,7 @@ const SigninPage = () => {
           </div>
           <a href="/forogotpassword">Forogt your password?</a>
           <div style={{ alignSelf: "center", width: "70%" }}>
-            <Button
-              onClick={() => console.log("sign in")}
-            >
-              Sign in
-            </Button>
+            <Button onClick={() => console.log("sign in")}>Sign in</Button>
           </div>
         </div>
       </div>
