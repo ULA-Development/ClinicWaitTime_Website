@@ -48,7 +48,7 @@ const SigninPage = () => {
 
   return (
     <div>
-      <Header />
+      <Header selectedItem={"Login"} />
       <div className="content-container">
         <div className="content">
           <div className="title">

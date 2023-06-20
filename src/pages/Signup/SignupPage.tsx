@@ -74,7 +74,7 @@ const SignupPage = () => {
   }
   return (
     <div>
-      <Header />
+      <Header selectedItem={"Signup"} />
       <div className="content-container">
         <div className="content">
           <div className="title">
