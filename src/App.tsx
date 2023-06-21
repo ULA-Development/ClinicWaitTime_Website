@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Signin/SigninPage";
 import SignupPage from "./pages/Signup/SignupPage";
-import RegisterPage from "./archive/RegisterPage";
 import ContactPage from "./pages/Contact/ContactPage";
 
 function App() {
@@ -20,8 +19,6 @@ function renderContent(path: string | null) {
     return <LoginPage />;
   } else if (path === "/signup") {
     return <SignupPage />;
-  } else if (path === "/register") {
-    return <RegisterPage />;
   } else if (path === "/contact") {
     return <ContactPage />;
   } else {

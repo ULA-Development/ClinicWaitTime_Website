@@ -7,6 +7,7 @@ import {
   sendEmailVerification,
   updateProfile
 } from "firebase/auth";
+
 const config = {
   apiKey: "AIzaSyBCMS5SqL8cf1-MuEGDFQbsb_NZL0DKtDM",
   authDomain: "ula-web.firebaseapp.com",
@@ -20,25 +21,6 @@ const config = {
 const app = initializeApp(config);
 const database = getDatabase(app);
 const authenticator = getAuth(app);
-
-const authHandler = {
-  auth: authenticator,
-  signIn: signInWithEmailAndPassword,
-  signUp: createUserWithEmailAndPassword,
-  sendEmailVerification: sendEmailVerification,
-  updateProfile: updateProfile
-};
-const dbCreateUser = (uid: string, name: string, email: string) => {
-  set(ref(database, 'users/' + uid), {
-    username: name,
-    email: email
-  })
-}
-
-const dbHandler = {
-  db: database,
-  createUser: dbCreateUser
-};
 
 const handleErrorMessages = (code: string) => {
   switch (code) {
@@ -65,5 +47,27 @@ const handleErrorMessages = (code: string) => {
     }
   }
 };
+
+
+const dbCreateUser = (uid: string, name: string, email: string) => {
+  set(ref(database, 'users/' + uid), {
+    username: name,
+    email: email
+  })
+}
+
+const dbHandler = {
+  db: database,
+  createUser: dbCreateUser,
+};
+
+const authHandler = {
+  auth: authenticator,
+  signIn: signInWithEmailAndPassword,
+  signUp: createUserWithEmailAndPassword,
+  sendEmailVerification: sendEmailVerification,
+  updateProfile: updateProfile
+};
+
 
 export { dbHandler, authHandler, handleErrorMessages };

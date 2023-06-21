@@ -5,9 +5,10 @@ import SmallFooter from "../../components/SmallFooter";
 import Button from "../../components/Button";
 import { ReactComponent as SigninIcon } from "../../assets/icons/sign-in-alt-solid.svg";
 import "./SigninPage.css";
-import { authHandler, handleErrorMessages } from "../../data/firebase";
+import { authHandler, dbHandler, handleErrorMessages } from "../../data/firebase";
 
 const SigninPage = () => {
+  console.log("dom updated")
   const [resetInput, setResetInput] = useState(false)
   const [emailText, setEmailText] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
@@ -15,6 +16,7 @@ const SigninPage = () => {
   );
   const [passText, setPassText] = useState("");
   const [passErrorMessage, setPassErrorMessage] = useState<null | string>(null);
+
 
   const handleSignIn = () => {
     if (authHandler.auth.currentUser === null) {
@@ -50,13 +52,13 @@ const SigninPage = () => {
     <div>
       <Header selectedItem={"Login"} />
       <div className="content-container">
-        <div className="content">
+        <div className="content-signin">
           <div className="title">
             <SigninIcon className="sign-in-logo" />
             <span className="title">Sign into ULA</span>
           </div>
           <a href="/signup">Don't have an account? Create account</a>
-          <div className="input-fields">
+          <div className="input-fields-signin">
             <TextInput
               value={emailText}
               onChange={setEmailText}

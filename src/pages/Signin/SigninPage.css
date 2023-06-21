@@ -7,7 +7,7 @@
     justify-content: center;
     margin-top: 30px;
 }
-.content{
+.content-signin{
     width: 40%;
     height: 390px;
     display: flex;
@@ -32,13 +32,12 @@
     position: relative;
     padding-right:14px;
 }
-.input-fields{
+.input-fields-signin{
     justify-content: space-between;
     display: flex;
     flex-direction: column;
-    height: 125px;
+    height: 130px;
     position: relative;
-
 }
 a{
     color: var(--shadow-grey);

@@ -81,7 +81,6 @@ const SignupPage = () => {
             <SignupIcon className="sign-in-logo" />
             <span className="title">Create new account</span>
           </div>
-          <a href="/register">Register as a practice? Click here</a>
           <div className="input-fields">
             <TextInput
               value={nameText}
