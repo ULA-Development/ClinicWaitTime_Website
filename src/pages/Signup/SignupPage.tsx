@@ -31,7 +31,7 @@ const SignupPage = () => {
       setNameErrorMessage("Name can only contain letters");
       return;
     }
-    if (confirmText != passText) {
+    if (confirmText !== passText) {
       setConfirmErrorMessage("Password does not match");
       return;
     }

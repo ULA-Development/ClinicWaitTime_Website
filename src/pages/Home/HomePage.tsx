@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/Header/Header";
+import { dbHandler } from "../../data/firebase";
 
-const index = () => {
+const HomePage = () => {
+  useEffect(() => {
+    dbHandler.fetchClinics()
+  }, [])
+  
   return (
     <div>
       <Header selectedItem={"Home"} />
@@ -10,4 +15,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default HomePage;

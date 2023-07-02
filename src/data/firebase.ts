@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, onValue } from "firebase/database";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -48,6 +48,51 @@ const handleErrorMessages = (code: string) => {
   }
 };
 
+const fetchClinics = (currLat: number = 43.689562, currLong: number = -79.456932) => {
+  const clinicRef = ref(database, 'clinics')
+  onValue(clinicRef, (snapshot) => {
+    const data = snapshot.val()
+    const clinicIds = Object.keys(data)
+    let closeClincis: any[] = []
+    const closeDist = 12
+    clinicIds.forEach((id: string) => {
+      if(id.includes('*')){
+        const coords = id.split('|')
+        const clinicLat = Number(coords[0].replace('*', '.'))
+        const clinicLong = Number(coords[1].replace('*', '.'))
+        const distance = distanceOfCoords(currLat, currLong, clinicLat, clinicLong)
+        if(distance <= closeDist){
+          const clinicInfo = {
+            lat: clinicLat,
+            long: clinicLong,
+            info: data[id]
+          }
+          closeClincis.push(clinicInfo)
+        }
+      }
+    })
+    // console.log(closeClincis[0].info.occupancy.current) - example useage
+    return closeClincis
+  })
+}
+
+const distanceOfCoords = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+	if ((lat1 === lat2) && (lon1 === lon2)) {
+		return 0;
+	}
+	else {
+		const radlat1 = Math.PI * lat1/180;
+		const radlat2 = Math.PI * lat2/180;
+		const theta = lon1-lon2;
+		const radtheta = Math.PI * theta/180;
+		let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		if (dist > 1) {
+			dist = 1;
+		}
+		dist = Math.acos(dist) * 180/Math.PI * 60 * 1.1515;
+		return dist * 1.609344 
+	}
+}
 
 const dbCreateUser = (uid: string, name: string, email: string) => {
   set(ref(database, 'users/' + uid), {
@@ -59,6 +104,7 @@ const dbCreateUser = (uid: string, name: string, email: string) => {
 const dbHandler = {
   db: database,
   createUser: dbCreateUser,
+  fetchClinics: fetchClinics,
 };
 
 const authHandler = {
