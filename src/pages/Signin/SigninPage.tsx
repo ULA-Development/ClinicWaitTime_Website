@@ -5,7 +5,7 @@ import SmallFooter from "../../components/SmallFooter";
 import Button from "../../components/Button";
 import { ReactComponent as SigninIcon } from "../../assets/icons/sign-in-alt-solid.svg";
 import "./SigninPage.css";
-import { authHandler, dbHandler, handleErrorMessages } from "../../data/firebase";
+import { authHandler, handleErrorMessages } from "../../data/firebase";
 
 const SigninPage = () => {
   console.log("dom updated")
