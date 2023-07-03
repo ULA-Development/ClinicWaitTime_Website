@@ -3,10 +3,19 @@ import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Signin/SigninPage";
 import SignupPage from "./pages/Signup/SignupPage";
 import ContactPage from "./pages/Contact/ContactPage";
+import { useDispatch } from "react-redux";
+import { updateBrowserView } from './reducers/mobileReducer'
 
 function App() {
-  const [currentPath, setCurrentPath] = useState<string | null>(null);
+  // Handle browser view updating
+  const dispatch = useDispatch();
+  const handleResize = () => {
+    dispatch(updateBrowserView());
+  };
+  window.addEventListener("resize", handleResize);
 
+  // Path
+  const [currentPath, setCurrentPath] = useState<string | null>(null);
   useEffect(() => {
     setCurrentPath(window.location.pathname);
   }, []);
@@ -14,6 +23,7 @@ function App() {
   return <div>{renderContent(currentPath)}</div>;
 }
 
+// Conditional Renderingf
 function renderContent(path: string | null) {
   if (path === "/signin") {
     return <LoginPage />;
