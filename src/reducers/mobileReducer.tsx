@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const mobileSlice = createSlice({
   name: 'isMobile',
   initialState: {
-    value: false,
+    value: window.innerWidth <= 530,
   },
   reducers: {
     updateBrowserView: (state) => {

@@ -11,9 +11,11 @@ import {
 } from "../../data/firebase";
 import "./SignupPage.css";
 import { UserCredential } from "firebase/auth";
+import { useSelector } from "react-redux";
 
 const SignupPage = () => {
-  const [resetInput, setResetInput] = useState(false)
+  const isMobile = useSelector((state: any) => state.isMobile.value);
+  const [resetInput, setResetInput] = useState(false);
   const [emailText, setEmailText] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
     null
@@ -40,7 +42,7 @@ const SignupPage = () => {
       authHandler
         .signUp(authHandler.auth, emailText, passText)
         .then((newUser) => {
-          verifyAndCreateUser(newUser)
+          verifyAndCreateUser(newUser);
         })
         .catch((error) => {
           const [type, message] = handleErrorMessages(error.code);
@@ -57,26 +59,31 @@ const SignupPage = () => {
         });
     } else {
       authHandler.auth.signOut();
-      alert("Cannot perform this action at the moment")
-      setResetInput(true)
+      alert("Cannot perform this action at the moment");
+      setResetInput(true);
     }
   };
   const verifyAndCreateUser = (newUser: UserCredential) => {
     const uid = newUser.user.uid;
     authHandler.updateProfile(newUser.user, { displayName: nameText });
-    authHandler.sendEmailVerification(newUser.user).then(() => {
-      dbHandler.createUser(uid, nameText, emailText);
-      alert("Email verified - account created")
-    }).catch((error) => {
-      alert(error)
-    })
-    
-  }
+    authHandler
+      .sendEmailVerification(newUser.user)
+      .then(() => {
+        dbHandler.createUser(uid, nameText, emailText);
+        alert("Email verified - account created");
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
   return (
     <div>
-      <Header selectedItem={"Signup"} />
+      {isMobile ? null : <Header selectedItem={"Signup"} />}
       <div className="content-container">
-        <div className="content">
+        <div
+          className="content"
+          style={isMobile ? { width: "95%" } : { width: "515px" }}
+        >
           <div className="title">
             <SignupIcon className="sign-in-logo" />
             <span className="title">Create new account</span>
@@ -120,7 +127,13 @@ const SignupPage = () => {
             />
           </div>
           <a href="/signin">Already have an account? Sign in</a>
-          <div style={{ alignSelf: "center", width: "70%" }}>
+          <div
+            style={
+              isMobile
+                ? { width: "100%" }
+                : { width: "70%", alignSelf: "center" }
+            }
+          >
             <Button onClick={() => handleSignUp()}>Create new account</Button>
           </div>
         </div>
