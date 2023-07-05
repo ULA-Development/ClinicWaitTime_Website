@@ -10,11 +10,12 @@
   padding-right: 16px;
   box-shadow: 0px 1px 7px var(--shadow-grey);
 }
-.logo{
+.logo {
   fill: var(--main);
   position: absolute;
   width: 35px;
   height: auto;
+  left: 20px;
 }
 .header-logo {
   display: flex;
@@ -30,4 +31,3 @@
 .header-navbar {
   margin-left: 40px; /* TODO: Fix this */
 }
-

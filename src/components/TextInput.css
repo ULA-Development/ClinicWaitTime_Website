@@ -39,7 +39,6 @@
   padding-right: 5px;
   background-color: transparent;
   white-space: nowrap;
-
 }
 
 .label.error {
@@ -57,8 +56,7 @@
   animation-name: slideUp;
 }
 
-.container{
-  width: 100%;
+.container {
   position: relative;
   display: flex;
   height: 50px;
@@ -79,9 +77,9 @@
 
 .input {
   width: 100%;
-  border-radius: 7px;
+  border-radius: 8px;
   border-color: transparent;
-  outline-width: 0;
+  outline: none;
   height: 45px;
   padding-left: 40px;
   font-size: 17px;
@@ -89,8 +87,8 @@
   position: relative;
   background-color: transparent;
   padding-right: 28px;
+  height: 40px;
 }
-
 .input.error {
   color: var(--error-red);
 }
@@ -127,7 +125,6 @@
   display: flex;
   left: 8px;
   vertical-align: middle;
-
 }
 .visible-eye {
   width: auto;
@@ -142,4 +139,6 @@
   right: 5px;
   justify-self: center;
 }
-.visible-eye:active{background-color: rgba(255, 255, 255, 0.3);}
+.visible-eye:active {
+  background-color: rgba(255, 255, 255, 0.3);
+}

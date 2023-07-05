@@ -1,9 +1,16 @@
+
 import React, {useEffect} from "react";
 import Header from "../../components/Header/Header";
 import { ReactComponent as Location } from "../../assets/icons/location-crosshairs-solid.svg";
 import axios from "axios";
+import { dbHandler } from "../../data/firebase";
+import { useSelector } from "react-redux";
 
-const Index: React.FC = () => {
+const HomePage = () => {
+  const isMobile = useSelector((state: any) => state.isMobile.value)
+  useEffect(() => {
+    dbHandler.fetchClinics()
+  }, [])
   const handleClick = () => {
         navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition) => {
           const { latitude, longitude } = position.coords;
@@ -25,15 +32,15 @@ const Index: React.FC = () => {
           }
         });
   };
-
   return (
     <div>
-      <Header selectedItem={"Home"} />
-      Home
       <Location onClick={() => handleClick()} 
       style={{ width: "50px", height: "50px" }}/>
+      {isMobile ? <p>Mobile</p> : <p>Desktop</p>}
     </div>
   );
 };
 
-export default Index;
+
+export default HomePage;
+
