@@ -1,16 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import { ReactComponent as Location } from "../../assets/icons/location-crosshairs-solid.svg";
 import axios from "axios";
-import { dbHandler } from "../../data/firebase";
 import { useSelector } from "react-redux";
-
+import SelectionPanel from "../../components/SelectionPanel";
+import "./HomePage.css";
+import TextInput from "../../components/TextInput";
 const HomePage = () => {
   const isMobile = useSelector((state: any) => state.isMobile.value);
-  useEffect(() => {
-    dbHandler.fetchClinics();
-  }, []);
-  const handleClick = () => {
+  const [resetInput, setResetInput] = useState(false);
+  const [emailText, setEmailText] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
+    null
+  );
+  const handleCurrLocaiton = () => {
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -35,11 +38,24 @@ const HomePage = () => {
   };
   return (
     <div>
-      <Location
-        onClick={() => handleClick()}
+      {isMobile ? null : <Header selectedItem={"Home"} />}
+      <div className="home-content">
+        <TextInput
+          value={emailText}
+          onChange={setEmailText}
+          type="Search"
+          errorMessage={emailErrorMessage}
+          setError={setEmailErrorMessage}
+          reset={resetInput}
+          setReset={setResetInput}
+        />
+        <SelectionPanel />
+      </div>
+
+      {/* <Location
+        onClick={() => handleCurrLocaiton()}
         style={{ width: "50px", height: "50px" }}
-      />
-      {isMobile ? <p>Mobile</p> : <p>Desktop</p>}
+      /> */}
     </div>
   );
 };
