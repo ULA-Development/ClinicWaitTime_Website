@@ -3,9 +3,12 @@ import Header from "../../components/Header/Header";
 import { ReactComponent as Location } from "../../assets/icons/location-crosshairs-solid.svg";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import SelectionPanel from "../../components/SelectionPanel";
+import SelectionPanel from "./SelectionPanel";
+import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
+import SmallFooter from "../../components/SmallFooter";
 import TextInput from "../../components/TextInput";
+import StarRating from "./ClinicComponent/StarRating";
 const HomePage = () => {
   const isMobile = useSelector((state: any) => state.isMobile.value);
   const [resetInput, setResetInput] = useState(false);
@@ -13,6 +16,7 @@ const HomePage = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
     null
   );
+  const [active, setActive] = useState(true)
   const handleCurrLocaiton = () => {
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
@@ -50,7 +54,16 @@ const HomePage = () => {
           setReset={setResetInput}
         />
         <SelectionPanel />
+        <ClinicOption
+          name="OCAD University - Hospital"
+          distance={5.3}
+          number="1"
+          busyness={2}
+          rating={4}
+          isActive={active}
+        />
       </div>
+      <SmallFooter/>
 
       {/* <Location
         onClick={() => handleCurrLocaiton()}
