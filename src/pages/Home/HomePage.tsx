@@ -4,13 +4,19 @@ import { dbHandler } from "../../data/firebase";
 import HereMapComponent from "./Map";
 
 const HomePage = () => {
-  // const isMobile = useSelector((state: any) => state.isMobile.value);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     dbHandler.fetchClinics().then((clinics: any) => {
       setData(clinics);
+      setLoading(false); // set loading to false once data is fetched
     });
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // or a spinner component
+  }
 
   return (
     <div>

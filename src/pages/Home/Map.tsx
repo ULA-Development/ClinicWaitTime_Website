@@ -84,15 +84,14 @@ function HereMapComponent({ hospitals }: { hospitals: Hospital[] }) {
         //   hospital.location,
         //   platform
         // );
-        console.log("hospital");
         let totalWaitTime = hospital.info.occupancy.current * 10; // 10 minutes per person
         let travelTime = (hospital.location.distance / 40) * 60; // 40 km/h average speed, time in minutes (distance in km)
         let totalTime = totalWaitTime + travelTime;
-        console.log(totalTime);
-        console.log(totalWaitTime);
-        console.log(travelTime);
         // 30 minutes
-        const hospitalMarker = new window.H.map.Marker(hospital.location);
+        const hospitalMarker = new window.H.map.Marker({
+          lat: hospital.location.lat,
+          lng: hospital.location.lng,
+        });
         map.addObject(hospitalMarker);
 
         hospitalMarker.addEventListener(
@@ -103,7 +102,6 @@ function HereMapComponent({ hospitals }: { hospitals: Hospital[] }) {
           },
           false
         );
-
         return {
           ...hospital,
           totalTime,
@@ -116,8 +114,7 @@ function HereMapComponent({ hospitals }: { hospitals: Hospital[] }) {
     };
 
     addMarkers();
-  }, [mapRef, currentLocation]);
-
+  }, [mapRef, currentLocation, hospitals]);
   return (
     <div>
       <div

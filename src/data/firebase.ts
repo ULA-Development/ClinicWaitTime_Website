@@ -64,7 +64,7 @@ const handleErrorMessages = (code: string) => {
           const clinicInfo = {
             location: {
               lat: clinicLat,
-              long: clinicLong,
+              lng: clinicLong,
               distance: distance
             },
             info: data[id]
