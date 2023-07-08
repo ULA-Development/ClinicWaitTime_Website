@@ -50,10 +50,10 @@ const handleErrorMessages = (code: string) => {
 
 const fetchClinics = (currLat: number = 43.689562, currLong: number = -79.456932) => {
   const clinicRef = ref(database, 'clinics')
+  let closeClincis: any[] = []
   onValue(clinicRef, (snapshot) => {
     const data = snapshot.val()
     const clinicIds = Object.keys(data)
-    let closeClincis: any[] = []
     const closeDist = 12
     clinicIds.forEach((id: string) => {
       if(id.includes('*')){
@@ -63,17 +63,19 @@ const fetchClinics = (currLat: number = 43.689562, currLong: number = -79.456932
         const distance = distanceOfCoords(currLat, currLong, clinicLat, clinicLong)
         if(distance <= closeDist){
           const clinicInfo = {
-            lat: clinicLat,
-            long: clinicLong,
+            location: {
+              lat: clinicLat,
+              long: clinicLong,
+              distance: distance
+            },
             info: data[id]
           }
           closeClincis.push(clinicInfo)
         }
       }
     })
-    // console.log(closeClincis[0].info.occupancy.current) - example useage
-    return closeClincis
   })
+  return closeClincis
 }
 
 const distanceOfCoords = (lat1: number, lon1: number, lat2: number, lon2: number) => {
