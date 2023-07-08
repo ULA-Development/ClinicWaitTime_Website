@@ -6,5 +6,9 @@
     --grey: #868585;
     --grey-text: rgb(86,86,86);
     --error-red: #eb0c31;
-    --shadow-grey: #bdbfbe;  
+    --shadow-grey: #bdbfbe; 
+    --hover-grey: #eeecec; 
+    --faded-green: #ccdca4;
+    --faded-yellow: #f1b84a;
+    --faded-red: #e1897b;
 }

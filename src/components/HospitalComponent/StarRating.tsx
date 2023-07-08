@@ -1,4 +1,7 @@
-import React from "react";
+import React, { ReactComponentElement } from "react";
+import { ReactComponent as Full } from "../../assets/icons/star-solid.svg";
+import { ReactComponent as Empty } from "../../assets/icons/star-regular.svg";
+import { ReactComponent as Half } from "../../assets/icons/star-half-alt-solid.svg";
 import "./StarRating.css";
 
 interface StarRatingProps {
@@ -6,17 +9,38 @@ interface StarRatingProps {
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
-  const filledStars = Math.round((rating / 100) * 6); // Calculate the number of filled stars based on the rating
+  // Rating ranges between 0-5 and can have .5
+  const stars = () => {
+    const stars: any = [];
+    // Get filled stars
+    for (var i = 0; i < Math.floor(rating); i++) {
+      stars.push({
+        starType: <Full className="star" />,
+        id: i,
+      });
+    }
+    //Add half star if needed
+    if (rating % 1 !== 0) {
+      stars.push({
+        starType: <Half className="star" />,
+        id: 5 - rating,
+      });
+    }
+    // Add remaining empty stars
+    for (var i = Math.ceil(rating); i < 5; i++) {
+      stars.push({
+        starType: <Empty className="star" />,
+        id: i,
+      });
+    }
+
+    return stars;
+  };
 
   return (
     <div className="star-rating">
-      {[...Array(6)].map((_, index) => (
-        <span
-          key={index}
-          className={`star ${index < filledStars ? "filled" : ""}`}
-        >
-          &#9733;
-        </span>
+      {stars().map((item: any) => (
+        <div key={item.id}>{item.starType}</div>
       ))}
     </div>
   );

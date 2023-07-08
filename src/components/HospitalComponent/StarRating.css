@@ -1,18 +1,13 @@
+@import "../../assets/common.css";
 .star-rating {
   display: flex;
   align-items: center;
-  }
-  
-  .star {
-    display: inline-block;
-    width: 20px; /* Adjust the width of the stars */
-    height: 20px; /* Adjust the height of the stars */
-    color: gray; /* Set the color of the empty stars */
-    margin-right: 2px; /* Adjust the spacing between the stars */
-    font-size: 16px; /* Adjust the font size of the stars */
-  }
-  
-  .star.filled {
-    color: rgb(234, 164, 11); /* Set the color of the filled stars */
-  }
-  
+}
+
+.star {
+  display: inline-block;
+  width: 16px; /* Adjust the width of the stars */
+  height: 16px; /* Adjust the height of the stars */ /* Set the color of the empty stars */
+  margin-right: 2px; /* Adjust the spacing between the stars */
+  fill: var(--faded-yellow);
+}

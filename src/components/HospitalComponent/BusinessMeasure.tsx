@@ -1,42 +1,41 @@
 import React from "react";
-
 interface BusinessMeasureProps {
-  business: number;
+  busyness: number;
+  greyBarColor: string;
 }
 
-const BusinessMeasure: React.FC<BusinessMeasureProps> = ({ business }) => {
-  const grayBarStyle = {
-    backgroundColor: "#ccc",
-    width: "10px",
-    height: "40px",
-    margin: "0 2px",
-    borderRadius: "4px",
+const BusinessMeasure: React.FC<BusinessMeasureProps> = ({ busyness, greyBarColor }) => {
+  const getBarColor = (busyness: number) => {
+    // Business ranges between 1 and 6
+    if(busyness <= 2){
+      return '#ccdca4'
+    }else if(busyness <= 4){
+      return '#f1b84a'
+    }else{
+      return '#e1897b'
+    }
   };
 
-  const getBarColor = (business: number) => {
-    const green = [0, 175, 0];
-    const red = [175, 0, 0];
-    const ratio = business / 100;
-    const color = green.map((value, index) =>
-      Math.round(value + (red[index] - value) * ratio)
-    );
-    return `rgb(${color.join(",")})`;
+  const grayBarStyle = {
+    backgroundColor: greyBarColor,
+    width: "9px",
+    height: "23px",
+    margin: "0 1.5px",
+    borderRadius: "10px",
   };
 
   const filledBarStyle = {
-    backgroundColor: getBarColor(business),
-    width: "10px",
-    height: "40px",
-    margin: "0 2px",
-    borderRadius: "4px",
+    backgroundColor: getBarColor(busyness),
+    width: "9px",
+    height: "23px",
+    margin: "0 1.5px",
+    borderRadius: "10px",
   };
-
-  const numFilledBars = Math.ceil(business / 16.7);
 
   const bars = Array.from({ length: 6 }, (_, index) => (
     <div
       key={index}
-      style={index < numFilledBars ? filledBarStyle : grayBarStyle}
+      style={index < busyness ? filledBarStyle : grayBarStyle}
     ></div>
   ));
 
