@@ -9,6 +9,8 @@ import "./HomePage.css";
 import SmallFooter from "../../components/SmallFooter";
 import TextInput from "../../components/TextInput";
 import StarRating from "./ClinicComponent/StarRating";
+import HereMapComponent from "./Map";
+import { dbHandler } from "../../data/firebase";
 const HomePage = () => {
   const isMobile = useSelector((state: any) => state.isMobile.value);
   const [resetInput, setResetInput] = useState(false);
@@ -16,6 +18,12 @@ const HomePage = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
     null
   );
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    dbHandler.fetchClinics().then((clinics: any) => {
+    setData(clinics);
+    });
+    }, []);
   const [active, setActive] = useState(true)
   const handleCurrLocaiton = () => {
     navigator.geolocation.getCurrentPosition(
@@ -43,6 +51,7 @@ const HomePage = () => {
   return (
     <div>
       {isMobile ? null : <Header selectedItem={"Home"} />}
+      <HereMapComponent hospitals={data}></HereMapComponent>
       <div className="home-content">
         <TextInput
           value={emailText}
@@ -54,14 +63,6 @@ const HomePage = () => {
           setReset={setResetInput}
         />
         <SelectionPanel />
-        <ClinicOption
-          name="OCAD University - Hospital"
-          distance={5.3}
-          number="1"
-          busyness={2}
-          rating={4}
-          isActive={active}
-        />
       </div>
       <SmallFooter/>
 
