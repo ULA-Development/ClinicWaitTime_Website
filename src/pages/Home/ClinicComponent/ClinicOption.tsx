@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./HospitalComponent.css";
-import BusinessMeasure from "./BusinessMeasure";
+import "./ClinicOption.css";
+import BusinessMeasure from "./BusynessIndicator";
 import StarRating from "./StarRating";
 
-interface HospitalComponentProps {
+interface ClinicOptionProps {
   name: string;
   distance: number;
   number: string;
@@ -11,7 +11,7 @@ interface HospitalComponentProps {
   rating: number;
   isActive: boolean;
 }
-const HospitalComponent: React.FC<HospitalComponentProps> = ({
+const ClinicOption: React.FC<ClinicOptionProps> = ({
   name,
   distance,
   number,
@@ -32,7 +32,7 @@ const HospitalComponent: React.FC<HospitalComponentProps> = ({
 
   return (
     <div
-      className={isActive ? "hospital-component-active" : "hospital-component"}
+      className={isActive ? "clinic-component-active" : "clinic-component"}
     >
       <div
         className="circle-num"
@@ -61,4 +61,4 @@ const HospitalComponent: React.FC<HospitalComponentProps> = ({
   );
 };
 
-export default HospitalComponent;
+export default ClinicOption;

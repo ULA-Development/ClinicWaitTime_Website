@@ -1,7 +1,7 @@
 import React, { ReactComponentElement } from "react";
-import { ReactComponent as Full } from "../../assets/icons/star-solid.svg";
-import { ReactComponent as Empty } from "../../assets/icons/star-regular.svg";
-import { ReactComponent as Half } from "../../assets/icons/star-half-alt-solid.svg";
+import { ReactComponent as Full } from "../../../assets/icons/star-solid.svg";
+import { ReactComponent as Empty } from "../../../assets/icons/star-regular.svg";
+import { ReactComponent as Half } from "../../../assets/icons/star-half-alt-solid.svg";
 import "./StarRating.css";
 
 interface StarRatingProps {

@@ -1,6 +1,6 @@
-@import "../../assets/common.css";
+@import "../../../assets/common.css";
 
-.hospital-component, .hospital-component-active {
+.clinic-component, .clinic-component-active {
   position: relative;
   display: flex;
   align-items: center;
@@ -11,11 +11,11 @@
   cursor: pointer; 
 }
 
-.hospital-component-active{
+.clinic-component-active{
   background-color: var(--main);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-.hospital-component:hover {
+.clinic-component:hover {
   background-color: var(--hover-grey);
 }
 .circle-num{

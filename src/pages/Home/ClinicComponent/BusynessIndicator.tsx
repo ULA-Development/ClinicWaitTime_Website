@@ -1,10 +1,10 @@
 import React from "react";
-interface BusinessMeasureProps {
+interface BusynessIndicatorProps {
   busyness: number;
   greyBarColor: string;
 }
 
-const BusinessMeasure: React.FC<BusinessMeasureProps> = ({ busyness, greyBarColor }) => {
+const BusynessIndicator: React.FC<BusynessIndicatorProps> = ({ busyness, greyBarColor }) => {
   const getBarColor = (busyness: number) => {
     // Business ranges between 1 and 6
     if(busyness <= 2){
@@ -42,4 +42,4 @@ const BusinessMeasure: React.FC<BusinessMeasureProps> = ({ busyness, greyBarColo
   return <div style={{ display: "flex" }}>{bars}</div>;
 };
 
-export default BusinessMeasure;
+export default BusynessIndicator;

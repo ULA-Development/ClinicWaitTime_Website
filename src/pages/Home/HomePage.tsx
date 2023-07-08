@@ -4,11 +4,11 @@ import { ReactComponent as Location } from "../../assets/icons/location-crosshai
 import axios from "axios";
 import { useSelector } from "react-redux";
 import SelectionPanel from "./SelectionPanel";
-import HospitalComponent from "../../components/HospitalComponent/HospitalComponent";
+import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
 import SmallFooter from "../../components/SmallFooter";
 import TextInput from "../../components/TextInput";
-import StarRating from "../../components/HospitalComponent/StarRating";
+import StarRating from "./ClinicComponent/StarRating";
 const HomePage = () => {
   const isMobile = useSelector((state: any) => state.isMobile.value);
   const [resetInput, setResetInput] = useState(false);
@@ -54,7 +54,7 @@ const HomePage = () => {
           setReset={setResetInput}
         />
         <SelectionPanel />
-        <HospitalComponent
+        <ClinicOption
           name="OCAD University - Hospital"
           distance={5.3}
           number="1"
