@@ -8,7 +8,7 @@ const SelectionPanel: React.FC = () => {
 
     return (
     <div className="selection-panel">
-        <h2 className="panel-heading">Selection</h2>
+        <h2 className="panel-heading">Select healthcare type</h2>
         <label>
         <input 
             type='radio'
@@ -16,6 +16,7 @@ const SelectionPanel: React.FC = () => {
             value="Walk-In Clinics"
             checked={isRadioSelected('Walk-In Clinics')}
             onChange={handleRadioClick}
+            className="radio-button"
         />
             Walk-In Clinics
         </label>
@@ -26,6 +27,7 @@ const SelectionPanel: React.FC = () => {
             value="Hospitals"
             checked={isRadioSelected('Hospitals')}
             onChange={handleRadioClick}
+            className="radio-button"
         />
             Hospitals
         </label>
@@ -37,6 +39,7 @@ const SelectionPanel: React.FC = () => {
             value="Specialists"
             checked={isRadioSelected('Specialists')}
             onChange={handleRadioClick}
+            className="radio-button"
         />
             Specialists
         </label>
@@ -47,8 +50,9 @@ const SelectionPanel: React.FC = () => {
             value="Family Physician"
             checked={isRadioSelected('Family Physician')}
             onChange={handleRadioClick}
+            className="radio-button"
         />
-            Family Physician
+            Family Physicians
         </label>
     </div>
     );

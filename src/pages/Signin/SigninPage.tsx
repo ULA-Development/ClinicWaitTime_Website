@@ -5,11 +5,12 @@ import SmallFooter from "../../components/SmallFooter";
 import Button from "../../components/Button";
 import { ReactComponent as SigninIcon } from "../../assets/icons/sign-in-alt-solid.svg";
 import "./SigninPage.css";
-import { authHandler, dbHandler, handleErrorMessages } from "../../data/firebase";
+import { authHandler, handleErrorMessages } from "../../data/firebase";
+import { useSelector } from "react-redux";
 
 const SigninPage = () => {
-  console.log("dom updated")
-  const [resetInput, setResetInput] = useState(false)
+  const isMobile = useSelector((state: any) => state.isMobile.value);
+  const [resetInput, setResetInput] = useState(false);
   const [emailText, setEmailText] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
     null
@@ -17,16 +18,15 @@ const SigninPage = () => {
   const [passText, setPassText] = useState("");
   const [passErrorMessage, setPassErrorMessage] = useState<null | string>(null);
 
-
   const handleSignIn = () => {
     if (authHandler.auth.currentUser === null) {
       authHandler
         .signIn(authHandler.auth, emailText, passText)
         .then((user) => {
-          if(user.user.emailVerified === false){
-            authHandler.auth.signOut()
-            alert("Don't let them in, email not verified")
-          }else{
+          if (user.user.emailVerified === false) {
+            authHandler.auth.signOut();
+            alert("Don't let them in, email not verified");
+          } else {
             alert("successful sign in");
           }
         })
@@ -43,19 +43,22 @@ const SigninPage = () => {
         });
     } else {
       authHandler.auth.signOut();
-      alert("Cannot perform this action at the moment")
-      setResetInput(true)
+      alert("Cannot perform this action at the moment");
+      setResetInput(true);
     }
   };
 
   return (
     <div>
-      <Header selectedItem={"Login"} />
+      {isMobile ? null : <Header selectedItem={"Login"} />}
       <div className="content-container">
-        <div className="content-signin">
+        <div
+          className="content-signin"
+          style={isMobile ? { width: "95%" } : { width: "515px" }}
+        >
           <div className="title">
             <SigninIcon className="sign-in-logo" />
-            <span className="title">Sign into ULA</span>
+            <span className="title">Log in</span>
           </div>
           <a href="/signup">Don't have an account? Create account</a>
           <div className="input-fields-signin">
@@ -79,7 +82,13 @@ const SigninPage = () => {
             />
           </div>
           <a href="/forogotpassword">Forogt your password?</a>
-          <div style={{ alignSelf: "center", width: "70%" }}>
+          <div
+            style={
+              isMobile
+                ? { width: "100%" }
+                : { width: "70%", alignSelf: "center" }
+            }
+          >
             <Button onClick={() => handleSignIn()}>Sign in</Button>
           </div>
         </div>

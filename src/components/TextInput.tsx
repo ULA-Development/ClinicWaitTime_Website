@@ -9,7 +9,7 @@ import { ReactComponent as ReferIcon } from "../assets/icons/user-friends-solid.
 import { ReactComponent as ErrorIcon } from "../assets/icons/exclamation-circle-solid.svg";
 import { ReactComponent as SearchIcon } from "../assets/icons/search-solid.svg";
 import "./TextInput.css";
-import { set } from "firebase/database";
+import { useSelector } from "react-redux";
 
 interface Props {
   onChange: (arg0: string) => void;
@@ -28,9 +28,10 @@ const TextInput = ({
   errorMessage = null,
   setError,
   reset = false,
-  setReset
+  setReset,
 }: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const isMobile = useSelector((state: any) => state.isMobile.value);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [focus, setFocus] = useState(value !== "");
   const [iconClass, setIconClass] = useState("icon");
   const [visibleText, setVisibleText] = useState(!type.includes("Password"));
@@ -90,13 +91,13 @@ const TextInput = ({
   };
 
   useEffect(() => {
-    if(reset === true){
-      setFocus(false)
-      onChange("")
-      inputRef.current?.blur()
-      setReset(false)
+    if (reset === true) {
+      setFocus(false);
+      onChange("");
+      inputRef.current?.blur();
+      setReset(false);
     }
-  }, [reset])
+  }, [reset]);
 
   function handleFocus() {
     if (errorMessage !== null && focus === false) {
@@ -136,6 +137,7 @@ const TextInput = ({
             : "container focus"
           : "container error"
       }
+      style={isMobile ? { width: "100%" } : { width: "515px" }}
     >
       <span
         className={
