@@ -78,7 +78,7 @@ const SignupPage = () => {
   };
   return (
     <div>
-      {isMobile ? null : <Header selectedItem={"Signup"} />}
+      <Header selectedItem={"Signup"} />
       <div className="content-container">
         <div
           className="content"
