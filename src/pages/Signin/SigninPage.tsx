@@ -50,7 +50,7 @@ const SigninPage = () => {
 
   return (
     <div>
-      {isMobile ? null : <Header selectedItem={"Login"} />}
+      <Header selectedItem={"Login"} />
       <div className="content-container">
         <div
           className="content-signin"

@@ -12,7 +12,7 @@ import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
 import HereMapComponent from "./Map";
 import { dbHandler } from "../../data/firebase";
 const HomePage = () => {
-  const isMobile = useSelector((state: any) => state.isMobile.value);
+  
   const [resetInput, setResetInput] = useState(false);
   const [emailText, setEmailText] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
@@ -50,7 +50,7 @@ const HomePage = () => {
   };
   return (
     <div>
-      {isMobile ? null : <Header selectedItem={"Home"} />}
+      <Header selectedItem={"Home"} />
       {/* <HereMapComponent hospitals={data}></HereMapComponent> */}
       <div className="home-content">
         {/* <TextInput
