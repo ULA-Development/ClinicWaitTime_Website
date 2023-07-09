@@ -1,0 +1,20 @@
+.info-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.info-icon {
+  width: 42px; /* Adjust the width as needed */
+  height: 42px; /* Adjust the height as needed */
+  fill: white;
+  margin-right: 20px;
+}
+
+.info-text {
+  color: white;
+  font-size: 16px; /* Adjust the font size as needed */
+  text-decoration: underline;
+  cursor: pointer;
+}

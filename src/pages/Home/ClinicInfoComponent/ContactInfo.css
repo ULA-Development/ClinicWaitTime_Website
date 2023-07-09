@@ -1,0 +1,31 @@
+@import url("../../../assets/common.css");
+.center-container {
+  display: flex;
+  justify-content: space-evenly;
+  height: inherit;
+  width: inherit;
+  background-color: inherit;
+  border-radius: 30px;
+  margin-top: 17px;
+}
+.contact-info-container {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+.directions-button {
+  justify-content: center;
+  outline: 3px solid white;
+  border-radius: 15px;
+  color: white;
+  width: fit-content;
+  height: fit-content;
+  padding: 13px 40px;
+  cursor: pointer;
+  align-self: center;
+  margin-top: 30px;
+}
+.directions-button:hover{
+    background-color: #1a8b7e;
+}
