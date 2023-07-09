@@ -40,8 +40,6 @@ function MobileHeader() {
           </a>
         </div>
 
-        <img className="umbrella-logo" src={umbrellaIcon} />
-
         <div className="footer-links">
           <a href="/about-us" className="dropdown-footer-item">
             About Us
@@ -50,6 +48,8 @@ function MobileHeader() {
             Terms of Use
           </a>
         </div>
+
+        <img className="umbrella-logo" src={umbrellaIcon} />
       </div>
     </div>
   );
