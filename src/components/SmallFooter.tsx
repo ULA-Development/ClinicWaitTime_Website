@@ -15,15 +15,15 @@ const SmallFooter = () => {
       }
     >
       <div className="footer-buttons">
-        <a href="/About-Us" className="footer-button">
+        <a href="/about-us" className="footer-button">
           About Us
         </a>
         <p>|</p>
-        <a href="/Contact" className="footer-button">
+        <a href="/contact" className="footer-button">
           Contact
         </a>
         <p>|</p>
-        <a href="Terms-of-Use" className="footer-button">
+        <a href="terms-of-use" className="footer-button">
           Terms of Use
         </a>
       </div>
