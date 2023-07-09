@@ -114,12 +114,9 @@
   width: 100px;
   height: auto;
   background-color: var(--main);
-  margin-top: 20px;
-  padding-left: 50px;
-  padding-right: 93px;
   padding-top: 30px;
   padding-bottom: 30px;
-  margin-bottom: 15px;
+  margin-left: 50px;
 }
 
 .header-links {
@@ -139,4 +136,11 @@
   margin-top: 20px;
   padding-bottom: 50px;
   background-color: var(--main);
+}
+
+.umbrella-container{
+  display:flex;
+  background-color: var(--main);
+  margin-top: 20px;
+  margin-bottom: 15px;
 }

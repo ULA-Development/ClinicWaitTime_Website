@@ -48,8 +48,9 @@ function MobileHeader() {
             Terms of Use
           </a>
         </div>
-
-        <img className="umbrella-logo" src={umbrellaIcon} />
+        <div className="umbrella-container">
+          <img className="umbrella-logo" src={umbrellaIcon} />
+        </div>
       </div>
     </div>
   );
