@@ -13,6 +13,7 @@ label {
     font-size: 14px;
     font-family: 'Lexend', sans-serif;
     color: var(--grey-text);
+    cursor: pointer;
 }
 
 .panel-heading {
@@ -35,6 +36,7 @@ input[type="radio"]{
     transform: translateY(-0.075em);
     display: grid;
     place-content: center;
+    cursor: pointer;
 }
 input[type="radio"]::before {
     content: "";

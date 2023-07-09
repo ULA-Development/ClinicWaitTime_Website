@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ClinicOption.css";
 import BusinessMeasure from "./BusynessIndicator";
-import StarRating from "./StarRating";
+import StarRating from "../StarRating";
 
 interface ClinicOptionProps {
   name: string;

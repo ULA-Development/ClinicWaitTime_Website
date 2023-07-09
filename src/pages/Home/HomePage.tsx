@@ -8,7 +8,7 @@ import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
 import SmallFooter from "../../components/SmallFooter";
 import TextInput from "../../components/TextInput";
-import StarRating from "./ClinicComponent/StarRating";
+import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
 import HereMapComponent from "./Map";
 import { dbHandler } from "../../data/firebase";
 const HomePage = () => {
@@ -51,9 +51,9 @@ const HomePage = () => {
   return (
     <div>
       {isMobile ? null : <Header selectedItem={"Home"} />}
-      <HereMapComponent hospitals={data}></HereMapComponent>
+      {/* <HereMapComponent hospitals={data}></HereMapComponent> */}
       <div className="home-content">
-        <TextInput
+        {/* <TextInput
           value={emailText}
           onChange={setEmailText}
           type="Search"
@@ -62,7 +62,18 @@ const HomePage = () => {
           reset={resetInput}
           setReset={setResetInput}
         />
-        <SelectionPanel />
+        <SelectionPanel /> */}
+        <ClinicInfoSection
+          name="OCAD University - Hospital"
+          totalTime="1 hr 30 min"
+          waitTime="55 min"
+          travelTime="35 min"
+          email="medicine@utoronto.ca"
+          website="www.temertymedicince.com"
+          phone="(416) 996-4526"
+          address="10 kings college road"
+          rating={4.5}
+        />
       </div>
       <SmallFooter/>
 
