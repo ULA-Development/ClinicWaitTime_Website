@@ -40,12 +40,12 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
             focusData ? "section-changer-left" : "section-changer-right"
           }
         >
-          <div className="section-changer-tail-end-right" />
-          <div className="section-changer-tail-right" />
-          <div className="section-curve-tail-right" />
-          <div className="section-changer-tail-end-left" />
-          <div className="section-changer-tail-left" />
-          <div className="section-curve-tail-left" />
+          <div className={`section-changer-tail-end-right ${focusData ? "active" : ""}`}/>
+          <div className={`section-changer-tail-right ${focusData ? "active" : ""}`}/>
+          <div className={`section-curve-tail-right ${focusData ? "active" : ""}`}/>
+          <div className={` section-changer-tail-end-left ${focusData ? "" : "active"}`}/>
+          <div className={`section-changer-tail-left ${focusData ? "" : "active"}`}/>
+          <div className={`section-curve-tail-left ${focusData ? "" : "active"}` }/>
         </div>
         <p
           style={
