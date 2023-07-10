@@ -29,13 +29,12 @@ type Hospital = {
 };
 type HospitalWithTime = Hospital & { totalTime: number };
 
-function HereMapComponent({ hospitals }: { hospitals: Hospital[] }) {
+function HereMapComponent({ hospitals,  setTopHospitals}: { hospitals: Hospital[], setTopHospitals: any }) {
   const mapRef = useRef(null);
   const [currentLocation, setCurrentLocation] = React.useState({
     lat: 0,
     lng: 0,
   });
-  const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -105,6 +104,8 @@ function HereMapComponent({ hospitals }: { hospitals: Hospital[] }) {
         return {
           ...hospital,
           totalTime,
+          totalWaitTime,
+          travelTime,
         } as HospitalWithTime;
       });
 
@@ -116,8 +117,7 @@ function HereMapComponent({ hospitals }: { hospitals: Hospital[] }) {
     addMarkers();
   }, [mapRef, currentLocation, hospitals]);
   return (
-    <div>
-      <div
+    <div
         ref={mapRef}
         style={{
           position: "absolute",
@@ -126,29 +126,31 @@ function HereMapComponent({ hospitals }: { hospitals: Hospital[] }) {
           width: "60vw",
         }}
       />
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        {topHospitals.map((hospital, index) => (
-          <ClinicOption
-            name={hospital.info.name}
-            number="1"
-            distance={hospital.location.distance}
-            busyness={4}
-            rating={3.5}
-            isActive={true}
-            // key={index}
-            // hospital={hospital.info.name}
-            // distance={hospital.totalTime.toFixed(2)} // Converting seconds to kilometers
-            // number={String(index + 1)}
-            // business={1} // Placeholder
-            // email={hospital.info.email}
-            // phone={hospital.info.phone}
-            // website={hospital.info.website}
-            // address={hospital.info.address}
-            // rating={5} // Placeholder
-          />
-        ))}
-      </div>
-    </div>
+    // <div>
+      
+    //   <div style={{ display: "flex", flexDirection: "column" }}>
+    //     {topHospitals.map((hospital, index) => (
+    //       <ClinicOption
+    //         name={hospital.info.name}
+    //         number="1"
+    //         distance={hospital.location.distance}
+    //         busyness={4}
+    //         rating={3.5}
+    //         isActive={true}
+    //         // key={index}
+    //         // hospital={hospital.info.name}
+    //         // distance={hospital.totalTime.toFixed(2)} // Converting seconds to kilometers
+    //         // number={String(index + 1)}
+    //         // business={1} // Placeholder
+    //         // email={hospital.info.email}
+    //         // phone={hospital.info.phone}
+    //         // website={hospital.info.website}
+    //         // address={hospital.info.address}
+    //         // rating={5} // Placeholder
+    //       />
+    //     ))}
+    //   </div>
+    // </div>
   );
 }
 async function getTravelTime(

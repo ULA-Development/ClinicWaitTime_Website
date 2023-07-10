@@ -11,20 +11,41 @@ import TextInput from "../../components/TextInput";
 import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
 import HereMapComponent from "./Map";
 import { dbHandler } from "../../data/firebase";
+type Location = {
+  lat: number;
+  lng: number;
+  distance: number;
+};
+type Hospital = {
+  location: Location;
+  info: {
+    name: string;
+    address: string;
+    email: string;
+    phone: string;
+    website: string;
+    occupancy: {
+      current: number;
+      capacity: number;
+    };
+  };
+};
+type HospitalWithTime = Hospital & { totalTime: number, totalWaitTime: number, travelTime: number };
 const HomePage = () => {
-  
   const [resetInput, setResetInput] = useState(false);
   const [emailText, setEmailText] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
     null
   );
   const [data, setData] = useState([]);
+  const [selectedClinic, setSelectedClinic] = useState(-1);
+  const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
   useEffect(() => {
     dbHandler.fetchClinics().then((clinics: any) => {
-    setData(clinics);
+      setData(clinics);
     });
-    }, []);
-  const [active, setActive] = useState(true)
+  }, []);
+  const [active, setActive] = useState(true);
   const handleCurrLocaiton = () => {
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
@@ -48,12 +69,23 @@ const HomePage = () => {
       }
     );
   };
+  const handleSelectClinic = (index: number) => {
+    if(selectedClinic === index){
+      setSelectedClinic(-1)
+    }else{
+      setSelectedClinic(index)
+    }
+    
+  }
   return (
     <div>
       <Header selectedItem={"Home"} />
-      {/* <HereMapComponent hospitals={data}></HereMapComponent> */}
+      <HereMapComponent
+        hospitals={data}
+        setTopHospitals={setTopHospitals}
+      ></HereMapComponent>
       <div className="home-content">
-        {/* <TextInput
+        <TextInput
           value={emailText}
           onChange={setEmailText}
           type="Search"
@@ -62,20 +94,34 @@ const HomePage = () => {
           reset={resetInput}
           setReset={setResetInput}
         />
-        <SelectionPanel /> */}
-        <ClinicInfoSection
-          name="OCAD University - Hospital"
-          totalTime="1 hr 30 min"
-          waitTime="55 min"
-          travelTime="35 min"
-          email="medicine@utoronto.ca"
-          website="www.temertymedicince.com"
-          phone="(416) 996-4526"
-          address="10 kings college road"
+        <SelectionPanel />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {topHospitals.map((hospital, index) => (
+            <div key={index} onClick={() => handleSelectClinic(index)}>
+              <ClinicOption
+                name={hospital.info.name}
+                number="1"
+                distance={hospital.location.distance}
+                busyness={4}
+                rating={3.5}
+                isActive={selectedClinic === index}
+              />
+            </div>
+          ))}
+        </div>
+        {selectedClinic < 0 ? null :<ClinicInfoSection
+          name={topHospitals[selectedClinic].info.name}
+          totalTime={String(topHospitals[selectedClinic].totalTime)}
+          waitTime={String(topHospitals[selectedClinic].totalWaitTime)}
+          travelTime={String(topHospitals[selectedClinic].travelTime)}
+          email={topHospitals[selectedClinic].info.email}
+          website={topHospitals[selectedClinic].info.website}
+          phone={topHospitals[selectedClinic].info.phone}
+          address={topHospitals[selectedClinic].info.address}
           rating={4.5}
-        />
+        />}
       </div>
-      <SmallFooter/>
+      <SmallFooter />
 
       {/* <Location
         onClick={() => handleCurrLocaiton()}

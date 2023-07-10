@@ -23,7 +23,6 @@
   width: 400px;
   height: 558px;
   border-radius: 30px;
-  outline: 2px solid black;
   display: flex;
   margin-top: 20px;
   background-color: white;
@@ -66,84 +65,78 @@
   border-top-right-radius: 25px;
   border-top-left-radius: 25px;
 }
-.section-changer-left {
-  animation-name: slideLeft;
-  animation-duration: 200ms;
+
+/* Slider */
+.section-changer-left,
+.section-changer-right {
   top: 7px;
-  width: 180px; 
   border-bottom-width: 100px;
   background-color: var(--main);
   height: 100px;
-  left: 0px; 
   position: absolute;
   border-radius: 30px 30px 0px 0px;
+}
+.section-changer-left {
+  width: 180px;
+  animation-name: slideLeft;
+  animation-duration: 200ms;
+  left: 0px;
 }
 .section-changer-right {
   animation-name: slideRight;
   animation-duration: 200ms;
-  top: 7px;
   width: 210px;
-  border-bottom-width: 100px;
-  background-color: var(--main);
-  height: 100px;
-  left: 190px; 
-  position: absolute;
-  border-radius: 30px 30px 0px 0px;
+  left: 190px;
 }
 
-.section-changer-tail-right {
+.section-changer-tail-left.active,
+.section-changer-tail-right.active {
   width: 50px;
   height: 100px;
   background-color: var(--main);
   position: absolute;
+  top: 10px;
+  border-radius: 18px;
+}
+.section-changer-tail-left.active {
+  left: -14px;
+  rotate: 24deg;
+}
+.section-changer-tail-right.active {
   rotate: -24deg;
   right: -14px;
-  top: 10px;
-  border-radius: 18px;
 }
-.section-changer-tail-left {
-  width: 50px;
-  height: 100px;
-  background-color: var(--main);
-  position: absolute;
-  rotate: 24deg;
-  left: -14px;
-  top: 10px;
+
+.section-changer-tail-end-left.active,
+.section-changer-tail-end-right.active {
   border-radius: 18px;
-}
-.section-changer-tail-end-right {
-  border-radius: 18px;
-  right: -33px;
   position: absolute;
   height: 50px;
   width: 60px;
-  bottom: 13px;
+  bottom: 13px; /*13*/
   background-color: var(--main);
 }
-.section-changer-tail-end-left {
-    border-radius: 18px;
-    left: -33px;
-    position: absolute;
-    height: 50px;
-    width: 60px;
-    bottom: 13px;
-    background-color: var(--main);
-  }
-.section-curve-tail-right {
+.section-changer-tail-end-left.active {
+  left: -33px;
+}
+.section-changer-tail-end-right.active {
+  right: -33px;
+}
+
+.section-curve-tail-left.active,
+.section-curve-tail-right.active {
   width: 52px;
   height: 70px;
   border-radius: 50%;
   position: absolute;
   background-color: white;
-  right: -53px;
   bottom: 47px;
 }
+/*LEFT SIDE*/
+.section-curve-tail-right.active {
+  right: -53px;
+}
+
 .section-curve-tail-left {
-  width: 52px;
-  height: 70px;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
   left: -53px;
-  bottom: 47px;
 }
