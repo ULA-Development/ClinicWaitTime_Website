@@ -87,7 +87,7 @@
   position: relative;
   background-color: transparent;
   padding-right: 28px;
-  height: 40px;
+  height: 44px;
 }
 .input.error {
   color: var(--error-red);

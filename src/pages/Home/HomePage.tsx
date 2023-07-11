@@ -30,11 +30,15 @@ type Hospital = {
     };
   };
 };
-type HospitalWithTime = Hospital & { totalTime: number, totalWaitTime: number, travelTime: number };
+type HospitalWithTime = Hospital & {
+  totalTime: number;
+  totalWaitTime: number;
+  travelTime: number;
+};
 const HomePage = () => {
   const [resetInput, setResetInput] = useState(false);
-  const [emailText, setEmailText] = useState("");
-  const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
+  const [location, setLocation] = useState("");
+  const [locationErrorMessage, setLocationErrorMessage] = useState<null | string>(
     null
   );
   const [data, setData] = useState([]);
@@ -45,8 +49,8 @@ const HomePage = () => {
       setData(clinics);
     });
   }, []);
-  const [active, setActive] = useState(true);
   const handleCurrLocaiton = () => {
+    console.log("press")
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -62,7 +66,7 @@ const HomePage = () => {
             },
             address: response.address.label,
           };
-          console.log(currInfo);
+          setLocation(currInfo.address)
         } catch (error) {
           alert(error);
         }
@@ -70,63 +74,96 @@ const HomePage = () => {
     );
   };
   const handleSelectClinic = (index: number) => {
-    if(selectedClinic === index){
-      setSelectedClinic(-1)
-    }else{
-      setSelectedClinic(index)
+    if (selectedClinic === index) {
+      setSelectedClinic(-1);
+    } else {
+      setSelectedClinic(index);
     }
-    
-  }
+  };
+  const busynessSetter = (time: number) => {
+    if(time < 15){
+      return 1
+    }else if(time < 25){
+      return 2
+    }else if (time < 35){
+      return 3
+    }else if (time < 45){
+      return 4
+    }else if (time < 60){
+      return 5
+    }else{
+      return 6
+    }
+  } 
   return (
-    <div>
+    <div className="home-container">
+      <div className="map-container">
+        <HereMapComponent
+          hospitals={data}
+          setTopHospitals={setTopHospitals}
+        ></HereMapComponent>
+        {selectedClinic < 0 ? null : (
+          <div className="info-popup">
+            <ClinicInfoSection
+              name={topHospitals[selectedClinic].info.name}
+              totalTime={topHospitals[selectedClinic].totalTime}
+              waitTime={topHospitals[selectedClinic].totalWaitTime}
+              travelTime={topHospitals[selectedClinic].travelTime}
+              email={topHospitals[selectedClinic].info.email}
+              website={topHospitals[selectedClinic].info.website}
+              phone={topHospitals[selectedClinic].info.phone}
+              address={topHospitals[selectedClinic].info.address}
+              rating={4.5}
+            />
+          </div>
+        )}
+      </div>
       <Header selectedItem={"Home"} />
-      <HereMapComponent
-        hospitals={data}
-        setTopHospitals={setTopHospitals}
-      ></HereMapComponent>
+
       <div className="home-content">
-        <TextInput
-          value={emailText}
-          onChange={setEmailText}
-          type="Search"
-          errorMessage={emailErrorMessage}
-          setError={setEmailErrorMessage}
-          reset={resetInput}
-          setReset={setResetInput}
-        />
+        <div style={{display: "flex", alignItems:"center"}}>
+          <TextInput
+            value={location}
+            onChange={setLocation}
+            type="Search"
+            errorMessage={locationErrorMessage}
+            setError={setLocationErrorMessage}
+            reset={resetInput}
+            setReset={setResetInput}
+          />
+          <Location
+            onClick={() => handleCurrLocaiton()}
+            style={{ width: "40px", height: "40px", marginLeft:"10px" }}
+          />
+        </div>
+
         <SelectionPanel />
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginLeft: "0px",
+          }}
+        >
           {topHospitals.map((hospital, index) => (
-            <div key={index} onClick={() => handleSelectClinic(index)}>
+            <div
+              key={index}
+              onClick={() => handleSelectClinic(index)}
+              className="clinic-option"
+            >
               <ClinicOption
                 name={hospital.info.name}
-                number="1"
+                number={String(index + 1)}
                 distance={hospital.location.distance}
-                busyness={4}
+                busyness={busynessSetter(hospital.totalTime)}
                 rating={3.5}
                 isActive={selectedClinic === index}
               />
             </div>
           ))}
         </div>
-        {selectedClinic < 0 ? null :<ClinicInfoSection
-          name={topHospitals[selectedClinic].info.name}
-          totalTime={String(topHospitals[selectedClinic].totalTime)}
-          waitTime={String(topHospitals[selectedClinic].totalWaitTime)}
-          travelTime={String(topHospitals[selectedClinic].travelTime)}
-          email={topHospitals[selectedClinic].info.email}
-          website={topHospitals[selectedClinic].info.website}
-          phone={topHospitals[selectedClinic].info.phone}
-          address={topHospitals[selectedClinic].info.address}
-          rating={4.5}
-        />}
       </div>
       <SmallFooter />
-
-      {/* <Location
-        onClick={() => handleCurrLocaiton()}
-        style={{ width: "50px", height: "50px" }}
-      /> */}
     </div>
   );
 };

@@ -7,9 +7,9 @@ import ClinicData from "./ClinicData";
 interface ClinicInfoProps {
   name: string;
   rating: number;
-  waitTime: string;
-  travelTime: string;
-  totalTime: string;
+  waitTime: number;
+  travelTime: number;
+  totalTime: number;
   email: string;
   website: string;
   phone: string;
