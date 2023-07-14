@@ -11,6 +11,7 @@ import TextInput from "../../components/TextInput";
 import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
 import HereMapComponent from "./Map";
 import { dbHandler } from "../../data/firebase";
+import LoadingSpinner from "../../components/LoadingSpinner";
 type Location = {
   lat: number;
   lng: number;
@@ -30,7 +31,13 @@ type Hospital = {
     };
   };
 };
-type HospitalWithTime = Hospital & { totalTime: number, totalWaitTime: number, travelTime: number };
+
+type HospitalWithTime = Hospital & {
+  totalTime: number;
+  totalWaitTime: number;
+  travelTime: number;
+  routeDistance: number;
+};
 const HomePage = () => {
   const [resetInput, setResetInput] = useState(false);
   const [emailText, setEmailText] = useState("");
@@ -40,49 +47,33 @@ const HomePage = () => {
   const [data, setData] = useState([]);
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     dbHandler.fetchClinics().then((clinics: any) => {
       setData(clinics);
     });
   }, []);
   const [active, setActive] = useState(true);
-  const handleCurrLocaiton = () => {
-    navigator.geolocation.getCurrentPosition(
-      async (position: GeolocationPosition) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const apiKey = "qnqs8KIVHizEGZrlrFdR--I0Run_DM5H5qQjoOd87NQ";
-          const apiUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${apiKey}&at=${latitude},${longitude}`;
 
-          const response = (await axios.get(apiUrl)).data.items[0];
-          const currInfo = {
-            location: {
-              lat: response.position.lat,
-              lng: response.position.lng,
-            },
-            address: response.address.label,
-          };
-          console.log(currInfo);
-        } catch (error) {
-          alert(error);
-        }
-      }
-    );
-  };
+  useEffect(() => {
+    console.log(loading);
+  }, [loading]);
+
   const handleSelectClinic = (index: number) => {
-    if(selectedClinic === index){
-      setSelectedClinic(-1)
-    }else{
-      setSelectedClinic(index)
+    if (selectedClinic === index) {
+      setSelectedClinic(-1);
+    } else {
+      setSelectedClinic(index);
     }
-    
-  }
+  };
+
   return (
     <div>
       <Header selectedItem={"Home"} />
       <HereMapComponent
         hospitals={data}
         setTopHospitals={setTopHospitals}
+        setLoading={setLoading}
       ></HereMapComponent>
       <div className="home-content">
         <TextInput
@@ -95,38 +86,39 @@ const HomePage = () => {
           setReset={setResetInput}
         />
         <SelectionPanel />
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {topHospitals.map((hospital, index) => (
-            <div key={index} onClick={() => handleSelectClinic(index)}>
-              <ClinicOption
-                name={hospital.info.name}
-                number="1"
-                distance={hospital.location.distance}
-                busyness={4}
-                rating={3.5}
-                isActive={selectedClinic === index}
-              />
-            </div>
-          ))}
-        </div>
-        {selectedClinic < 0 ? null :<ClinicInfoSection
-          name={topHospitals[selectedClinic].info.name}
-          totalTime={String(topHospitals[selectedClinic].totalTime)}
-          waitTime={String(topHospitals[selectedClinic].totalWaitTime)}
-          travelTime={String(topHospitals[selectedClinic].travelTime)}
-          email={topHospitals[selectedClinic].info.email}
-          website={topHospitals[selectedClinic].info.website}
-          phone={topHospitals[selectedClinic].info.phone}
-          address={topHospitals[selectedClinic].info.address}
-          rating={4.5}
-        />}
+        {loading ? (
+          <LoadingSpinner color={"green"} />
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {topHospitals.map((hospital, index) => (
+              <div key={index} onClick={() => handleSelectClinic(index)}>
+                <ClinicOption
+                  name={hospital.info.name}
+                  number="1"
+                  distance={parseFloat(hospital.routeDistance.toFixed(2))}
+                  busyness={4}
+                  rating={3.5}
+                  isActive={selectedClinic === index}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+        {selectedClinic < 0 ? null : (
+          <ClinicInfoSection
+            name={topHospitals[selectedClinic].info.name}
+            totalTime={String(topHospitals[selectedClinic].totalTime)}
+            waitTime={String(topHospitals[selectedClinic].totalWaitTime)}
+            travelTime={String(topHospitals[selectedClinic].travelTime)}
+            email={topHospitals[selectedClinic].info.email}
+            website={topHospitals[selectedClinic].info.website}
+            phone={topHospitals[selectedClinic].info.phone}
+            address={topHospitals[selectedClinic].info.address}
+            rating={4.5}
+          />
+        )}
       </div>
       <SmallFooter />
-
-      {/* <Location
-        onClick={() => handleCurrLocaiton()}
-        style={{ width: "50px", height: "50px" }}
-      /> */}
     </div>
   );
 };
