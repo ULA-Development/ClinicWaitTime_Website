@@ -12,7 +12,7 @@ import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
 import HereMapComponent from "./Map";
 import { dbHandler } from "../../data/firebase";
 import LoadingSpinner from "../../components/LoadingSpinner";
-
+import FilterResults from "./FilterResults";
 type Location = {
   lat: number;
   lng: number;
@@ -106,6 +106,7 @@ const HomePage = () => {
         <HereMapComponent
           hospitals={data}
           setTopHospitals={setTopHospitals}
+          setLoading={setLoading}
         ></HereMapComponent>
         {selectedClinic < 0 ? null : (
           <div className="info-popup">
@@ -147,37 +148,8 @@ const HomePage = () => {
         </div>
 
         <SelectionPanel />
-        {loading ? (
-          <LoadingSpinner color={"green"} />
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {topHospitals.map((hospital, index) => (
-              <div key={index} onClick={() => handleSelectClinic(index)}>
-                <ClinicOption
-                  name={hospital.info.name}
-                  number="1"
-                  distance={parseFloat(hospital.routeDistance.toFixed(2))}
-                  busyness={4}
-                  rating={3.5}
-                  isActive={selectedClinic === index}
-                />
-              </div>
-            ))}
-          </div>
-        )}
-        {selectedClinic < 0 ? null : (
-          <ClinicInfoSection
-            name={topHospitals[selectedClinic].info.name}
-            totalTime={String(topHospitals[selectedClinic].totalTime)}
-            waitTime={String(topHospitals[selectedClinic].totalWaitTime)}
-            travelTime={String(topHospitals[selectedClinic].travelTime)}
-            email={topHospitals[selectedClinic].info.email}
-            website={topHospitals[selectedClinic].info.website}
-            phone={topHospitals[selectedClinic].info.phone}
-            address={topHospitals[selectedClinic].info.address}
-            rating={4.5}
-          />
-        )}
+          <FilterResults/>
+        {loading ? <LoadingSpinner color={"green"} /> : 
         <div
           style={{
             display: "flex",
@@ -194,7 +166,7 @@ const HomePage = () => {
               <ClinicOption
                 name={hospital.info.name}
                 number={String(index + 1)}
-                distance={hospital.location.distance}
+                distance={hospital.routeDistance}
                 busyness={busynessSetter(hospital.totalTime)}
                 rating={hospital.info.rating}
                 isActive={selectedClinic === index}
@@ -202,6 +174,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
+        }
       </div>
       <SmallFooter />
     </div>
