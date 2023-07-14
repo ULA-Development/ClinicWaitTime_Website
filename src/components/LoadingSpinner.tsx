@@ -9,7 +9,7 @@ interface LoadingSpinnerProps {
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = 40,
-  color = "green",
+  color = "#000000",
   text = "Loading...",
 }) => {
   const spinnerStyle = {

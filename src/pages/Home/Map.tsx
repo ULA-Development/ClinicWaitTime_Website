@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import ClinicOption from "./ClinicComponent/ClinicOption";
-import { set } from "firebase/database";
 
 const HERE_API_KEY = "Bv_Ltyse4K-yulQjZ_aBzJIbbeEl4K1eUQSqITFhWxg";
 declare global {
@@ -22,6 +20,7 @@ type Hospital = {
     email: string;
     phone: string;
     website: string;
+    rating: number;
     occupancy: {
       current: number;
       capacity: number;
@@ -139,14 +138,12 @@ function HereMapComponent({
   }, [mapRef, currentLocation, hospitals]);
   return (
     <div
-      ref={mapRef}
-      style={{
-        position: "absolute",
-        right: 0,
-        height: "100vh",
-        width: "60vw",
-      }}
-    />
+        ref={mapRef}
+        style={{
+          height: "100%",
+          width: "100%",
+        }}
+      />
   );
 }
 

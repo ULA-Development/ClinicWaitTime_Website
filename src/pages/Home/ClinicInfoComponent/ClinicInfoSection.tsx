@@ -7,12 +7,12 @@ import ClinicData from "./ClinicData";
 interface ClinicInfoProps {
   name: string;
   rating: number;
-  waitTime: string;
-  travelTime: string;
-  totalTime: string;
-  email: string;
-  website: string;
-  phone: string;
+  waitTime: number;
+  travelTime: number;
+  totalTime: number;
+  email?: string;
+  website?: string;
+  phone?: string;
   address: string;
 }
 
