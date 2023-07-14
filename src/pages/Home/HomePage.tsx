@@ -11,6 +11,7 @@ import TextInput from "../../components/TextInput";
 import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
 import HereMapComponent from "./Map";
 import { dbHandler } from "../../data/firebase";
+
 type Location = {
   lat: number;
   lng: number;
@@ -24,6 +25,7 @@ type Hospital = {
     email: string;
     phone: string;
     website: string;
+    rating: number;
     occupancy: {
       current: number;
       capacity: number;
@@ -113,7 +115,7 @@ const HomePage = () => {
               website={topHospitals[selectedClinic].info.website}
               phone={topHospitals[selectedClinic].info.phone}
               address={topHospitals[selectedClinic].info.address}
-              rating={4.5}
+              rating={topHospitals[selectedClinic].info.rating}
             />
           </div>
         )}
@@ -156,7 +158,7 @@ const HomePage = () => {
                 number={String(index + 1)}
                 distance={hospital.location.distance}
                 busyness={busynessSetter(hospital.totalTime)}
-                rating={3.5}
+                rating={hospital.info.rating}
                 isActive={selectedClinic === index}
               />
             </div>

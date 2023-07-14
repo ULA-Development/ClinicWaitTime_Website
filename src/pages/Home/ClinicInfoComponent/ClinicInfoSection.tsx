@@ -10,9 +10,9 @@ interface ClinicInfoProps {
   waitTime: number;
   travelTime: number;
   totalTime: number;
-  email: string;
-  website: string;
-  phone: string;
+  email?: string;
+  website?: string;
+  phone?: string;
   address: string;
 }
 

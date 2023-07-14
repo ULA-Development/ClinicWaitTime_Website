@@ -20,6 +20,7 @@ type Hospital = {
     email: string;
     phone: string;
     website: string;
+    rating: number;
     occupancy: {
       current: number;
       capacity: number;
