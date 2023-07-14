@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import ClinicOption from "./ClinicComponent/ClinicOption";
 
 const HERE_API_KEY = "Bv_Ltyse4K-yulQjZ_aBzJIbbeEl4K1eUQSqITFhWxg";
 declare global {
@@ -21,6 +20,7 @@ type Hospital = {
     email: string;
     phone: string;
     website: string;
+    rating: number;
     occupancy: {
       current: number;
       capacity: number;
@@ -120,37 +120,10 @@ function HereMapComponent({ hospitals,  setTopHospitals}: { hospitals: Hospital[
     <div
         ref={mapRef}
         style={{
-          position: "absolute",
-          right: 0,
-          height: "100vh",
-          width: "60vw",
+          height: "100%",
+          width: "100%",
         }}
       />
-    // <div>
-      
-    //   <div style={{ display: "flex", flexDirection: "column" }}>
-    //     {topHospitals.map((hospital, index) => (
-    //       <ClinicOption
-    //         name={hospital.info.name}
-    //         number="1"
-    //         distance={hospital.location.distance}
-    //         busyness={4}
-    //         rating={3.5}
-    //         isActive={true}
-    //         // key={index}
-    //         // hospital={hospital.info.name}
-    //         // distance={hospital.totalTime.toFixed(2)} // Converting seconds to kilometers
-    //         // number={String(index + 1)}
-    //         // business={1} // Placeholder
-    //         // email={hospital.info.email}
-    //         // phone={hospital.info.phone}
-    //         // website={hospital.info.website}
-    //         // address={hospital.info.address}
-    //         // rating={5} // Placeholder
-    //       />
-    //     ))}
-    //   </div>
-    // </div>
   );
 }
 async function getTravelTime(
