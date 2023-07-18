@@ -1,6 +1,7 @@
+import { set } from "firebase/database";
 import React, { useEffect, useRef, useState } from "react";
 
-const HERE_API_KEY = "Bv_Ltyse4K-yulQjZ_aBzJIbbeEl4K1eUQSqITFhWxg";
+const HERE_API_KEY = "qnqs8KIVHizEGZrlrFdR--I0Run_DM5H5qQjoOd87NQ";
 declare global {
   interface Window {
     H: any;
@@ -9,7 +10,6 @@ declare global {
 type Location = {
   lat: number;
   lng: number;
-  distance: number;
 };
 
 type Hospital = {
@@ -38,38 +38,25 @@ type HereMapComponentProps = {
   hospitals: Hospital[];
   setTopHospitals: (hospitals: HospitalWithTime[]) => void;
   setLoading: (loading: boolean) => void;
+  UserLocation: Location;
 };
 
 function HereMapComponent({
   hospitals,
   setTopHospitals,
   setLoading,
+  UserLocation,
 }: HereMapComponentProps) {
   console.log("map run");
   const mapRef = useRef(null);
-  const [currentLocation, setCurrentLocation] = React.useState({
-    lat: 0,
-    lng: 0,
-  });
-
-  useEffect(() => {
-    console.log("get location run");
-    navigator.geolocation.getCurrentPosition((position) => {
-      setCurrentLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
-    });
-  }, []);
-
   useEffect(() => {
     console.log("add markers run");
     const processMap = async () => {
       if (
         !mapRef.current ||
         !window.H ||
-        !currentLocation.lat ||
-        !currentLocation.lng
+        !UserLocation.lat ||
+        !UserLocation.lng
       ) {
         return;
       }
@@ -84,7 +71,7 @@ function HereMapComponent({
         mapRef.current,
         defaultLayers.vector.normal.map,
         {
-          center: currentLocation,
+          center: UserLocation,
           zoom: 14,
           pixelRatio: window.devicePixelRatio || 1,
         }
@@ -92,13 +79,13 @@ function HereMapComponent({
       new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(map));
       let iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="40" height="60"><path fill="red" d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0z"/></svg>`;
       let icon = new window.H.map.Icon(iconSvg);
-      let marker = new window.H.map.Marker(currentLocation, { icon: icon });
+      let marker = new window.H.map.Marker(UserLocation, { icon: icon });
       map.addObject(marker);
 
       const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
         let { time: travelTime, distance: routeDistance } =
           await getTravelTimeAndDistance(
-            currentLocation,
+            UserLocation,
             hospital.location,
             platform
           );
@@ -112,11 +99,10 @@ function HereMapComponent({
           lng: hospital.location.lng,
         });
         map.addObject(hospitalMarker);
-        setLoading(false);
         hospitalMarker.addEventListener(
           "tap",
           function () {
-            const directionUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLocation.lat},${currentLocation.lng}&destination=${hospital.location.lat},${hospital.location.lng}`;
+            const directionUrl = `https://www.google.com/maps/dir/?api=1&origin=${UserLocation.lat},${UserLocation.lng}&destination=${hospital.location.lat},${hospital.location.lng}`;
             window.open(directionUrl, "_blank");
           },
           false
@@ -131,19 +117,20 @@ function HereMapComponent({
       });
       const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
       hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
-      setTopHospitals(hospitalWithTimes.slice(0, 5)); // Select top 5
+      setTopHospitals(hospitalWithTimes.slice(0, 10)); // Select top 5
+      setLoading(false);
     };
 
     processMap();
-  }, [mapRef, currentLocation, hospitals]);
+  }, [mapRef, UserLocation, hospitals]);
   return (
     <div
-        ref={mapRef}
-        style={{
-          height: "100%",
-          width: "100%",
-        }}
-      />
+      ref={mapRef}
+      style={{
+        height: "100%",
+        width: "100%",
+      }}
+    />
   );
 }
 

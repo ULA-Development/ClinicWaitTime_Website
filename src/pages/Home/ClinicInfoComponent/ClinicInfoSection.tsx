@@ -14,7 +14,13 @@ interface ClinicInfoProps {
   website?: string;
   phone?: string;
   address: string;
+  location: Location;
+  currLocation: Location;
 }
+type Location = {
+  lat: number;
+  lng: number;
+};
 
 const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
   name,
@@ -26,6 +32,8 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
   phone,
   address,
   rating,
+  location,
+  currLocation,
 }) => {
   const [focusData, setFocusData] = useState(true);
   return (
@@ -40,12 +48,30 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
             focusData ? "section-changer-left" : "section-changer-right"
           }
         >
-          <div className={`section-changer-tail-end-right ${focusData ? "active" : ""}`}/>
-          <div className={`section-changer-tail-right ${focusData ? "active" : ""}`}/>
-          <div className={`section-curve-tail-right ${focusData ? "active" : ""}`}/>
-          <div className={` section-changer-tail-end-left ${focusData ? "" : "active"}`}/>
-          <div className={`section-changer-tail-left ${focusData ? "" : "active"}`}/>
-          <div className={`section-curve-tail-left ${focusData ? "" : "active"}` }/>
+          <div
+            className={`section-changer-tail-end-right ${
+              focusData ? "active" : ""
+            }`}
+          />
+          <div
+            className={`section-changer-tail-right ${
+              focusData ? "active" : ""
+            }`}
+          />
+          <div
+            className={`section-curve-tail-right ${focusData ? "active" : ""}`}
+          />
+          <div
+            className={` section-changer-tail-end-left ${
+              focusData ? "" : "active"
+            }`}
+          />
+          <div
+            className={`section-changer-tail-left ${focusData ? "" : "active"}`}
+          />
+          <div
+            className={`section-curve-tail-left ${focusData ? "" : "active"}`}
+          />
         </div>
         <p
           style={
@@ -81,6 +107,8 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
             website={website}
             phone={phone}
             address={address}
+            location={location}
+            currLocation={currLocation}
           />
         )}
       </div>

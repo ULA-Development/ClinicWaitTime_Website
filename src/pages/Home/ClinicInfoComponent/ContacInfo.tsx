@@ -12,14 +12,23 @@ interface ClinicInfoProps {
   phone?: string;
   website?: string;
   address: string;
+  location: Location;
+  currLocation: Location;
 }
+type Location = {
+  lat: number;
+  lng: number;
+};
 
 const ContactInfo: React.FC<ClinicInfoProps> = ({
   email,
   phone,
   website,
   address,
+  location,
+  currLocation,
 }) => {
+  const directionUrl = `https://www.google.com/maps/dir/?api=1&origin=${currLocation.lat},${currLocation.lng}&destination=${location.lat},${location.lng}`;
   return (
     <div className="center-container">
       <div className="contact-info-container">
@@ -35,7 +44,12 @@ const ContactInfo: React.FC<ClinicInfoProps> = ({
         <InfoLine text={address} message="Address - Copied">
           <MapIcon />
         </InfoLine>
-        <div className="directions-button">Get directions</div>
+        <div
+          className="directions-button"
+          onClick={() => window.open(directionUrl, "_blank")}
+        >
+          Get directions
+        </div>
       </div>
     </div>
   );
