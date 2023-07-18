@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
-import { ReactComponent as Location } from "../../assets/icons/location-arrow-solid.svg";
+
 import axios from "axios";
 import { useSelector } from "react-redux";
 import SelectionPanel from "./SelectionPanel";
 import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
 import SmallFooter from "../../components/SmallFooter";
-import TextInput from "../../components/TextInput";
 import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
 import HereMapComponent from "./Map";
 import { dbHandler } from "../../data/firebase";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
+import LocaitonInput from "./LocationInput";
 type Location = {
   lat: number;
   lng: number;
@@ -39,11 +39,7 @@ type HospitalWithTime = Hospital & {
   routeDistance: number;
 };
 const HomePage = () => {
-  const [resetInput, setResetInput] = useState(false);
   const [location, setLocation] = useState("");
-  const [locationErrorMessage, setLocationErrorMessage] = useState<
-    null | string
-  >(null);
   const [data, setData] = useState([]);
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
@@ -131,19 +127,7 @@ const HomePage = () => {
       ></HereMapComponent>
       <div className="home-content">
         <div className="location-container">
-          <TextInput
-            value={location}
-            onChange={setLocation}
-            type="Search"
-            errorMessage={locationErrorMessage}
-            setError={setLocationErrorMessage}
-            reset={resetInput}
-            setReset={setResetInput}
-          />
-          <Location
-            onClick={() => handleCurrLocaiton()}
-            className="location-icon"
-          />
+          <LocaitonInput value={location} onChange={setLocation} currLocation={handleCurrLocaiton}/>
         </div>
         <SelectionPanel />
         <FilterResults />
@@ -151,7 +135,7 @@ const HomePage = () => {
           {loading ? (
             <LoadingSpinner
               text="Locating..."
-              style={{ left: "123px", position: "absolute", top: "40px" }}
+              style={{ alignSelf:'center', position: "absolute", top: "40px" }}
             />
           ) : (
             <div>

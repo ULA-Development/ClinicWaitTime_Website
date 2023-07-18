@@ -37,12 +37,6 @@ const TextInput = ({
   const [visibleText, setVisibleText] = useState(!type.includes("Password"));
   const inputInfo = () => {
     switch (type) {
-      case "Search": {
-        return {
-          placeholder: "Location",
-          icon: <SearchIcon className={iconClass} />,
-        };
-      }
       case "Name": {
         return {
           placeholder: "Name",
