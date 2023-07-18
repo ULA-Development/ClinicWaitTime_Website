@@ -6,13 +6,15 @@
   width: inherit;
   background-color: inherit;
   border-radius: 30px;
-  margin-top: 17px;
 }
 .contact-info-container {
   width: fit-content;
+  padding: 10px 30px;
   height: fit-content;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .directions-button {
   justify-content: center;

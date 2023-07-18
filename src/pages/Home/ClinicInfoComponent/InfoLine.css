@@ -17,4 +17,10 @@
   font-size: 16px; /* Adjust the font size as needed */
   text-decoration: underline;
   cursor: pointer;
+  display: block;/* or inline-block */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 3.6em;
+  line-height: 1.8em;
 }

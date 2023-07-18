@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ClinicOption.css";
-import BusinessMeasure from "./BusynessIndicator";
+import BusinessIndicator from "./BusynessIndicator";
 import StarRating from "../StarRating";
 
 interface ClinicOptionProps {
@@ -41,18 +41,18 @@ const ClinicOption: React.FC<ClinicOptionProps> = ({
         {number}
       </div>
       <div className="clinic-info">
-        <h3 style={isActive ? { color: "white" } : { color: "black" }}>
+        <h3 className="clinic-name" style={isActive ? { color: "white" } : { color: "black" }}>
           {name}
         </h3>
         <div className="clinic-secondary-info">
           <StarRating rating={rating} />
           <p style={isActive ? { color: "white" } : { color: "black" }}>
-            {distance} km
+            {distance.toFixed(1)} km
           </p>
         </div>
       </div>
       <div className="measure-bars">
-        <BusinessMeasure
+        <BusinessIndicator
           busyness={busyness}
           greyBarColor={isActive ? "white" : "#e5e4e3"}
         />

@@ -8,9 +8,9 @@ import { ReactComponent as PhoneIcon } from "../../../assets/icons/phone-solid.s
 import { ReactComponent as MapIcon } from "../../../assets/icons/map-location-dot-solid.svg";
 
 interface ClinicInfoProps {
-  email: string;
-  phone: string;
-  website: string;
+  email?: string;
+  phone?: string;
+  website?: string;
   address: string;
 }
 

@@ -53,7 +53,7 @@ const handleErrorMessages = (code: string) => {
   onValue(clinicRef, (snapshot) => {
     const data = snapshot.val()
     const clinicIds = Object.keys(data)
-    const closeDist = 12
+    const closeDist = 30
     clinicIds.forEach((id: string) => {
       if(id.includes('*')){
         const coords = id.split('|')
@@ -65,7 +65,6 @@ const handleErrorMessages = (code: string) => {
             location: {
               lat: clinicLat,
               lng: clinicLong,
-              distance: distance
             },
             info: data[id]
           }

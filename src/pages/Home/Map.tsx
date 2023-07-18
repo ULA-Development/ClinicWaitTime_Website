@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import ClinicOption from "./ClinicComponent/ClinicOption";
 
 const HERE_API_KEY = "Bv_Ltyse4K-yulQjZ_aBzJIbbeEl4K1eUQSqITFhWxg";
 declare global {
@@ -21,15 +20,32 @@ type Hospital = {
     email: string;
     phone: string;
     website: string;
+    rating: number;
     occupancy: {
       current: number;
       capacity: number;
+      avgWaitTime: number;
     };
   };
 };
-type HospitalWithTime = Hospital & { totalTime: number };
+type HospitalWithTime = Hospital & {
+  totalTime: number;
+  totalWaitTime: number;
+  travelTime: number;
+  routeDistance: number;
+};
+type HereMapComponentProps = {
+  hospitals: Hospital[];
+  setTopHospitals: (hospitals: HospitalWithTime[]) => void;
+  setLoading: (loading: boolean) => void;
+};
 
-function HereMapComponent({ hospitals,  setTopHospitals}: { hospitals: Hospital[], setTopHospitals: any }) {
+function HereMapComponent({
+  hospitals,
+  setTopHospitals,
+  setLoading,
+}: HereMapComponentProps) {
+  console.log("map run");
   const mapRef = useRef(null);
   const [currentLocation, setCurrentLocation] = React.useState({
     lat: 0,
@@ -37,6 +53,7 @@ function HereMapComponent({ hospitals,  setTopHospitals}: { hospitals: Hospital[
   });
 
   useEffect(() => {
+    console.log("get location run");
     navigator.geolocation.getCurrentPosition((position) => {
       setCurrentLocation({
         lat: position.coords.latitude,
@@ -46,7 +63,8 @@ function HereMapComponent({ hospitals,  setTopHospitals}: { hospitals: Hospital[
   }, []);
 
   useEffect(() => {
-    const addMarkers = async () => {
+    console.log("add markers run");
+    const processMap = async () => {
       if (
         !mapRef.current ||
         !window.H ||
@@ -78,13 +96,15 @@ function HereMapComponent({ hospitals,  setTopHospitals}: { hospitals: Hospital[
       map.addObject(marker);
 
       const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-        // let travelTime = await getTravelTime(
-        //   currentLocation,
-        //   hospital.location,
-        //   platform
-        // );
-        let totalWaitTime = hospital.info.occupancy.current * 10; // 10 minutes per person
-        let travelTime = (hospital.location.distance / 40) * 60; // 40 km/h average speed, time in minutes (distance in km)
+        let { time: travelTime, distance: routeDistance } =
+          await getTravelTimeAndDistance(
+            currentLocation,
+            hospital.location,
+            platform
+          );
+        let totalWaitTime =
+          hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime; // 10 minutes per person
+        // let travelTime = (hospital.location.distance / 40) * 60; // 40 km/h average speed, time in minutes (distance in km)
         let totalTime = totalWaitTime + travelTime;
         // 30 minutes
         const hospitalMarker = new window.H.map.Marker({
@@ -92,7 +112,7 @@ function HereMapComponent({ hospitals,  setTopHospitals}: { hospitals: Hospital[
           lng: hospital.location.lng,
         });
         map.addObject(hospitalMarker);
-
+        setLoading(false);
         hospitalMarker.addEventListener(
           "tap",
           function () {
@@ -106,58 +126,32 @@ function HereMapComponent({ hospitals,  setTopHospitals}: { hospitals: Hospital[
           totalTime,
           totalWaitTime,
           travelTime,
-        } as HospitalWithTime;
+          routeDistance,
+        } as HospitalWithTime & { routeDistance: number };
       });
-
       const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
       hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
       setTopHospitals(hospitalWithTimes.slice(0, 5)); // Select top 5
     };
 
-    addMarkers();
+    processMap();
   }, [mapRef, currentLocation, hospitals]);
   return (
     <div
         ref={mapRef}
         style={{
-          position: "absolute",
-          right: 0,
-          height: "100vh",
-          width: "60vw",
+          height: "100%",
+          width: "100%",
         }}
       />
-    // <div>
-      
-    //   <div style={{ display: "flex", flexDirection: "column" }}>
-    //     {topHospitals.map((hospital, index) => (
-    //       <ClinicOption
-    //         name={hospital.info.name}
-    //         number="1"
-    //         distance={hospital.location.distance}
-    //         busyness={4}
-    //         rating={3.5}
-    //         isActive={true}
-    //         // key={index}
-    //         // hospital={hospital.info.name}
-    //         // distance={hospital.totalTime.toFixed(2)} // Converting seconds to kilometers
-    //         // number={String(index + 1)}
-    //         // business={1} // Placeholder
-    //         // email={hospital.info.email}
-    //         // phone={hospital.info.phone}
-    //         // website={hospital.info.website}
-    //         // address={hospital.info.address}
-    //         // rating={5} // Placeholder
-    //       />
-    //     ))}
-    //   </div>
-    // </div>
   );
 }
-async function getTravelTime(
-  origin: Location,
-  destination: Location,
+
+async function getTravelTimeAndDistance(
+  origin: any,
+  destination: any,
   platform: any
-): Promise<number> {
+): Promise<{ time: number; distance: number }> {
   const router = platform.getRoutingService(null, 8);
   const routeRequestParams = {
     routingMode: "fast",
@@ -166,19 +160,28 @@ async function getTravelTime(
     destination: `${destination.lat},${destination.lng}`,
     return: "polyline,travelSummary",
   };
-  const routePromise = new Promise<number>((resolve: any, reject: any) => {
-    router.calculateRoute(
-      routeRequestParams,
-      (result: any) => {
-        if (result.routes.length) {
-          resolve(result.routes[0].sections[0].travelSummary.duration);
-        } else {
-          reject(new Error("Could not find any routes."));
-        }
-      },
-      reject
-    );
-  });
+  const routePromise = new Promise<{ time: number; distance: number }>(
+    (resolve: any, reject: any) => {
+      router.calculateRoute(
+        routeRequestParams,
+        (result: any) => {
+          if (result.routes.length) {
+            const travelTimeInMinutes =
+              result.routes[0].sections[0].travelSummary.duration / 60;
+            const routeDistanceInMeters =
+              result.routes[0].sections[0].travelSummary.length / 1000; // converting to km
+            resolve({
+              time: Math.round(travelTimeInMinutes), // rounding to the nearest integer
+              distance: routeDistanceInMeters,
+            });
+          } else {
+            reject(new Error("Could not find any routes."));
+          }
+        },
+        reject
+      );
+    }
+  );
 
   return routePromise;
 }
