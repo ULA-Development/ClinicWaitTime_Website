@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
-import { ReactComponent as Location } from "../../assets/icons/location-crosshairs-solid.svg";
+import { ReactComponent as Location } from "../../assets/icons/location-arrow-solid.svg";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import SelectionPanel from "./SelectionPanel";
@@ -16,7 +16,6 @@ import FilterResults from "./FilterResults";
 type Location = {
   lat: number;
   lng: number;
-  distance: number;
 };
 type Hospital = {
   location: Location;
@@ -42,9 +41,9 @@ type HospitalWithTime = Hospital & {
 const HomePage = () => {
   const [resetInput, setResetInput] = useState(false);
   const [location, setLocation] = useState("");
-  const [locationErrorMessage, setLocationErrorMessage] = useState<null | string>(
-    null
-  );
+  const [locationErrorMessage, setLocationErrorMessage] = useState<
+    null | string
+  >(null);
   const [data, setData] = useState([]);
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
@@ -55,7 +54,7 @@ const HomePage = () => {
     });
   }, []);
   const handleCurrLocaiton = () => {
-    console.log("press")
+    console.log("press");
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -71,7 +70,7 @@ const HomePage = () => {
             },
             address: response.address.label,
           };
-          setLocation(currInfo.address)
+          setLocation(currInfo.address);
         } catch (error) {
           alert(error);
         }
@@ -86,20 +85,20 @@ const HomePage = () => {
     }
   };
   const busynessSetter = (time: number) => {
-    if(time < 15){
-      return 1
-    }else if(time < 25){
-      return 2
-    }else if (time < 35){
-      return 3
-    }else if (time < 45){
-      return 4
-    }else if (time < 60){
-      return 5
-    }else{
-      return 6
+    if (time < 15) {
+      return 1;
+    } else if (time < 25) {
+      return 2;
+    } else if (time < 35) {
+      return 3;
+    } else if (time < 45) {
+      return 4;
+    } else if (time < 60) {
+      return 5;
+    } else {
+      return 6;
     }
-  } 
+  };
   return (
     <div className="home-container">
       <div className="map-container">
@@ -131,7 +130,7 @@ const HomePage = () => {
         setLoading={setLoading}
       ></HereMapComponent>
       <div className="home-content">
-        <div style={{display: "flex", alignItems:"center"}}>
+        <div className="location-container">
           <TextInput
             value={location}
             onChange={setLocation}
@@ -143,38 +142,38 @@ const HomePage = () => {
           />
           <Location
             onClick={() => handleCurrLocaiton()}
-            style={{ width: "40px", height: "40px", marginLeft:"10px" }}
+            className="location-icon"
           />
         </div>
-
         <SelectionPanel />
-          <FilterResults/>
-        {loading ? <LoadingSpinner color={"green"} /> : 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginLeft: "0px",
-          }}
-        >
-          {topHospitals.map((hospital, index) => (
-            <div
-              key={index}
-              onClick={() => handleSelectClinic(index)}
-              className="clinic-option"
-            >
-              <ClinicOption
-                name={hospital.info.name}
-                number={String(index + 1)}
-                distance={hospital.routeDistance}
-                busyness={busynessSetter(hospital.totalTime)}
-                rating={hospital.info.rating}
-                isActive={selectedClinic === index}
-              />
+        <FilterResults />
+        <div className="results-container">
+          {loading ? (
+            <LoadingSpinner
+              text="Locating..."
+              style={{ left: "123px", position: "absolute", top: "40px" }}
+            />
+          ) : (
+            <div>
+              {topHospitals.map((hospital, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleSelectClinic(index)}
+                  className="clinic-option"
+                >
+                  <ClinicOption
+                    name={hospital.info.name}
+                    number={String(index + 1)}
+                    distance={hospital.routeDistance}
+                    busyness={busynessSetter(hospital.totalTime)}
+                    rating={hospital.info.rating}
+                    isActive={selectedClinic === index}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-        }
       </div>
       <SmallFooter />
     </div>

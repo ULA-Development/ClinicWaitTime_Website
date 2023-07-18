@@ -1,26 +1,19 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import "./LoadingSpinner.css";
 
 interface LoadingSpinnerProps {
-  size?: number;
-  color?: string;
+  style?: CSSProperties;
   text?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  size = 40,
-  color = "#000000",
   text = "Loading...",
+  style,
 }) => {
-  const spinnerStyle = {
-    width: `${size}px`,
-    height: `${size}px`,
-    borderTopColor: color,
-  };
 
   return (
-    <div className="loading-spinner">
-      <div className="spinner" style={spinnerStyle}></div>
+    <div className="loading-spinner" style={style}>
+      <div className="spinner"></div>
       <div className="spinner-text">{text}</div>
     </div>
   );
