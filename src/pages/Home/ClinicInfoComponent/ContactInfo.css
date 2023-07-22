@@ -6,6 +6,7 @@
   width: inherit;
   background-color: inherit;
   border-radius: 30px;
+  padding-top: 10px;
 }
 .contact-info-container {
   width: fit-content;
@@ -15,19 +16,4 @@
   flex-direction: column;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.directions-button {
-  justify-content: center;
-  outline: 3px solid white;
-  border-radius: 15px;
-  color: white;
-  width: fit-content;
-  height: fit-content;
-  padding: 13px 40px;
-  cursor: pointer;
-  align-self: center;
-  margin-top: 30px;
-}
-.directions-button:hover{
-    background-color: #1a8b7e;
 }

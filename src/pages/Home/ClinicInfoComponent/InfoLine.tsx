@@ -4,14 +4,14 @@ import "./InfoLine.css";
 interface InfoLineProps {
   children: ReactNode;
   text?: string;
-  message: string;
+  decor?: boolean
 }
 const unavilableMessage = "Not currently available"
-const InfoLine: React.FC<InfoLineProps> = ({ children, text = unavilableMessage, message }) => {
+const InfoLine: React.FC<InfoLineProps> = ({ children, text = unavilableMessage, decor = true }) => {
   return (
     <div className="info-line">
       <div className="info-icon">{children}</div>
-      <span className="info-text" style={text === unavilableMessage ? {textDecoration: "none"} : {}}onClick={() => alert(message)}>
+      <span className="info-text" style={(text === unavilableMessage || !decor ) ? {textDecoration: "none"} : {}}>
         {text}
       </span>
     </div>

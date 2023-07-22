@@ -8,7 +8,7 @@
     background-color: white;
     box-shadow: none;
     width: 150px;
-    /* transition: background-color 0.3s, color 0.3s; */
+    transition: background-color 0.1s, color 0.1s;
     cursor: pointer;
 }
 
@@ -16,7 +16,6 @@
     background-color: var(--main);
     color: white;
 }
-
 .title-filter-results {
     font-size: 25px;
     margin-bottom: 5px;

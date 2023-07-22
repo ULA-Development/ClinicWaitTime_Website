@@ -8,14 +8,14 @@ interface Props {
   onChange: (arg0: string) => void;
   currLocation: () => void;
   value: string;
-  setLoading: (arg0: boolean) => void;
+  handleSearch: () => void;
 }
 
 const LocationInput = ({
   value,
   onChange,
   currLocation,
-  setLoading,
+  handleSearch,
 }: Props) => {
   const isMobile = useSelector((state: any) => state.isMobile.value);
 
@@ -26,10 +26,14 @@ const LocationInput = ({
     setLocalValue(value);
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
+  function handleKeyDown(e?: React.KeyboardEvent<HTMLInputElement>) {
+    if (e && e.key === "Enter") {
       e.preventDefault();
-      setLoading(true);
+      handleSearch();
+      onChange(localValue);
+    }
+    if(!e){
+      handleSearch();
       onChange(localValue);
     }
   }
@@ -43,7 +47,7 @@ const LocationInput = ({
       className="location-input-container"
       style={isMobile ? { width: "100%" } : { width: "515px" }}
     >
-      <Search className="location-icon" onClick={() => onChange(localValue)} />
+
       <input
         value={localValue}
         onChange={handleChange}
@@ -55,6 +59,9 @@ const LocationInput = ({
       />
       <div className="curr-loction-container" onClick={currLocation}>
         <Location className="curr-location-icon" />
+      </div>
+      <div className="search-loction-container">
+      <Search className="search-icon" onClick={() => handleKeyDown()} />
       </div>
     </div>
   );

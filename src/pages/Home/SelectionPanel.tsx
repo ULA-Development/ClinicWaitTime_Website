@@ -2,60 +2,79 @@ import React from "react";
 import "./SelectionPanel.css";
 
 const SelectionPanel: React.FC = () => {
-    const [selectedRadioBtn, setSelectedRadioBtn] = React.useState('Walk-In Clinics') //sets default selection
-    const isRadioSelected = (value: string): boolean => selectedRadioBtn === value;
-    const handleRadioClick = (e: React.ChangeEvent<HTMLInputElement>): void => setSelectedRadioBtn(e.currentTarget.value);
+  const [selectedRadioBtn, setSelectedRadioBtn] =
+    React.useState("Walk-In Clinics"); //sets default selection
+  const isRadioSelected = (value: string): boolean =>
+    selectedRadioBtn === value;
+  const handleRadioClick = (e: React.ChangeEvent<HTMLInputElement>): void =>
+    setSelectedRadioBtn(e.currentTarget.value);
 
-    return (
+  return (
     <div className="selection-panel">
-        <h2 className="panel-heading">Select healthcare type</h2>
-        <label>
-        <input 
-            type='radio'
-            name="selection-radio-btn"
-            value="Walk-In Clinics"
-            checked={isRadioSelected('Walk-In Clinics')}
-            onChange={handleRadioClick}
-            className="radio-button"
+      <h2 className="panel-heading">Select healthcare type</h2>
+      <p
+        style={{
+          position: "absolute",
+          color: "#ffc1cc",
+          fontSize: "9px",
+          top: "42px",
+          left: "8px",
+        }}
+      >
+        Some features are currently disabled
+      </p>
+      <label>
+        <input
+          type="radio"
+          name="selection-radio-btn"
+          value="Walk-In Clinics"
+          checked={isRadioSelected("Walk-In Clinics")}
+          onChange={handleRadioClick}
+          className="radio-button"
         />
-            Walk-In Clinics
-        </label>
-        <label>
-        <input 
-            type='radio'
-            name="selection-radio-btn"
-            value="Hospitals"
-            checked={isRadioSelected('Hospitals')}
-            onChange={handleRadioClick}
-            className="radio-button"
+        Walk-In Clinics
+      </label>
+
+      <label style={{ color: "grey", opacity: "50%" }}>
+        <input
+          type="radio"
+          name="selection-radio-btn"
+          value="Hospitals"
+          checked={isRadioSelected("Hospitals")}
+          onChange={handleRadioClick}
+          className="radio-button"
+          disabled={true}
         />
-            Hospitals
-        </label>
-        
-        <label>
-        <input 
-            type='radio'
-            name="selection-radio-btn"
-            value="Specialists"
-            checked={isRadioSelected('Specialists')}
-            onChange={handleRadioClick}
-            className="radio-button"
+        Hospitals
+      </label>
+
+      <label style={{ color: "grey", opacity: "50%" }}>
+        <input
+          type="radio"
+          name="selection-radio-btn"
+          value="Specialists"
+          checked={isRadioSelected("Specialists")}
+          onChange={handleRadioClick}
+          className="radio-button"
+          disabled={true}
         />
-            Specialists
-        </label>
-        <label>
-        <input 
-            type='radio'
-            name="selection-radio-btn"
-            value="Family Physician"
-            checked={isRadioSelected('Family Physician')}
-            onChange={handleRadioClick}
-            className="radio-button"
+        Specialists
+      </label>
+
+      <label style={{ color: "grey", opacity: "50%" }}>
+        <input
+          type="radio"
+          name="selection-radio-btn"
+          value="Family Physician"
+          checked={isRadioSelected("Family Physician")}
+          onChange={handleRadioClick}
+          className="radio-button"
+          disabled={true}
         />
-            Family Physicians
-        </label>
+        Family Physicians
+      </label>
     </div>
-    );
-}
+  );
+};
 
 export default SelectionPanel;

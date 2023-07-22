@@ -50,9 +50,10 @@ const HomePage = () => {
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
   const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
     if (locationCoords.lat === 0 && locationCoords.lng === 0) {
-      handleCurrLocaiton();
+      getCurrLocation();
     }
     dbHandler
       .fetchClinics(locationCoords.lat, locationCoords.lng)
@@ -60,7 +61,9 @@ const HomePage = () => {
         setData(clinics);
       });
   }, [locationCoords]);
-  const handleCurrLocaiton = () => {
+
+  const getCurrLocation = () => {
+    setLoading(true)
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -85,6 +88,10 @@ const HomePage = () => {
     );
   };
 
+  const handleSearch = () => {
+    setSelectedClinic(-1)
+    setLoading(true)
+  }
   useEffect(() => {
     const fetchCoordinates = async () => {
       try {
@@ -156,6 +163,7 @@ const HomePage = () => {
               rating={topHospitals[selectedClinic].info.rating}
               location={topHospitals[selectedClinic].location}
               currLocation={locationCoords}
+              seedState={selectedClinic}
             />
           </div>
         )}
@@ -166,8 +174,8 @@ const HomePage = () => {
           <LocaitonInput
             value={locationAddress}
             onChange={setLocationAddress}
-            currLocation={handleCurrLocaiton}
-            setLoading={setLoading}
+            currLocation={getCurrLocation}
+            handleSearch={handleSearch}
           />
         </div>
         <SelectionPanel />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StarRating from "../StarRating";
 import "./ClinicInfoSection.css";
 import ContactInfo from "./ContacInfo";
@@ -16,6 +16,7 @@ interface ClinicInfoProps {
   address: string;
   location: Location;
   currLocation: Location;
+  seedState?: number
 }
 type Location = {
   lat: number;
@@ -34,8 +35,14 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
   rating,
   location,
   currLocation,
+  seedState,
 }) => {
   const [focusData, setFocusData] = useState(true);
+  
+  useEffect(() => {
+    setFocusData(true)
+  }, [seedState])
+  
   return (
     <div className="info-section-container">
       <div className="clinic-info-heading">
@@ -100,6 +107,8 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
             waitTime={waitTime}
             travelTime={travelTime}
             totalTime={totalTime}
+            currLocation={currLocation}
+            location={location}
           />
         ) : (
           <ContactInfo
@@ -107,8 +116,7 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
             website={website}
             phone={phone}
             address={address}
-            location={location}
-            currLocation={currLocation}
+            
           />
         )}
       </div>
