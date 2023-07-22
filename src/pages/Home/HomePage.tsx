@@ -122,6 +122,7 @@ const HomePage = () => {
       setSelectedClinic(index);
     }
   };
+
   const busynessSetter = (time: number) => {
     if (time < 15) {
       return 1;
