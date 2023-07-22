@@ -102,7 +102,6 @@ const HomePage = () => {
         if (!locationCoords) {
           return;
         }
-        console.log("setting location coords", locationCoords);
         setLocationCoords(locationCoords);
       } catch (error) {
         console.error(error);
