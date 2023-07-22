@@ -15,8 +15,8 @@ const SmallFooter = () => {
       }
     >
       <div className="footer-buttons">
-        <a href="/about-us" className="footer-button">
-          About Us
+        <a href="/feedback" className="footer-button">
+          Feedback
         </a>
         <p>|</p>
         <a href="/contact" className="footer-button">

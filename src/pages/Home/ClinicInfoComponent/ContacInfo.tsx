@@ -6,50 +6,39 @@ import { ReactComponent as EmailIcon } from "../../../assets/icons/envelope-soli
 import { ReactComponent as LinkIcon } from "../../../assets/icons/link-solid.svg";
 import { ReactComponent as PhoneIcon } from "../../../assets/icons/phone-solid.svg";
 import { ReactComponent as MapIcon } from "../../../assets/icons/map-location-dot-solid.svg";
+import { ReactComponent as HoursIcon } from "../../../assets/icons/calendar-week-solid.svg";
 
 interface ClinicInfoProps {
   email?: string;
   phone?: string;
   website?: string;
   address: string;
-  location: Location;
-  currLocation: Location;
 }
-type Location = {
-  lat: number;
-  lng: number;
-};
 
 const ContactInfo: React.FC<ClinicInfoProps> = ({
   email,
   phone,
   website,
   address,
-  location,
-  currLocation,
 }) => {
-  const directionUrl = `https://www.google.com/maps/dir/?api=1&origin=${currLocation.lat},${currLocation.lng}&destination=${location.lat},${location.lng}`;
   return (
     <div className="center-container">
       <div className="contact-info-container">
-        <InfoLine text={email} message="Email">
+        <InfoLine text={email}>
           <EmailIcon />
         </InfoLine>
-        <InfoLine text={website} message="Website">
+        <InfoLine text={website}>
           <LinkIcon />
         </InfoLine>
-        <InfoLine text={phone} message="Phone">
+        <InfoLine text={phone}>
           <PhoneIcon />
         </InfoLine>
-        <InfoLine text={address} message="Address - Copied">
+        <InfoLine text={address}>
           <MapIcon />
         </InfoLine>
-        <div
-          className="directions-button"
-          onClick={() => window.open(directionUrl, "_blank")}
-        >
-          Get directions
-        </div>
+        <InfoLine text={"9am - 6pm | Monday - Friday"} decor={false}>
+          <HoursIcon/>
+        </InfoLine>
       </div>
     </div>
   );
