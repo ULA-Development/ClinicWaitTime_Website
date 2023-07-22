@@ -39,6 +39,7 @@ type HospitalWithTime = Hospital & {
 };
 const HERE_API_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
 const HomePage = () => {
+  const [activeButton, setActiveButton] = useState("");
   // The location of the origin as a string
   const [locationAddress, setLocationAddress] = useState("");
   // The location of the origin as a lat lng object
@@ -50,7 +51,7 @@ const HomePage = () => {
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     if (locationCoords.lat === 0 && locationCoords.lng === 0) {
       getCurrLocation();
@@ -63,7 +64,7 @@ const HomePage = () => {
   }, [locationCoords]);
 
   const getCurrLocation = () => {
-    setLoading(true)
+    setLoading(true);
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -89,9 +90,9 @@ const HomePage = () => {
   };
 
   const handleSearch = () => {
-    setSelectedClinic(-1)
-    setLoading(true)
-  }
+    setSelectedClinic(-1);
+    setLoading(true);
+  };
   useEffect(() => {
     const fetchCoordinates = async () => {
       try {
@@ -147,6 +148,7 @@ const HomePage = () => {
           UserLocation={locationCoords}
           selectedClinic={selectedClinic}
           setSelectedClinic={setSelectedClinic}
+          activeFilter={activeButton}
         ></GoogleMaps>
         {selectedClinic < 0 ? null : (
           <div className="info-popup">
@@ -178,7 +180,10 @@ const HomePage = () => {
           />
         </div>
         <SelectionPanel />
-        <FilterResults />
+        <FilterResults
+          setActiveButton={setActiveButton}
+          activeButton={activeButton}
+        />
         <div className="results-container">
           {loading ? (
             <LoadingSpinner

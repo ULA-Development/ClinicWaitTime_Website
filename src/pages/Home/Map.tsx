@@ -50,6 +50,7 @@ type HereMapComponentProps = {
   UserLocation: Location;
   selectedClinic: number;
   setSelectedClinic: (selectedClinic: number) => void;
+  activeFilter: string;
 };
 
 function GoogleMapComponent({
@@ -59,8 +60,12 @@ function GoogleMapComponent({
   UserLocation,
   selectedClinic,
   setSelectedClinic,
+  activeFilter,
 }: HereMapComponentProps) {
   const [bestHospitals, setBestHospitals] = useState<HospitalWithTime[]>([]);
+  const [hospitalWithTimes, setHospitalWithTimes] = useState<
+    HospitalWithTime[]
+  >([]);
   const mapRef = useRef<google.maps.Map | null>(null);
   const handleMapLoad = async (map: google.maps.Map) => {
     mapRef.current = map;
@@ -115,16 +120,26 @@ function GoogleMapComponent({
       });
 
       const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
-      hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
-      const topHospitals = hospitalWithTimes.slice(0, 10);
-      setBestHospitals(topHospitals);
-      setTopHospitals(topHospitals);
+      setHospitalWithTimes(hospitalWithTimes);
       setTimeout(function () {
         setLoading(false);
       }, 3000);
     };
     processMap();
   }, [UserLocation, hospitals, mapRef]);
+
+  useEffect(() => {
+    if (activeFilter === "waitTime") {
+      hospitalWithTimes.sort((a, b) => a.totalWaitTime - b.totalWaitTime);
+    } else if (activeFilter === "travelTime") {
+      hospitalWithTimes.sort((a, b) => a.travelTime - b.travelTime);
+    } else {
+      hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
+    }
+    const topHospitals = hospitalWithTimes.slice(0, 10);
+    setBestHospitals(topHospitals);
+    setTopHospitals(topHospitals);
+  }, [activeFilter, hospitalWithTimes]);
   const busynessSetter = (time: number) => {
     if (time < 15) {
       return 1;
