@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
-
 import axios from "axios";
 import { useSelector } from "react-redux";
 import SelectionPanel from "./SelectionPanel";
@@ -8,7 +7,7 @@ import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
 import SmallFooter from "../../components/SmallFooter";
 import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
-import HereMapComponent from "./Map";
+import GoogleMaps from "./Map";
 import { dbHandler } from "../../data/firebase";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
@@ -38,24 +37,35 @@ type HospitalWithTime = Hospital & {
   travelTime: number;
   routeDistance: number;
 };
+const HERE_API_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
 const HomePage = () => {
-  const [location, setLocation] = useState("");
+  // The location of the origin as a string
+  const [locationAddress, setLocationAddress] = useState("");
+  // The location of the origin as a lat lng object
+  const [locationCoords, setLocationCoords] = useState<Location>({
+    lat: 0,
+    lng: 0,
+  });
   const [data, setData] = useState([]);
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    dbHandler.fetchClinics().then((clinics: any) => {
-      setData(clinics);
-    });
-  }, []);
+    if (locationCoords.lat === 0 && locationCoords.lng === 0) {
+      handleCurrLocaiton();
+    }
+    dbHandler
+      .fetchClinics(locationCoords.lat, locationCoords.lng)
+      .then((clinics: any) => {
+        setData(clinics);
+      });
+  }, [locationCoords]);
   const handleCurrLocaiton = () => {
-    console.log("press");
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
         try {
-          const apiKey = "qnqs8KIVHizEGZrlrFdR--I0Run_DM5H5qQjoOd87NQ";
+          const apiKey = HERE_API_KEY;
           const apiUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${apiKey}&at=${latitude},${longitude}`;
 
           const response = (await axios.get(apiUrl)).data.items[0];
@@ -66,13 +76,38 @@ const HomePage = () => {
             },
             address: response.address.label,
           };
-          setLocation(currInfo.address);
+          setLocationAddress(currInfo.address);
+          setLocationCoords(currInfo.location);
         } catch (error) {
           alert(error);
         }
       }
     );
   };
+
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      try {
+        const locationCoords = await getCoordinates(
+          locationAddress,
+          setLocationAddress
+        );
+        if (!locationCoords) {
+          return;
+        }
+        console.log("setting location coords", locationCoords);
+        setLocationCoords(locationCoords);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (locationCoords.lat === 0 && locationCoords.lng === 0) {
+      return;
+    }
+    fetchCoordinates();
+  }, [locationAddress]);
+
   const handleSelectClinic = (index: number) => {
     if (selectedClinic === index) {
       setSelectedClinic(-1);
@@ -98,11 +133,15 @@ const HomePage = () => {
   return (
     <div className="home-container">
       <div className="map-container">
-        <HereMapComponent
+        <GoogleMaps
+          key={JSON.stringify(locationCoords)}
           hospitals={data}
           setTopHospitals={setTopHospitals}
           setLoading={setLoading}
-        ></HereMapComponent>
+          UserLocation={locationCoords}
+          selectedClinic={selectedClinic}
+          setSelectedClinic={setSelectedClinic}
+        ></GoogleMaps>
         {selectedClinic < 0 ? null : (
           <div className="info-popup">
             <ClinicInfoSection
@@ -115,19 +154,21 @@ const HomePage = () => {
               phone={topHospitals[selectedClinic].info.phone}
               address={topHospitals[selectedClinic].info.address}
               rating={topHospitals[selectedClinic].info.rating}
+              location={topHospitals[selectedClinic].location}
+              currLocation={locationCoords}
             />
           </div>
         )}
       </div>
       <Header selectedItem={"Home"} />
-      <HereMapComponent
-        hospitals={data}
-        setTopHospitals={setTopHospitals}
-        setLoading={setLoading}
-      ></HereMapComponent>
       <div className="home-content">
         <div className="location-container">
-          <LocaitonInput value={location} onChange={setLocation} currLocation={handleCurrLocaiton}/>
+          <LocaitonInput
+            value={locationAddress}
+            onChange={setLocationAddress}
+            currLocation={handleCurrLocaiton}
+            setLoading={setLoading}
+          />
         </div>
         <SelectionPanel />
         <FilterResults />
@@ -135,7 +176,7 @@ const HomePage = () => {
           {loading ? (
             <LoadingSpinner
               text="Locating..."
-              style={{ alignSelf:'center', position: "absolute", top: "40px" }}
+              style={{ alignSelf: "center", position: "absolute", top: "40px" }}
             />
           ) : (
             <div>
@@ -165,3 +206,33 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+async function getCoordinates(address: string, setLocation: any) {
+  try {
+    const response = await axios.get(
+      `https://geocode.search.hereapi.com/v1/geocode`,
+      {
+        params: {
+          apiKey: HERE_API_KEY,
+          q: address,
+        },
+      }
+    );
+    if (response.data.items.length === 0) {
+      setLocation(null);
+      throw new Error("The provided address is not valid.");
+    }
+    const location = response.data.items[0].position;
+
+    return {
+      lat: location.lat,
+      lng: location.lng,
+    } as Location;
+  } catch (error) {
+    setLocation(null);
+    throw new Error(
+      `Failed to get coordinates for the address: ${address}. ${error}`
+    );
+    return;
+  }
+}
