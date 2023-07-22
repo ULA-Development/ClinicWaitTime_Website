@@ -1,15 +1,22 @@
-import { set } from "firebase/database";
 import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import {
+  GoogleMap,
+  LoadScript,
+  OverlayView,
+  Marker,
+} from "@react-google-maps/api";
+import CustomMarker from "./CustomMarker";
 
-const HERE_API_KEY = "qnqs8KIVHizEGZrlrFdR--I0Run_DM5H5qQjoOd87NQ";
-declare global {
-  interface Window {
-    H: any;
-  }
-}
+declare var H: any;
+
+const GOOGLE_API_KEY = "AIzaSyBaNVZvlJZpN3s1n2IDPBfInkf98WAhbD0";
+const HERE_MAP_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
+
 type Location = {
   lat: number;
   lng: number;
+  distance?: number;
 };
 
 type Hospital = {
@@ -28,85 +35,76 @@ type Hospital = {
     };
   };
 };
+
 type HospitalWithTime = Hospital & {
   totalTime: number;
   totalWaitTime: number;
   travelTime: number;
   routeDistance: number;
 };
+
 type HereMapComponentProps = {
   hospitals: Hospital[];
   setTopHospitals: (hospitals: HospitalWithTime[]) => void;
   setLoading: (loading: boolean) => void;
   UserLocation: Location;
+  selectedClinic: number;
+  setSelectedClinic: (selectedClinic: number) => void;
 };
 
-function HereMapComponent({
+function GoogleMapComponent({
   hospitals,
   setTopHospitals,
   setLoading,
   UserLocation,
+  selectedClinic,
+  setSelectedClinic,
 }: HereMapComponentProps) {
-  console.log("map run");
-  const mapRef = useRef(null);
+  const [bestHospitals, setBestHospitals] = useState<HospitalWithTime[]>([]);
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const handleMapLoad = async (map: google.maps.Map) => {
+    mapRef.current = map;
+    if (!UserLocation.lat || !UserLocation.lng) {
+      return;
+    }
+  };
   useEffect(() => {
-    console.log("add markers run");
+    if (!UserLocation) {
+      return;
+    }
     const processMap = async () => {
-      if (
-        !mapRef.current ||
-        !window.H ||
-        !UserLocation.lat ||
-        !UserLocation.lng
-      ) {
-        return;
-      }
-
-      const platform = new window.H.service.Platform({
-        apikey: HERE_API_KEY,
+      const platform = new H.service.Platform({
+        apikey: HERE_MAP_KEY, // replace with your HERE Maps API key
       });
-
-      const defaultLayers = platform.createDefaultLayers();
-
-      const map = new window.H.Map(
-        mapRef.current,
-        defaultLayers.vector.normal.map,
-        {
-          center: UserLocation,
-          zoom: 14,
-          pixelRatio: window.devicePixelRatio || 1,
-        }
-      );
-      new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(map));
-      let iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="40" height="60"><path fill="red" d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0z"/></svg>`;
-      let icon = new window.H.map.Icon(iconSvg);
-      let marker = new window.H.map.Marker(UserLocation, { icon: icon });
-      map.addObject(marker);
-
+      new google.maps.Marker({
+        position: UserLocation, // Replace with your position object
+        map: mapRef.current, // Replace with your Google Map instance
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 12, // adjust for desired size
+          fillColor: "#4285F4",
+          fillOpacity: 1,
+          strokeColor: "#fff",
+          strokeWeight: 2,
+        },
+      });
       const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-        let { time: travelTime, distance: routeDistance } =
-          await getTravelTimeAndDistance(
-            UserLocation,
-            hospital.location,
-            platform
-          );
+        // let { time: travelTime, distance: routeDistance } =
+        //   await getTravelTimeAndDistance(
+        //     UserLocation,
+        //     hospital.location,
+        //     platform
+        //   );
+        // Keep the above code commented out for now for testing purposes
+
+        let routeDistance = hospital.location.distance || 0; // in km
+        let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
+        // comment out the above two lines for deployment
+
         let totalWaitTime =
-          hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime; // 10 minutes per person
-        // let travelTime = (hospital.location.distance / 40) * 60; // 40 km/h average speed, time in minutes (distance in km)
+          hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;
         let totalTime = totalWaitTime + travelTime;
-        // 30 minutes
-        const hospitalMarker = new window.H.map.Marker({
-          lat: hospital.location.lat,
-          lng: hospital.location.lng,
-        });
-        map.addObject(hospitalMarker);
-        hospitalMarker.addEventListener(
-          "tap",
-          function () {
-            const directionUrl = `https://www.google.com/maps/dir/?api=1&origin=${UserLocation.lat},${UserLocation.lng}&destination=${hospital.location.lat},${hospital.location.lng}`;
-            window.open(directionUrl, "_blank");
-          },
-          false
-        );
+
         return {
           ...hospital,
           totalTime,
@@ -115,22 +113,88 @@ function HereMapComponent({
           routeDistance,
         } as HospitalWithTime & { routeDistance: number };
       });
+
       const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
       hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
-      setTopHospitals(hospitalWithTimes.slice(0, 10)); // Select top 5
-      setLoading(false);
+      const topHospitals = hospitalWithTimes.slice(0, 10);
+      setBestHospitals(topHospitals);
+      setTopHospitals(topHospitals);
+      setTimeout(function () {
+        setLoading(false);
+      }, 3000);
     };
-
     processMap();
-  }, [mapRef, UserLocation, hospitals]);
+  }, [UserLocation, hospitals, mapRef]);
+  const busynessSetter = (time: number) => {
+    if (time < 15) {
+      return 1;
+    } else if (time < 25) {
+      return 2;
+    } else if (time < 35) {
+      return 3;
+    } else if (time < 45) {
+      return 4;
+    } else if (time < 60) {
+      return 5;
+    } else {
+      return 6;
+    }
+  };
+  const handleSelectClinic = (index: number) => {
+    if (selectedClinic === index) {
+      setSelectedClinic(-1);
+    } else {
+      setSelectedClinic(index);
+    }
+  };
   return (
-    <div
-      ref={mapRef}
-      style={{
-        height: "100%",
-        width: "100%",
-      }}
-    />
+    <div style={{ width: "100%", height: "100%" }}>
+      {/* <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
+        <GoogleMap
+          onLoad={handleMapLoad} // This line was added
+          center={UserLocation}
+          mapContainerStyle={{ width: "100%", height: "100%" }}
+          zoom={14}
+          options={{
+            mapTypeControl: false,
+            streetViewControl: false,
+            styles: [
+              {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }],
+              },
+            ],
+          }}
+        >
+          {bestHospitals.map((hospital, index) => (
+            <OverlayView
+              position={{
+                lat: hospital.location.lat,
+                lng: hospital.location.lng,
+              }}
+              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            >
+              <div onClick={() => handleSelectClinic(index)}>
+                <CustomMarker
+                  key={index}
+                  index={index}
+                  busyness={busynessSetter(hospital.totalTime)}
+                  isActive={index === selectedClinic}
+                  UserLocation={UserLocation} // Substitute with your actual user location
+                  hospital={{
+                    location: {
+                      lat: hospital.location.lat,
+                      lng: hospital.location.lng,
+                    },
+                  }}
+                />
+              </div>
+            </OverlayView>
+          ))}
+        </GoogleMap>
+      </LoadScript> */}
+    </div>
   );
 }
 
@@ -173,4 +237,4 @@ async function getTravelTimeAndDistance(
   return routePromise;
 }
 
-export default HereMapComponent;
+export default GoogleMapComponent;

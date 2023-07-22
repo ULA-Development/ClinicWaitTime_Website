@@ -7,12 +7,11 @@ import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
 import SmallFooter from "../../components/SmallFooter";
 import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
-import HereMapComponent from "./Map";
+import GoogleMaps from "./Map";
 import { dbHandler } from "../../data/firebase";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
-import { set } from "firebase/database";
 type Location = {
   lat: number;
   lng: number;
@@ -38,6 +37,7 @@ type HospitalWithTime = Hospital & {
   travelTime: number;
   routeDistance: number;
 };
+const HERE_API_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
 const HomePage = () => {
   // The location of the origin as a string
   const [locationAddress, setLocationAddress] = useState("");
@@ -51,18 +51,21 @@ const HomePage = () => {
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    dbHandler.fetchClinics().then((clinics: any) => {
-      setData(clinics);
+    if (locationCoords.lat === 0 && locationCoords.lng === 0) {
       handleCurrLocaiton();
-    });
-  }, []);
+    }
+    dbHandler
+      .fetchClinics(locationCoords.lat, locationCoords.lng)
+      .then((clinics: any) => {
+        setData(clinics);
+      });
+  }, [locationCoords]);
   const handleCurrLocaiton = () => {
-    console.log("press");
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
         try {
-          const apiKey = "qnqs8KIVHizEGZrlrFdR--I0Run_DM5H5qQjoOd87NQ";
+          const apiKey = HERE_API_KEY;
           const apiUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${apiKey}&at=${latitude},${longitude}`;
 
           const response = (await axios.get(apiUrl)).data.items[0];
@@ -92,13 +95,16 @@ const HomePage = () => {
         if (!locationCoords) {
           return;
         }
-        console.log(locationCoords);
+        console.log("setting location coords", locationCoords);
         setLocationCoords(locationCoords);
       } catch (error) {
         console.error(error);
       }
     };
 
+    if (locationCoords.lat === 0 && locationCoords.lng === 0) {
+      return;
+    }
     fetchCoordinates();
   }, [locationAddress]);
 
@@ -127,13 +133,15 @@ const HomePage = () => {
   return (
     <div className="home-container">
       <div className="map-container">
-        <HereMapComponent
+        <GoogleMaps
           key={JSON.stringify(locationCoords)}
           hospitals={data}
           setTopHospitals={setTopHospitals}
           setLoading={setLoading}
           UserLocation={locationCoords}
-        ></HereMapComponent>
+          selectedClinic={selectedClinic}
+          setSelectedClinic={setSelectedClinic}
+        ></GoogleMaps>
         {selectedClinic < 0 ? null : (
           <div className="info-popup">
             <ClinicInfoSection
@@ -159,6 +167,7 @@ const HomePage = () => {
             value={locationAddress}
             onChange={setLocationAddress}
             currLocation={handleCurrLocaiton}
+            setLoading={setLoading}
           />
         </div>
         <SelectionPanel />
@@ -204,7 +213,7 @@ async function getCoordinates(address: string, setLocation: any) {
       `https://geocode.search.hereapi.com/v1/geocode`,
       {
         params: {
-          apiKey: "qnqs8KIVHizEGZrlrFdR--I0Run_DM5H5qQjoOd87NQ",
+          apiKey: HERE_API_KEY,
           q: address,
         },
       }

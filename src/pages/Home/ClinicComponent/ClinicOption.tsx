@@ -31,9 +31,7 @@ const ClinicOption: React.FC<ClinicOptionProps> = ({
   };
 
   return (
-    <div
-      className={isActive ? "clinic-component-active" : "clinic-component"}
-    >
+    <div className={isActive ? "clinic-component-active" : "clinic-component"}>
       <div
         className="circle-num"
         style={{ backgroundColor: getColor(busyness) }}
@@ -41,7 +39,10 @@ const ClinicOption: React.FC<ClinicOptionProps> = ({
         {number}
       </div>
       <div className="clinic-info">
-        <h3 className="clinic-name" style={isActive ? { color: "white" } : { color: "black" }}>
+        <h3
+          className="clinic-name"
+          style={isActive ? { color: "white" } : { color: "black" }}
+        >
           {name}
         </h3>
         <div className="clinic-secondary-info">

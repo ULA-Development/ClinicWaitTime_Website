@@ -47,7 +47,7 @@ const handleErrorMessages = (code: string) => {
     }
   }
 };
- async function fetchClinics (currLat: number = 43.689562, currLong: number = -79.456932) {
+ async function fetchClinics (currLat: number, currLong: number) {
   const clinicRef = ref(database, 'clinics')
   let closeClincis: any[] = []
   onValue(clinicRef, (snapshot) => {
@@ -65,6 +65,7 @@ const handleErrorMessages = (code: string) => {
             location: {
               lat: clinicLat,
               lng: clinicLong,
+              distance: distance
             },
             info: data[id]
           }

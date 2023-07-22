@@ -8,9 +8,15 @@ interface Props {
   onChange: (arg0: string) => void;
   currLocation: () => void;
   value: string;
+  setLoading: (arg0: boolean) => void;
 }
 
-const LocationInput = ({ value, onChange, currLocation }: Props) => {
+const LocationInput = ({
+  value,
+  onChange,
+  currLocation,
+  setLoading,
+}: Props) => {
   const isMobile = useSelector((state: any) => state.isMobile.value);
 
   const [localValue, setLocalValue] = useState(value);
@@ -23,6 +29,7 @@ const LocationInput = ({ value, onChange, currLocation }: Props) => {
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       e.preventDefault();
+      setLoading(true);
       onChange(localValue);
     }
   }
