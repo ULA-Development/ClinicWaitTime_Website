@@ -15,6 +15,7 @@ interface ClinicDataProps {
   totalTime: number;
   location: Location;
   currLocation: Location;
+  hourlyData: any;
 }
 const ClinicData: React.FC<ClinicDataProps> = ({
   waitTime,
@@ -22,9 +23,10 @@ const ClinicData: React.FC<ClinicDataProps> = ({
   totalTime,
   currLocation,
   location,
+  hourlyData,
 }) => {
   const directionUrl = `https://www.google.com/maps/dir/?api=1&origin=${currLocation.lat},${currLocation.lng}&destination=${location.lat},${location.lng}`;
-
+  console.log(hourlyData)
   const formatTime = (num: number) => {
     const hours = Math.floor(num / 60);
     const minutes = Math.round(num % 60);
@@ -63,11 +65,11 @@ const ClinicData: React.FC<ClinicDataProps> = ({
       <div style={{ marginTop: "30px", color: "white" }}>
         <span>Hourly trends</span>
         <div className="trends">
-          <div className="chart" style={{ height: `${Math.floor(Math.random() * (60 - 15 + 1) + 15)}px` }} />
-          <div className="chart" style={{ height: `${Math.floor(Math.random() * (60 - 15 + 1) + 15)}px` }} />
-          <div className="chart" style={{ height: `${Math.floor(Math.random() * (60 - 15 + 1) + 15)}px` }} />
-          <div className="chart" style={{ height: `${Math.floor(Math.random() * (60 - 15 + 1) + 15)}px` }} />
-          <div className="chart" style={{ height: `${Math.floor(Math.random() * (60 - 15 + 1) + 15)}px` }} />
+          <div className="chart" style={{ height: `${hourlyData[0]}px` }} />
+          <div className="chart" style={{ height: `${hourlyData[1]}px` }} />
+          <div className="chart" style={{ height: `${hourlyData[2]}px` }} />
+          <div className="chart" style={{ height: `${hourlyData[3]}px` }} />
+          <div className="chart" style={{ height: `${hourlyData[4]}px` }} />
         </div>
       </div>
       <div

@@ -38,8 +38,17 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
   seedState,
 }) => {
   const [focusData, setFocusData] = useState(true);
-  
+  const [hourly, setHourly] = useState(hourlyData())
+  function hourlyData(){
+    let test: any = []
+    for(var i = 0; i < 5; i++){
+      test.push(Math.floor(Math.random() * (60 - 15 + 1) + 15))
+    }
+    return test
+  }
+
   useEffect(() => {
+    setHourly(hourlyData)
     setFocusData(true)
   }, [seedState])
   
@@ -109,6 +118,7 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
             totalTime={totalTime}
             currLocation={currLocation}
             location={location}
+            hourlyData={hourly}
           />
         ) : (
           <ContactInfo

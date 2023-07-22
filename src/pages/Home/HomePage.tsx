@@ -39,8 +39,9 @@ type HospitalWithTime = Hospital & {
 };
 const HERE_API_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
 const HomePage = () => {
+  const [activeButton, setActiveButton] = useState("");
   // The location of the origin as a string
-  const [locationAddress, setLocationAddress] = useState("");
+  const [locationAddress, setLocationAddress] = useState("Current location");
   // The location of the origin as a lat lng object
   const [locationCoords, setLocationCoords] = useState<Location>({
     lat: 0,
@@ -50,7 +51,7 @@ const HomePage = () => {
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     if (locationCoords.lat === 0 && locationCoords.lng === 0) {
       getCurrLocation();
@@ -63,7 +64,8 @@ const HomePage = () => {
   }, [locationCoords]);
 
   const getCurrLocation = () => {
-    setLoading(true)
+    setLoading(true);
+    setLocationAddress("Current location")
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -79,7 +81,7 @@ const HomePage = () => {
             },
             address: response.address.label,
           };
-          setLocationAddress(currInfo.address);
+          setLocationAddress("Current location");
           setLocationCoords(currInfo.location);
         } catch (error) {
           alert(error);
@@ -89,9 +91,9 @@ const HomePage = () => {
   };
 
   const handleSearch = () => {
-    setSelectedClinic(-1)
-    setLoading(true)
-  }
+    setSelectedClinic(-1);
+    setLoading(true);
+  };
   useEffect(() => {
     const fetchCoordinates = async () => {
       try {
@@ -102,7 +104,6 @@ const HomePage = () => {
         if (!locationCoords) {
           return;
         }
-        console.log("setting location coords", locationCoords);
         setLocationCoords(locationCoords);
       } catch (error) {
         console.error(error);
@@ -122,6 +123,7 @@ const HomePage = () => {
       setSelectedClinic(index);
     }
   };
+
   const busynessSetter = (time: number) => {
     if (time < 15) {
       return 1;
@@ -148,6 +150,7 @@ const HomePage = () => {
           UserLocation={locationCoords}
           selectedClinic={selectedClinic}
           setSelectedClinic={setSelectedClinic}
+          activeFilter={activeButton}
         ></GoogleMaps>
         {selectedClinic < 0 ? null : (
           <div className="info-popup">
@@ -179,7 +182,10 @@ const HomePage = () => {
           />
         </div>
         <SelectionPanel />
-        <FilterResults />
+        <FilterResults
+          setActiveButton={setActiveButton}
+          activeButton={activeButton}
+        />
         <div className="results-container">
           {loading ? (
             <LoadingSpinner

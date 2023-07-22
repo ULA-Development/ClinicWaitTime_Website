@@ -23,7 +23,7 @@ const SmallFooter = () => {
           Contact
         </a>
         <p>|</p>
-        <a href="terms-of-use" className="footer-button">
+        <a href="/terms-of-use" className="footer-button">
           Terms of Use
         </a>
       </div>

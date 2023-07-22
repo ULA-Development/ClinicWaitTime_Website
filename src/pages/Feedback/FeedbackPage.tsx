@@ -2,14 +2,14 @@ import React from "react";
 import Header from "../../components/Header/Header";
 import SmallFooter from "../../components/SmallFooter";
 
-const index = () => {
+const FeedbackPage = () => {
   return (
     <div>
-      <Header selectedItem={"Home"} />
-      Contact
+      <Header selectedItem={"Feedback"} />
+      Feedback
       <SmallFooter/>
     </div>
   );
 };
 
-export default index;
+export default FeedbackPage;

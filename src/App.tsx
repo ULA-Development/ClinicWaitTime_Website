@@ -5,6 +5,8 @@ import SignupPage from "./pages/Signup/SignupPage";
 import ContactPage from "./pages/Contact/ContactPage";
 import { useDispatch } from "react-redux";
 import { updateBrowserView } from './reducers/mobileReducer'
+import FeedbackPage from "./pages/Feedback/FeedbackPage";
+import TermsPage from "./pages/Terms/TermsPage";
 
 function App() {
   // Handle browser view updating
@@ -25,14 +27,25 @@ function App() {
 
 // Conditional Renderingf
 function renderContent(path: string | null) {
-  if (path === "/signin") {
-    return <LoginPage />;
-  } else if (path === "/signup") {
-    return <SignupPage />;
-  } else if (path === "/contact") {
-    return <ContactPage />;
-  } else {
-    return <HomePage />;
+  switch(path?.replace("/","")){
+    case "signin": {
+      return <LoginPage/>
+    }
+    case "signup": {
+      return <SignupPage/>
+    }
+    case "contact": {
+      return <ContactPage/>
+    }
+    case "feedback": {
+      return <FeedbackPage/>
+    }
+    case "terms-of-use": {
+      return <TermsPage/>
+    }
+    default: {
+      return <HomePage/>
+    }
   }
 }
 
