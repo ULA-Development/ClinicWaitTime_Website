@@ -41,7 +41,7 @@ const HERE_API_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
 const HomePage = () => {
   const [activeButton, setActiveButton] = useState("");
   // The location of the origin as a string
-  const [locationAddress, setLocationAddress] = useState("");
+  const [locationAddress, setLocationAddress] = useState("Current location");
   // The location of the origin as a lat lng object
   const [locationCoords, setLocationCoords] = useState<Location>({
     lat: 0,
@@ -65,6 +65,7 @@ const HomePage = () => {
 
   const getCurrLocation = () => {
     setLoading(true);
+    setLocationAddress("Current location")
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -80,7 +81,7 @@ const HomePage = () => {
             },
             address: response.address.label,
           };
-          setLocationAddress(currInfo.address);
+          setLocationAddress("Current location");
           setLocationCoords(currInfo.location);
         } catch (error) {
           alert(error);
