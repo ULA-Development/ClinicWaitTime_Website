@@ -1,1 +1,53 @@
 @import url("../../assets/common.css");
+@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
+textarea{
+    width: 100%;
+    height: 130px;
+    resize: none;
+    border-radius: 7px;
+    top: 300px;
+    display: block;
+    font-family: 'Lexend', sans-serif;
+    margin-top: 15px;
+    border: none;
+    outline: 1px solid black;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 10px
+}
+textarea:focus{
+    outline: 3px solid var(--main);
+}
+.invalid-textarea:focus, .invalid-textarea{
+    outline-color: var(--dark-error-red);
+}
+.feed-subtitle{
+    color: var(--grey-text);
+    font-weight: 100;
+}
+.feedback-content{
+    display: block;
+    height: 100%;
+    width: 700px;
+    padding: 50px 0px;
+}
+.feedback-main-container{
+    display: flex;
+    justify-content: center;
+}
+.acknowledgement-text{
+    color: var(--grey-text);
+    font-weight: 100;
+}
+.required-feild-error{
+    color: var(--dark-error-red);
+    opacity: 90%;
+    font-size: 10px;
+}
+.check-icon{
+    width: 70px;
+    height: 70px;
+    fill: green;
+    display: block;
+    margin-top: 40px
+}

@@ -52,6 +52,7 @@ const HomePage = () => {
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     if (locationCoords.lat === 0 && locationCoords.lng === 0) {
       getCurrLocation();

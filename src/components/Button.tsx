@@ -5,9 +5,11 @@ import "./Button.css";
 interface Props {
   children: ReactNode;
   onClick: () => void;
+  style?: React.CSSProperties;
+  noImg?: boolean;
 }
 
-const Button = ({ children, onClick}: Props) => {
+const Button = ({ children, onClick, style, noImg = false }: Props) => {
   const [clicked, setClicked] = useState(false);
   const buttonRef = useRef<HTMLDivElement>(null);
   return (
@@ -18,16 +20,19 @@ const Button = ({ children, onClick}: Props) => {
         setClicked(true);
       }}
       onAnimationEnd={() => setClicked(false)}
+      style={style}
     >
       <div className="button-content" ref={buttonRef}>
         {children}{" "}
-        <img
-          src={icon}
-          alt="Icon"
-          width={"20px"}
-          height={"20px"}
-          style={{ filter: "invert(100%)", marginLeft: "5px" }}
-        />
+        {noImg === false ? (
+          <img
+            src={icon}
+            alt="Icon"
+            width={"20px"}
+            height={"20px"}
+            style={{ filter: "invert(100%)", marginLeft: "5px" }}
+          />
+        ) : null}
       </div>
     </button>
   );
