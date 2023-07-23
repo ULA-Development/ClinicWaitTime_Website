@@ -6,7 +6,6 @@ import { ReactComponent as CloseIcon } from "../../assets/icons/times-solid.svg"
 function MobileHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const selectedMenu = window.location.href.split("/").at(-1);
-  console.log(selectedMenu === "home", selectedMenu);
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -16,7 +15,7 @@ function MobileHeader() {
       <div className="hamburger-menu">
         <HamMenu className="menu-icon" onClick={handleToggle} />
         <a href="/home" className="home-title">
-          Ula Logo
+          MedFlow
         </a>
       </div>
 

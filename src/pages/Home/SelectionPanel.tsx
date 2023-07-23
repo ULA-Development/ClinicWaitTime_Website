@@ -12,17 +12,6 @@ const SelectionPanel: React.FC = () => {
   return (
     <div className="selection-panel">
       <h2 className="panel-heading">Select healthcare type</h2>
-      <p
-        style={{
-          position: "absolute",
-          color: "#ffc1cc",
-          fontSize: "9px",
-          top: "42px",
-          left: "8px",
-        }}
-      >
-        Some features are currently disabled
-      </p>
       <label>
         <input
           type="radio"
