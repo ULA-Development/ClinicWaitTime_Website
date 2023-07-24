@@ -81,18 +81,18 @@ function GoogleMapComponent({
       const platform = new H.service.Platform({
         apikey: HERE_MAP_KEY, // replace with your HERE Maps API key
       });
-      new google.maps.Marker({
-        position: UserLocation, // Replace with your position object
-        map: mapRef.current, // Replace with your Google Map instance
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 12, // adjust for desired size
-          fillColor: "#4285F4",
-          fillOpacity: 1,
-          strokeColor: "#fff",
-          strokeWeight: 2,
-        },
-      });
+      // new google.maps.Marker({
+      //   position: UserLocation, // Replace with your position object
+      //   map: mapRef.current, // Replace with your Google Map instance
+      //   icon: {
+      //     path: google.maps.SymbolPath.CIRCLE,
+      //     scale: 12, // adjust for desired size
+      //     fillColor: "#4285F4",
+      //     fillOpacity: 1,
+      //     strokeColor: "#fff",
+      //     strokeWeight: 2,
+      //   },
+      // });
       const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
         // let { time: travelTime, distance: routeDistance } =
         //   await getTravelTimeAndDistance(
@@ -108,7 +108,7 @@ function GoogleMapComponent({
 
         let totalWaitTime =
           hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;
-        let totalTime = totalWaitTime + travelTime;
+        let totalTime = totalWaitTime + travelTime; // in minutes
 
         return {
           ...hospital,

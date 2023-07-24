@@ -8,6 +8,13 @@ import VisEyeIcon from "../assets/icons/eye-solid.svg";
 import { ReactComponent as ReferIcon } from "../assets/icons/user-friends-solid.svg";
 import { ReactComponent as ErrorIcon } from "../assets/icons/exclamation-circle-solid.svg";
 import { ReactComponent as SearchIcon } from "../assets/icons/search-solid.svg";
+import { ReactComponent as LocationIcon } from "../assets/icons/map-marker-alt-solid.svg";
+import { ReactComponent as PhoneIcon } from "../assets/icons/phone-solid.svg";
+import { ReactComponent as WebsiteIcon } from "../assets/icons/globe-solid.svg";
+import { ReactComponent as CapaIcon } from "../assets/icons/database-solid.svg";
+import { ReactComponent as DocIcon } from "../assets/icons/user-doctor-solid.svg";
+import { ReactComponent as ClockIcon } from "../assets/icons/clock-regular.svg";
+
 import "./TextInput.css";
 import { useSelector } from "react-redux";
 
@@ -49,6 +56,43 @@ const TextInput = ({
           icon: <PasswordIcon className={iconClass} />,
         };
       }
+      case "Phone": {
+        return {
+          placeholder: "Phone",
+          icon: <PhoneIcon className={iconClass} />,
+        };
+      }
+      case "Website": {
+        return {
+          placeholder: "Website",
+          icon: <WebsiteIcon className={iconClass} />,
+        };
+      }
+      case "Full Address": {
+        return {
+          placeholder: "Address",
+          icon: <LocationIcon className={iconClass} />,
+        };
+      }
+      case "numDoctors": {
+        return {
+          placeholder: "NumDoctors",
+          icon: <DocIcon className={iconClass} />,
+        };
+      }
+      case "capacity": {
+        return {
+          placeholder: "Capacity",
+          icon: <CapaIcon className={iconClass} />,
+        };
+      }
+      case "avgWaitTime": {
+        return {
+          placeholder: "AvgWaitTime",
+          icon: <ClockIcon className={iconClass} />,
+        };
+      }
+
       case "Confirm Password": {
         return {
           placeholder: "Confirm password",
