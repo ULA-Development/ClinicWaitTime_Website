@@ -93,17 +93,17 @@ function GoogleMapComponent({
           strokeWeight: 4,
         },
       });
-      const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-        let { time: travelTime, distance: routeDistance } =
-          await getTravelTimeAndDistance(
-            UserLocation,
-            hospital.location,
-            platform
-          );
+      // const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
+      //   let { time: travelTime, distance: routeDistance } =
+      //     await getTravelTimeAndDistance(
+      //       UserLocation,
+      //       hospital.location,
+      //       platform
+      //     );
         // Keep the above code commented out for now for testing purposes
 
-        // let routeDistance = hospital.location.distance || 0; // in km
-        // let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
+        let routeDistance = hospital.location.distance || 0; // in km
+        let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
         // comment out the above two lines for deployment
 
         let totalWaitTime =
@@ -165,7 +165,7 @@ function GoogleMapComponent({
   console.log("UserLocation", UserLocation.lat);
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
+{/*       <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
         <GoogleMap
           onLoad={handleMapLoad} // This line was added
           center={UserLocation}
@@ -204,7 +204,7 @@ function GoogleMapComponent({
             </OverlayView>
           ))}
         </GoogleMap>
-      </LoadScript>
+      </LoadScript> */}
     </div>
   );
 }
