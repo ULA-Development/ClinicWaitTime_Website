@@ -4,15 +4,18 @@ interface BusynessIndicatorProps {
   greyBarColor: string;
 }
 
-const BusynessIndicator: React.FC<BusynessIndicatorProps> = ({ busyness, greyBarColor }) => {
+const BusynessIndicator: React.FC<BusynessIndicatorProps> = ({
+  busyness,
+  greyBarColor,
+}) => {
   const getBarColor = (busyness: number) => {
     // Business ranges between 1 and 6
-    if(busyness <= 2){
-      return '#ccdca4'
-    }else if(busyness <= 4){
-      return '#f1b84a'
-    }else{
-      return '#e1897b'
+    if (busyness <= 2) {
+      return "#7FC175";
+    } else if (busyness <= 4) {
+      return "#f1b84a";
+    } else {
+      return "#Da7a6b";
     }
   };
 

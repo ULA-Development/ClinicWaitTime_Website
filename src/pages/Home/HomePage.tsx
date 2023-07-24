@@ -12,8 +12,6 @@ import { dbHandler } from "../../data/firebase";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
-import { get } from "http";
-import { set } from "firebase/database";
 type Location = {
   lat: number;
   lng: number;

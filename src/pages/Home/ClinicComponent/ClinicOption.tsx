@@ -22,11 +22,11 @@ const ClinicOption: React.FC<ClinicOptionProps> = ({
   const getColor = (busyness: number) => {
     // busyness ranges between 1 and 6
     if (busyness <= 2) {
-      return "#ccdca4";
+      return "#7FC175";
     } else if (busyness <= 4) {
       return "#f1b84a";
     } else {
-      return "#e1897b";
+      return "#Da7a6b";
     }
   };
 

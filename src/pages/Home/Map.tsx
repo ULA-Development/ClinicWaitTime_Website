@@ -6,7 +6,7 @@ import {
   OverlayView,
   Marker,
 } from "@react-google-maps/api";
-import CustomMarker from "./CustomMarker";
+import IconMarker from "./IconMarker";
 
 declare var H: any;
 
@@ -81,29 +81,29 @@ function GoogleMapComponent({
       const platform = new H.service.Platform({
         apikey: HERE_MAP_KEY, // replace with your HERE Maps API key
       });
-      // new google.maps.Marker({
-      //   position: UserLocation, // Replace with your position object
-      //   map: mapRef.current, // Replace with your Google Map instance
-      //   icon: {
-      //     path: google.maps.SymbolPath.CIRCLE,
-      //     scale: 12, // adjust for desired size
-      //     fillColor: "#4285F4",
-      //     fillOpacity: 1,
-      //     strokeColor: "#fff",
-      //     strokeWeight: 2,
-      //   },
-      // });
+      new google.maps.Marker({
+        position: UserLocation, // Replace with your position object
+        map: mapRef.current, // Replace with your Google Map instance
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 12, // adjust for desired size
+          fillColor: "#4285F4",
+          fillOpacity: 1,
+          strokeColor: "#fff",
+          strokeWeight: 4,
+        },
+      });
       const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-        // let { time: travelTime, distance: routeDistance } =
-        //   await getTravelTimeAndDistance(
-        //     UserLocation,
-        //     hospital.location,
-        //     platform
-        //   );
+        let { time: travelTime, distance: routeDistance } =
+          await getTravelTimeAndDistance(
+            UserLocation,
+            hospital.location,
+            platform
+          );
         // Keep the above code commented out for now for testing purposes
 
-        let routeDistance = hospital.location.distance || 0; // in km
-        let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
+        // let routeDistance = hospital.location.distance || 0; // in km
+        // let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
         // comment out the above two lines for deployment
 
         let totalWaitTime =
@@ -162,9 +162,10 @@ function GoogleMapComponent({
       setSelectedClinic(index);
     }
   };
+  console.log("UserLocation", UserLocation.lat);
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {/* <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
+      <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
         <GoogleMap
           onLoad={handleMapLoad} // This line was added
           center={UserLocation}
@@ -182,8 +183,10 @@ function GoogleMapComponent({
             ],
           }}
         >
+          <Marker position={UserLocation} key={0} />
           {bestHospitals.map((hospital, index) => (
             <OverlayView
+              key={index}
               position={{
                 lat: hospital.location.lat,
                 lng: hospital.location.lng,
@@ -191,24 +194,17 @@ function GoogleMapComponent({
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             >
               <div onClick={() => handleSelectClinic(index)}>
-                <CustomMarker
+                <IconMarker
                   key={index}
                   index={index}
                   busyness={busynessSetter(hospital.totalTime)}
                   isActive={index === selectedClinic}
-                  UserLocation={UserLocation} // Substitute with your actual user location
-                  hospital={{
-                    location: {
-                      lat: hospital.location.lat,
-                      lng: hospital.location.lng,
-                    },
-                  }}
                 />
               </div>
             </OverlayView>
           ))}
         </GoogleMap>
-      </LoadScript> */}
+      </LoadScript>
     </div>
   );
 }
