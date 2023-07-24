@@ -6,7 +6,7 @@ import {
   OverlayView,
   Marker,
 } from "@react-google-maps/api";
-import CustomMarker from "./CustomMarker";
+// import CustomMarker from "./CustomMarker";
 
 declare var H: any;
 
@@ -191,18 +191,11 @@ function GoogleMapComponent({
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             >
               <div onClick={() => handleSelectClinic(index)}>
-                <CustomMarker
+                <IconMarker
                   key={index}
                   index={index}
                   busyness={busynessSetter(hospital.totalTime)}
                   isActive={index === selectedClinic}
-                  UserLocation={UserLocation} // Substitute with your actual user location
-                  hospital={{
-                    location: {
-                      lat: hospital.location.lat,
-                      lng: hospital.location.lng,
-                    },
-                  }}
                 />
               </div>
             </OverlayView>
