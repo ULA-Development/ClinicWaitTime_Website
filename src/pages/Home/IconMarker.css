@@ -4,7 +4,9 @@
   height: 60px;
 }
 .icon-container-active{
-  transform: scale(1.3);
+  transform: scale(1.5);
+  position: absolute;
+  top: -14px;
 }
 .icon-container{
   transform: scale(1);

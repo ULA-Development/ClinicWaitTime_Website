@@ -4,26 +4,27 @@ import "./IconMarker.css";
 interface IconMarkerProps {
   busyness: number;
   index: number;
+  isActive: boolean;
 }
 
-const IconMarker: React.FC<IconMarkerProps> = ({ busyness = 3, index}) => {
-  const [active, setActive] = useState(false)
+const IconMarker: React.FC<IconMarkerProps> = ({
+  busyness,
+  index,
+  isActive,
+}) => {
   const getColor = () => {
     // busyness ranges between 1 and 6
     if (busyness <= 2) {
-      return "#ccdca4";
+      return "#32aa55"; // "#4ac36e" is a brighter green
     } else if (busyness <= 4) {
-      return "#f1b84a";
+      return "#Fbb22d"; // "#Fbb22d" is a brighter yellow
     } else {
-      return "#e1897b";
+      return "#D45b5b"; // "#D45b5b" is a brighter red
     }
   };
 
-
   return (
-    <div
-    onClick={() => setActive(!active)} 
-    className={active ? "icon-container-active" : "icon-container"}>
+    <div className={isActive ? "icon-container-active" : "icon-container"}>
       <div
         className="marker"
         dangerouslySetInnerHTML={{

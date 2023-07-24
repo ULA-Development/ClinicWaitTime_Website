@@ -12,9 +12,6 @@ import { dbHandler } from "../../data/firebase";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
-import { get } from "http";
-import { set } from "firebase/database";
-import IconMarker from "./IconMarker";
 type Location = {
   lat: number;
   lng: number;
@@ -150,7 +147,6 @@ const HomePage = () => {
   return (
     <div className="home-container">
       <div className="map-container">
-        <IconMarker busyness={5} index={4}/>
         <GoogleMaps
           key={JSON.stringify(locationCoords)}
           hospitals={data}
