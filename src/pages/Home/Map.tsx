@@ -81,25 +81,25 @@ function GoogleMapComponent({
       const platform = new H.service.Platform({
         apikey: HERE_MAP_KEY, // replace with your HERE Maps API key
       });
-      new google.maps.Marker({
-        position: UserLocation, // Replace with your position object
-        map: mapRef.current, // Replace with your Google Map instance
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 12, // adjust for desired size
-          fillColor: "#4285F4",
-          fillOpacity: 1,
-          strokeColor: "#fff",
-          strokeWeight: 4,
-        },
-      });
-      // const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-      //   let { time: travelTime, distance: routeDistance } =
-      //     await getTravelTimeAndDistance(
-      //       UserLocation,
-      //       hospital.location,
-      //       platform
-      //     );
+      // new google.maps.Marker({
+      //   position: UserLocation, // Replace with your position object
+      //   map: mapRef.current, // Replace with your Google Map instance
+      //   icon: {
+      //     path: google.maps.SymbolPath.CIRCLE,
+      //     scale: 12, // adjust for desired size
+      //     fillColor: "#4285F4",
+      //     fillOpacity: 1,
+      //     strokeColor: "#fff",
+      //     strokeWeight: 4,
+      //   },
+      // });
+      const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
+        // let { time: travelTime, distance: routeDistance } =
+        //   await getTravelTimeAndDistance(
+        //     UserLocation,
+        //     hospital.location,
+        //     platform
+        //   );
         // Keep the above code commented out for now for testing purposes
 
         let routeDistance = hospital.location.distance || 0; // in km
@@ -165,15 +165,17 @@ function GoogleMapComponent({
   console.log("UserLocation", UserLocation.lat);
   return (
     <div style={{ width: "100%", height: "100%" }}>
-{/*       <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
+      {/* <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
         <GoogleMap
           onLoad={handleMapLoad} // This line was added
-          center={UserLocation}
+          center={selectedClinic < 0 ? UserLocation : {lat: bestHospitals[selectedClinic].location.lat , lng: bestHospitals[selectedClinic].location.lng - 0.023}}
           mapContainerStyle={{ width: "100%", height: "100%" }}
-          zoom={14}
+          zoom={selectedClinic < 0 ? 12 : 13}
           options={{
             mapTypeControl: false,
             streetViewControl: false,
+            zoomControl: false,
+            scrollwheel: false,
             styles: [
               {
                 featureType: "poi",
