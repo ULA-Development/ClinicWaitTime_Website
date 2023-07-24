@@ -3,8 +3,9 @@ import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Signin/SigninPage";
 import SignupPage from "./pages/Signup/SignupPage";
 import ContactPage from "./pages/Contact/ContactPage";
+import RegisterPage from "./pages/Register/register";
 import { useDispatch } from "react-redux";
-import { updateBrowserView } from './reducers/mobileReducer'
+import { updateBrowserView } from "./reducers/mobileReducer";
 import FeedbackPage from "./pages/Feedback/FeedbackPage";
 import TermsPage from "./pages/Terms/TermsPage";
 
@@ -27,24 +28,27 @@ function App() {
 
 // Conditional Renderingf
 function renderContent(path: string | null) {
-  switch(path?.replace("/","")){
+  switch (path?.replace("/", "")) {
     case "signin": {
-      return <LoginPage/>
+      return <LoginPage />;
     }
     case "signup": {
-      return <SignupPage/>
+      return <SignupPage />;
     }
     case "contact": {
-      return <ContactPage/>
+      return <ContactPage />;
     }
     case "feedback": {
-      return <FeedbackPage/>
+      return <FeedbackPage />;
     }
     case "terms-of-use": {
-      return <TermsPage/>
+      return <TermsPage />;
+    }
+    case "register": {
+      return <RegisterPage />;
     }
     default: {
-      return <HomePage/>
+      return <HomePage />;
     }
   }
 }

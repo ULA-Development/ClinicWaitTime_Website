@@ -24,8 +24,8 @@ function Header({ selectedItem }: HeaderProps) {
     );
   };
   const mobileHeader = () => {
-    return <MobileHeader/>
-  }
+    return <MobileHeader />;
+  };
   return isMobile ? mobileHeader() : desktopHeader();
 }
 

@@ -115,6 +115,18 @@ const dbCreateUser = (uid: string, name: string, email: string) => {
   });
 };
 
+const dbCreateClinic = (clinicData: any) => {
+  const { name, address, coords, occupancy, phoneNumber, email, website } = clinicData;
+  set(ref(database, "clinics/" + coords), {
+    name: name,
+    address: address,
+    phone: phoneNumber,
+    occupancy: occupancy,
+    email: email,
+    website: website,
+  });
+};
+
 function dbCreateFeedback(message: string){
   const promise = new Promise ((resolve, reject) => {
     const ticketCode = Math.random().toString(36).substring(2, 12);
@@ -138,6 +150,7 @@ const dbHandler = {
   createUser: dbCreateUser,
   fetchClinics: fetchClinics,
   createFeedback: dbCreateFeedback,
+  createClinic: dbCreateClinic,
 };
 
 const authHandler = {

@@ -71,7 +71,10 @@ const FeedbackPage = () => {
           {" "}
           We appreciate your support and will review your message very soon.
         </span>
-        <h5 className="feed-subtitle">To submit more feedback, come back in 3hrs once this has been processed.</h5>
+        <h5 className="feed-subtitle">
+          To submit more feedback, come back in 3hrs once this has been
+          processed.
+        </h5>
         <CheckIcon className="check-icon" />
         <button
           onClick={() => removeCookie("feedbackSubmitted")}
@@ -86,8 +89,11 @@ const FeedbackPage = () => {
     <>
       <Header selectedItem={"Home"} />
       <div className="feedback-main-container">
-        <div className="feedback-content" style={isMobile ? {width: "90%"} : {width: "600px"}}>
-          {!submitted ? successSubmitSection() : submitInfoSection()}
+        <div
+          className="feedback-content"
+          style={isMobile ? { width: "90%" } : { width: "600px" }}
+        >
+          {submitted ? successSubmitSection() : submitInfoSection()}
         </div>
       </div>
     </>
