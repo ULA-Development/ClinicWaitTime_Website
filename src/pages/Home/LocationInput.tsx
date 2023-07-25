@@ -45,7 +45,7 @@ const LocationInput = ({
   return (
     <div
       className="location-input-container"
-      style={isMobile ? { width: "100%" } : { width: "515px" }}
+      // style={isMobile ? { width: "100%" } : { width: "515px" }}
     >
 
       <input

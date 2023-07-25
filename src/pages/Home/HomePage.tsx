@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import SelectionPanel from "./SelectionPanel";
+import SelectionPanel from "./Selection/SelectionPanel";
 import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
 import SmallFooter from "../../components/SmallFooter";
@@ -39,6 +39,8 @@ type HospitalWithTime = Hospital & {
 };
 const HERE_API_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
 const HomePage = () => {
+  const [resize, setResize] = useState(window.innerWidth <= 990)
+  window.addEventListener("resize", () => setResize(window.innerWidth <= 990))
   const [activeButton, setActiveButton] = useState("");
   // The location of the origin as a string
   const [locationAddress, setLocationAddress] = useState("Current Location");
@@ -64,6 +66,7 @@ const HomePage = () => {
   }, [locationCoords]);
 
   const getCurrLocation = () => {
+    setLoading(true)
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -146,7 +149,8 @@ const HomePage = () => {
   };
   return (
     <div className="home-container">
-      <div className="map-container">
+      <div className="map-container"
+      style={resize ? {width: "0px"} : {}}>
         <GoogleMaps
           key={JSON.stringify(locationCoords)}
           hospitals={data}
@@ -177,7 +181,8 @@ const HomePage = () => {
         )}
       </div>
       <Header selectedItem={"Home"} />
-      <div className="home-content">
+      <div className="home-content"
+      style={resize ? {width: "calc(100% - 14px)"} : {}}>
         <div className="location-container">
           <LocaitonInput
             value={locationAddress}
@@ -199,22 +204,31 @@ const HomePage = () => {
             />
           ) : (
             <div>
-              {topHospitals.map((hospital, index) => (
-                <div
-                  key={index}
-                  onClick={() => handleSelectClinic(index)}
-                  className="clinic-option"
-                >
-                  <ClinicOption
-                    name={hospital.info.name}
-                    number={String(index + 1)}
-                    distance={hospital.routeDistance}
-                    busyness={busynessSetter(hospital.totalTime)}
-                    rating={hospital.info.rating}
-                    isActive={selectedClinic === index}
-                  />
+              {topHospitals.length == 0 ? (
+                <div className="no-results">
+                  <div style={{display: "block"}}>
+                  <span style={{fontSize: "17px"}}>No results ... try different address</span>
+                  <span style={{display: "block", fontSize: "13px", color: "dimgrey"}}>make sure city is included </span>
+                  </div>
                 </div>
-              ))}
+              ) : (
+                topHospitals.map((hospital, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleSelectClinic(index)}
+                    className="clinic-option"
+                  >
+                    <ClinicOption
+                      name={hospital.info.name}
+                      number={String(index + 1)}
+                      distance={hospital.routeDistance}
+                      busyness={busynessSetter(hospital.totalTime)}
+                      rating={hospital.info.rating}
+                      isActive={selectedClinic === index}
+                    />
+                  </div>
+                ))
+              )}
             </div>
           )}
         </div>

@@ -6,7 +6,7 @@
 .home-content{
     padding-top: 40px;
     padding-left: 20px;
-    width: min(calc(40% - 20px), 600px) ;
+    width: max(400px, min(calc(40% - 20px), 600px));
     height: calc(100vh - 200px);
     position: relative;
     display: flex;
@@ -14,12 +14,12 @@
     justify-content: space-between;
 }
 .map-container{
-    width: max(60%, 100% - 630px);
+    width: max(60%, calc(100% - 430px));
     height: calc(100% - 151px);
     margin-top: 73px;
     margin-bottom: -50px;
     position: absolute;
-    left: min(40%, 630px);
+    left: max(430px, min(40%, 630px));
     overflow: hidden;
     background-color: var(--light-hover-grey);
 }
@@ -68,7 +68,13 @@
     cursor: pointer;
 }
 .location-container{
-    width: 100%;
+    width: 90%;
     display: flex;
     align-items: center;
+
+}
+.no-results{
+    display: block;
+    text-align: center;
+    margin-top: 30px;
 }

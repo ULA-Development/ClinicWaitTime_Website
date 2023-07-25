@@ -10,6 +10,9 @@ const FilterResults: React.FC<FilterResultsProps> = ({
   setActiveButton,
   activeButton,
 }) => {
+  const [resize, setResize] = useState(window.innerWidth <= 875)
+  window.addEventListener("resize", () => setResize(window.innerWidth <= 75)) // 875
+
   const handleWaitTimeClick = () => {
     if (activeButton == "waitTime") {
       setActiveButton("");
@@ -34,7 +37,7 @@ const FilterResults: React.FC<FilterResultsProps> = ({
           activeButton == "waitTime" ? "active" : ""
         }`}
         onClick={handleWaitTimeClick}
-        style={{ marginRight: "10px" }}
+        style={resize ? {width: "95%"} : {}}
       >
         Wait Time
       </button>
@@ -43,7 +46,7 @@ const FilterResults: React.FC<FilterResultsProps> = ({
           activeButton == "travelTime" ? "active" : ""
         }`}
         onClick={handleTravelTimeClick}
-        style={{ marginRight: "10px" }}
+        style={resize ? {width: "95%"} : {}}
       >
         Travel Time
       </button>
