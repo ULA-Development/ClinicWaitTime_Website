@@ -3,8 +3,8 @@ import "./SelectionPanel.css";
 import MobileSelection from "./MobileSelection";
 
 const SelectionPanel: React.FC = () => {
-  const [resize, setResize] = useState(window.innerWidth <= 1030);
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 30)); //1030
+  const [resize, setResize] = useState(window.innerWidth <= 410);
+  window.addEventListener("resize", () => setResize(window.innerWidth <= 410)); //1030
   const [selectedRadioBtn, setSelectedRadioBtn] =
     React.useState("Walk-In Clinics"); //sets default selection
   const isRadioSelected = (value: string): boolean =>

@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { ReactComponent as Search } from "../../assets/icons/magnifying-glass-solid.svg";
 import { ReactComponent as Location } from "../../assets/icons/location-arrow-solid.svg";
-import { useSelector } from "react-redux";
 import "./LocationInput.css";
 
 interface Props {
@@ -17,7 +16,6 @@ const LocationInput = ({
   currLocation,
   handleSearch,
 }: Props) => {
-  const isMobile = useSelector((state: any) => state.isMobile.value);
 
   const [localValue, setLocalValue] = useState(value);
 
@@ -45,7 +43,6 @@ const LocationInput = ({
   return (
     <div
       className="location-input-container"
-      // style={isMobile ? { width: "100%" } : { width: "515px" }}
     >
 
       <input

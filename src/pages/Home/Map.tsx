@@ -136,7 +136,7 @@ function GoogleMapComponent({
     } else {
       hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
     }
-    const topHospitals = hospitalWithTimes.slice(0, 10);
+    const topHospitals = hospitalWithTimes.slice(0, 5);
     setBestHospitals(topHospitals);
     setTopHospitals(topHospitals);
   }, [activeFilter, hospitalWithTimes]);

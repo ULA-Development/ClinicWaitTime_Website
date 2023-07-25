@@ -12,6 +12,7 @@ import { dbHandler } from "../../data/firebase";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
+import OptionSlider from "./OptionSlider";
 type Location = {
   lat: number;
   lng: number;
@@ -39,8 +40,8 @@ type HospitalWithTime = Hospital & {
 };
 const HERE_API_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
 const HomePage = () => {
-  const [resize, setResize] = useState(window.innerWidth <= 990)
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 990))
+  const [resize, setResize] = useState(window.innerWidth <= 990);
+  window.addEventListener("resize", () => setResize(window.innerWidth <= 990)); //990
   const [activeButton, setActiveButton] = useState("");
   // The location of the origin as a string
   const [locationAddress, setLocationAddress] = useState("Current Location");
@@ -53,7 +54,7 @@ const HomePage = () => {
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<HospitalWithTime[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [active, setActive] = useState("list");
   useEffect(() => {
     if (locationCoords.lat === 0 && locationCoords.lng === 0) {
       getCurrLocation();
@@ -66,7 +67,7 @@ const HomePage = () => {
   }, [locationCoords]);
 
   const getCurrLocation = () => {
-    setLoading(true)
+    setLoading(true);
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -149,40 +150,43 @@ const HomePage = () => {
   };
   return (
     <div className="home-container">
-      <div className="map-container"
-      style={resize ? {width: "0px"} : {}}>
-        <GoogleMaps
-          key={JSON.stringify(locationCoords)}
-          hospitals={data}
-          setTopHospitals={setTopHospitals}
-          setLoading={setLoading}
-          UserLocation={locationCoords}
-          selectedClinic={selectedClinic}
-          setSelectedClinic={setSelectedClinic}
-          activeFilter={activeButton}
-        ></GoogleMaps>
-        {selectedClinic < 0 ? null : (
-          <div className="info-popup">
-            <ClinicInfoSection
-              name={topHospitals[selectedClinic].info.name}
-              totalTime={topHospitals[selectedClinic].totalTime}
-              waitTime={topHospitals[selectedClinic].totalWaitTime}
-              travelTime={topHospitals[selectedClinic].travelTime}
-              email={topHospitals[selectedClinic].info.email}
-              website={topHospitals[selectedClinic].info.website}
-              phone={topHospitals[selectedClinic].info.phone}
-              address={topHospitals[selectedClinic].info.address}
-              rating={topHospitals[selectedClinic].info.rating}
-              location={topHospitals[selectedClinic].location}
-              currLocation={locationCoords}
-              seedState={selectedClinic}
-            />
-          </div>
-        )}
-      </div>
+      {!resize ? (
+        <div className="map-container">
+          <GoogleMaps
+            key={JSON.stringify(locationCoords)}
+            hospitals={data}
+            setTopHospitals={setTopHospitals}
+            setLoading={setLoading}
+            UserLocation={locationCoords}
+            selectedClinic={selectedClinic}
+            setSelectedClinic={setSelectedClinic}
+            activeFilter={activeButton}
+          ></GoogleMaps>
+          {selectedClinic < 0 ? null : (
+            <div className="info-popup">
+              <ClinicInfoSection
+                name={topHospitals[selectedClinic].info.name}
+                totalTime={topHospitals[selectedClinic].totalTime}
+                waitTime={topHospitals[selectedClinic].totalWaitTime}
+                travelTime={topHospitals[selectedClinic].travelTime}
+                email={topHospitals[selectedClinic].info.email}
+                website={topHospitals[selectedClinic].info.website}
+                phone={topHospitals[selectedClinic].info.phone}
+                address={topHospitals[selectedClinic].info.address}
+                rating={topHospitals[selectedClinic].info.rating}
+                location={topHospitals[selectedClinic].location}
+                currLocation={locationCoords}
+                seedState={selectedClinic}
+              />
+            </div>
+          )}
+        </div>
+      ) : null}
       <Header selectedItem={"Home"} />
-      <div className="home-content"
-      style={resize ? {width: "calc(100% - 14px)"} : {}}>
+      <div
+        className="home-content"
+        style={resize ? { width: "calc(100% - 14px)" } : {}}
+      >
         <div className="location-container">
           <LocaitonInput
             value={locationAddress}
@@ -196,42 +200,92 @@ const HomePage = () => {
           setActiveButton={setActiveButton}
           activeButton={activeButton}
         />
+        {resize ? <OptionSlider active={active} setActive={setActive} /> : null}
         <div className="results-container">
-          {loading ? (
-            <LoadingSpinner
-              text="Locating..."
-              style={{ alignSelf: "center", position: "absolute", top: "40px" }}
-            />
-          ) : (
-            <div>
-              {topHospitals.length == 0 ? (
-                <div className="no-results">
-                  <div style={{display: "block"}}>
-                  <span style={{fontSize: "17px"}}>No results ... try different address</span>
-                  <span style={{display: "block", fontSize: "13px", color: "dimgrey"}}>make sure city is included </span>
+        {!resize || (resize && active == "list") ? (
+          <div className="">
+            {loading ? (
+              <LoadingSpinner
+                text="Locating..."
+                style={{
+                  alignSelf: "center",
+                  position: "absolute",
+                  top: "40px",
+                }}
+              />
+            ) : (
+              <div>
+                {topHospitals.length == 0 ? (
+                  <div className="no-results">
+                    <div style={{ display: "block" }}>
+                      <span style={{ fontSize: "17px" }}>
+                        No results ... try different address
+                      </span>
+                      <span
+                        style={{
+                          display: "block",
+                          fontSize: "13px",
+                          color: "dimgrey",
+                        }}
+                      >
+                        make sure city is included{" "}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                topHospitals.map((hospital, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleSelectClinic(index)}
-                    className="clinic-option"
-                  >
-                    <ClinicOption
-                      name={hospital.info.name}
-                      number={String(index + 1)}
-                      distance={hospital.routeDistance}
-                      busyness={busynessSetter(hospital.totalTime)}
-                      rating={hospital.info.rating}
-                      isActive={selectedClinic === index}
-                    />
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-        </div>
+                ) : (
+                  topHospitals.map((hospital, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleSelectClinic(index)}
+                      className="clinic-option"
+                    >
+                      <ClinicOption
+                        name={hospital.info.name}
+                        number={String(index + 1)}
+                        distance={hospital.routeDistance}
+                        busyness={busynessSetter(hospital.totalTime)}
+                        rating={hospital.info.rating}
+                        isActive={selectedClinic === index}
+                      />
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="map-container-mobile">
+            <GoogleMaps
+              key={JSON.stringify(locationCoords)}
+              hospitals={data}
+              setTopHospitals={setTopHospitals}
+              setLoading={setLoading}
+              UserLocation={locationCoords}
+              selectedClinic={selectedClinic}
+              setSelectedClinic={setSelectedClinic}
+              activeFilter={activeButton}
+            ></GoogleMaps>
+            {selectedClinic < 0 ? null : <div>Popup</div>
+              // <div className="info-popup">
+              //   <ClinicInfoSection
+              //     name={topHospitals[selectedClinic].info.name}
+              //     totalTime={topHospitals[selectedClinic].totalTime}
+              //     waitTime={topHospitals[selectedClinic].totalWaitTime}
+              //     travelTime={topHospitals[selectedClinic].travelTime}
+              //     email={topHospitals[selectedClinic].info.email}
+              //     website={topHospitals[selectedClinic].info.website}
+              //     phone={topHospitals[selectedClinic].info.phone}
+              //     address={topHospitals[selectedClinic].info.address}
+              //     rating={topHospitals[selectedClinic].info.rating}
+              //     location={topHospitals[selectedClinic].location}
+              //     currLocation={locationCoords}
+              //     seedState={selectedClinic}
+              //   />
+              // </div>
+            }
+          </div>
+        )}
+      </div>
       </div>
       <SmallFooter />
     </div>
