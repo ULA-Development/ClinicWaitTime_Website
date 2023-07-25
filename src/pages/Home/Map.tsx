@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import {
-  GoogleMap,
-  LoadScript,
-  OverlayView,
-  Marker,
-} from "@react-google-maps/api";
+import { GoogleMap, OverlayView } from "@react-google-maps/api";
 import IconMarker from "./IconMarker";
+import ReactDOM from "react-dom";
+import { set } from "firebase/database";
 
-declare var H: any;
+declare var H: any, google: any;
 
-const GOOGLE_API_KEY = "AIzaSyBaNVZvlJZpN3s1n2IDPBfInkf98WAhbD0";
 const HERE_MAP_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
 
 type Location = {
@@ -45,7 +41,7 @@ type HospitalWithTime = Hospital & {
 
 type HereMapComponentProps = {
   hospitals: Hospital[];
-  setTopHospitals: (hospitals: HospitalWithTime[]) => void;
+  setTopHospitals: (hospitals: any) => void;
   setLoading: (loading: boolean) => void;
   UserLocation: Location;
   selectedClinic: number;
@@ -62,37 +58,43 @@ function GoogleMapComponent({
   setSelectedClinic,
   activeFilter,
 }: HereMapComponentProps) {
+  console.log("Component re-rendering");
   const [bestHospitals, setBestHospitals] = useState<HospitalWithTime[]>([]);
   const [hospitalWithTimes, setHospitalWithTimes] = useState<
     HospitalWithTime[]
   >([]);
-  const mapRef = useRef<google.maps.Map | null>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const markerRef = useRef<google.maps.Marker | null>(null);
   const handleMapLoad = async (map: google.maps.Map) => {
-    mapRef.current = map;
-    if (!UserLocation.lat || !UserLocation.lng) {
-      return;
-    }
+    console.log("Map instance created and handleMapLoad called");
+    setMap(map);
   };
   useEffect(() => {
     if (!UserLocation) {
       return;
     }
+    if (markerRef.current) {
+      markerRef.current.setMap(null);
+      markerRef.current = null;
+    }
     const processMap = async () => {
       const platform = new H.service.Platform({
-        apikey: HERE_MAP_KEY, // replace with your HERE Maps API key
+        apikey: HERE_MAP_KEY,
       });
-      // new google.maps.Marker({
-      //   position: UserLocation, // Replace with your position object
-      //   map: mapRef.current, // Replace with your Google Map instance
-      //   icon: {
-      //     path: google.maps.SymbolPath.CIRCLE,
-      //     scale: 12, // adjust for desired size
-      //     fillColor: "#4285F4",
-      //     fillOpacity: 1,
-      //     strokeColor: "#fff",
-      //     strokeWeight: 4,
-      //   },
-      // });
+      const marker = new google.maps.Marker({
+        position: UserLocation,
+        map: map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 12,
+          fillColor: "#4285F4",
+          fillOpacity: 1,
+          strokeColor: "#fff",
+          strokeWeight: 4,
+        },
+      });
+      console.log("marker created");
+      markerRef.current = marker;
       const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
         // let { time: travelTime, distance: routeDistance } =
         //   await getTravelTimeAndDistance(
@@ -121,12 +123,15 @@ function GoogleMapComponent({
 
       const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
       setHospitalWithTimes(hospitalWithTimes);
-      setTimeout(function () {
-        setLoading(false);
-      }, 3000);
+      setLoading(false);
     };
-    processMap();
-  }, [UserLocation, hospitals, mapRef]);
+    if (typeof google !== "undefined" && google.maps && map) {
+      processMap();
+    } else {
+      console.log("map ref not ready yet");
+      return;
+    }
+  }, [UserLocation, hospitals, map]);
 
   useEffect(() => {
     if (activeFilter === "waitTime") {
@@ -137,6 +142,7 @@ function GoogleMapComponent({
       hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
     }
     const topHospitals = hospitalWithTimes.slice(0, 5);
+
     setBestHospitals(topHospitals);
     setTopHospitals(topHospitals);
   }, [activeFilter, hospitalWithTimes]);
@@ -162,51 +168,65 @@ function GoogleMapComponent({
       setSelectedClinic(index);
     }
   };
-  console.log("UserLocation", UserLocation.lat);
+  useEffect(() => {
+    console.log("Component mounted");
+    return () => console.log("Component unmounting");
+  }, []);
+  // console.log("selectedClinic", selectedClinic);
+  // console.log("activeFilter", activeFilter);
+  // console.log("hospitals", hospitals);
+  // console.log("hospitalWithTimes", hospitalWithTimes);
+  // console.log("bestHospitals", bestHospitals);
+  // console.log("UserLocation", UserLocation.lat);
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {/* <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
-        <GoogleMap
-          onLoad={handleMapLoad} // This line was added
-          center={selectedClinic < 0 ? UserLocation : {lat: bestHospitals[selectedClinic].location.lat , lng: bestHospitals[selectedClinic].location.lng - 0.023}}
-          mapContainerStyle={{ width: "100%", height: "100%" }}
-          zoom={selectedClinic < 0 ? 12 : 13}
-          options={{
-            mapTypeControl: false,
-            streetViewControl: false,
-            zoomControl: false,
-            scrollwheel: false,
-            styles: [
-              {
-                featureType: "poi",
-                elementType: "labels",
-                stylers: [{ visibility: "off" }],
-              },
-            ],
-          }}
-        >
-          <Marker position={UserLocation} key={0} />
-          {bestHospitals.map((hospital, index) => (
-            <OverlayView
-              key={index}
-              position={{
-                lat: hospital.location.lat,
-                lng: hospital.location.lng,
-              }}
-              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-            >
-              <div onClick={() => handleSelectClinic(index)}>
-                <IconMarker
-                  key={index}
-                  index={index}
-                  busyness={busynessSetter(hospital.totalTime)}
-                  isActive={index === selectedClinic}
-                />
-              </div>
-            </OverlayView>
-          ))}
-        </GoogleMap>
-      </LoadScript> */}
+      <GoogleMap
+        onLoad={handleMapLoad}
+        center={
+          selectedClinic < 0
+            ? UserLocation
+            : {
+                lat: bestHospitals[selectedClinic].location.lat,
+                lng: bestHospitals[selectedClinic].location.lng - 0.02,
+              }
+        }
+        mapContainerStyle={{ width: "100%", height: "100%" }}
+        zoom={selectedClinic < 0 ? 13 : 13.5}
+        options={{
+          mapTypeControl: false,
+          streetViewControl: false,
+          zoomControl: false,
+          scrollwheel: false,
+          fullscreenControl: false,
+          styles: [
+            {
+              featureType: "poi",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }],
+            },
+          ],
+        }}
+      >
+        {bestHospitals.map((hospital, index) => (
+          <OverlayView
+            key={index}
+            position={{
+              lat: hospital.location.lat,
+              lng: hospital.location.lng,
+            }}
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+          >
+            <div onClick={() => handleSelectClinic(index)}>
+              <IconMarker
+                key={index}
+                index={index}
+                busyness={busynessSetter(hospital.totalTime)}
+                isActive={index === selectedClinic}
+              />
+            </div>
+          </OverlayView>
+        ))}
+      </GoogleMap>
     </div>
   );
 }

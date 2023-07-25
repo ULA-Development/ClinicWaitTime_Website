@@ -11,7 +11,7 @@ const FilterResults: React.FC<FilterResultsProps> = ({
   activeButton,
 }) => {
   const [resize, setResize] = useState(window.innerWidth <= 360)
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 360)) // 875
+  window.addEventListener("resize", () => setResize(window.innerWidth <= 360))
 
   const handleWaitTimeClick = () => {
     if (activeButton == "waitTime") {

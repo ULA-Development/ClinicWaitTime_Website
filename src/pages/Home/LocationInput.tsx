@@ -46,10 +46,10 @@ const LocationInput = ({
     >
 
       <input
-        value={localValue}
+        value={localValue === "Current Location" ? "" : localValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder="Your location ..."
+        placeholder={localValue === "Current Location" ? "Current Location" : "Your location ..."}
         type="text"
         className="location-input"
         autoComplete="off"

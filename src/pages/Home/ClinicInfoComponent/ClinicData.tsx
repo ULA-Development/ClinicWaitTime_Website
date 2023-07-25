@@ -26,7 +26,6 @@ const ClinicData: React.FC<ClinicDataProps> = ({
   hourlyData,
 }) => {
   const directionUrl = `https://www.google.com/maps/dir/?api=1&origin=${currLocation.lat},${currLocation.lng}&destination=${location.lat},${location.lng}`;
-  console.log(hourlyData)
   const formatTime = (num: number) => {
     const hours = Math.floor(num / 60);
     const minutes = Math.round(num % 60);

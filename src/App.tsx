@@ -15,18 +15,18 @@ function App() {
   const handleResize = () => {
     dispatch(updateBrowserView());
   };
-  window.addEventListener("resize", handleResize);
-
+ 
   // Path
-  const [currentPath, setCurrentPath] = useState<string | null>(null);
+  const [currentPath, setCurrentPath] = useState<string | null>("/");
   useEffect(() => {
+    window.addEventListener("resize", handleResize);
     setCurrentPath(window.location.pathname);
-  }, []);
+  }, [dispatch]);
 
   return <div>{renderContent(currentPath)}</div>;
 }
 
-// Conditional Renderingf
+// Conditional Rendering
 function renderContent(path: string | null) {
   switch (path?.replace("/", "")) {
     case "signin": {
