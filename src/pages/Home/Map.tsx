@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { GoogleMap, OverlayView } from "@react-google-maps/api";
+import { GoogleMap, OverlayViewF, OverlayView } from "@react-google-maps/api";
 import IconMarker from "./IconMarker";
 import {
   HERE_MAPS_KEY,
@@ -14,8 +14,7 @@ import { getTravelTimeAndDistance } from "../../data/mapdata";
 declare var H: any, google: any;
 
 type HereMapComponentProps = {
-  topHospitals: Hospital[];
-  // setTopHospitals: (hospitals: any) => void;
+  topHospitals: HospitalWithTime[];
   setLoading: (loading: boolean) => void;
   UserLocation: Location;
   selectedClinic: number;
@@ -23,27 +22,18 @@ type HereMapComponentProps = {
   activeFilter: string;
   show?: boolean;
 };
-
 function GoogleMapComponent({
   topHospitals,
   UserLocation,
   selectedClinic,
   setSelectedClinic,
 }: HereMapComponentProps) {
-  const [bestHospitals, setBestHospitals] = useState<HospitalWithTime[]>([]);
-  const [hospitalWithTimes, setHospitalWithTimes] = useState<
-    HospitalWithTime[]
-  >([]);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const markerRef = useRef<google.maps.Marker | null>(null);
   const handleMapLoad = async (map: google.maps.Map) => {
     setMap(map);
   };
-
   const processMap = async () => {
-    const platform = new H.service.Platform({
-      apikey: HERE_MAPS_KEY,
-    });
     const marker = new google.maps.Marker({
       position: UserLocation,
       map: map,
@@ -57,36 +47,6 @@ function GoogleMapComponent({
       },
     });
     markerRef.current = marker;
-
-    // const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-    //   // let { time: travelTime, distance: routeDistance } =
-    //   //   await getTravelTimeAndDistance(
-    //   //     UserLocation,
-    //   //     hospital.location,
-    //   //     platform
-    //   //   );
-    //   // Keep the above code commented out for now for testing purposes
-
-    //   let routeDistance = hospital.location.distance || 0; // in km
-    //   let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
-    //   // comment out the above two lines for deployment
-
-    //   let totalWaitTime =
-    //     hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;
-    //   let totalTime = totalWaitTime + travelTime; // in minutes
-
-    //   return {
-    //     ...hospital,
-    //     totalTime,
-    //     totalWaitTime,
-    //     travelTime,
-    //     routeDistance,
-    //   } as HospitalWithTime & { routeDistance: number };
-    // });
-
-    // const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
-    // setHospitalWithTimes(hospitalWithTimes);
-    // setLoading(false);
   };
 
   useEffect(() => {
@@ -100,9 +60,10 @@ function GoogleMapComponent({
     if (typeof google !== "undefined" && google.maps && map) {
       processMap();
     } else {
+      console.log("google not available");
       return;
     }
-  }, [UserLocation, topHospitals, map]);
+  }, [UserLocation, map]);
 
   const handleSelectClinic = (index: number) => {
     if (selectedClinic === index) {
@@ -111,7 +72,6 @@ function GoogleMapComponent({
       setSelectedClinic(index);
     }
   };
-  useEffect(() => {}, []);
   // console.log("selectedClinic", selectedClinic);
   // console.log("activeFilter", activeFilter);
   // console.log("hospitals", hospitals);
@@ -120,53 +80,56 @@ function GoogleMapComponent({
   // console.log("UserLocation", UserLocation.lat);
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <GoogleMap
-        onLoad={handleMapLoad}
-        center={
-          selectedClinic < 0
-            ? UserLocation
-            : {
-                lat: bestHospitals[selectedClinic].location.lat,
-                lng: bestHospitals[selectedClinic].location.lng - 0.02,
-              }
-        }
-        mapContainerStyle={{ width: "100%", height: "100%" }}
-        zoom={selectedClinic < 0 ? 13 : 13.5}
-        options={{
-          mapTypeControl: false,
-          streetViewControl: false,
-          zoomControl: false,
-          scrollwheel: false,
-          fullscreenControl: false,
-          styles: [
-            {
-              featureType: "poi",
-              elementType: "labels",
-              stylers: [{ visibility: "off" }],
-            },
-          ],
-        }}
-      >
-        {bestHospitals.map((hospital, index) => (
-          <OverlayView
-            key={index}
-            position={{
-              lat: hospital.location.lat,
-              lng: hospital.location.lng,
-            }}
-            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-          >
-            <div onClick={() => handleSelectClinic(index)}>
-              <IconMarker
-                key={index}
-                index={index}
-                busyness={busynessSetter(hospital.totalTime)}
-                isActive={index === selectedClinic}
-              />
-            </div>
-          </OverlayView>
-        ))}
-      </GoogleMap>
+      {topHospitals.length === 0 ? null : (
+        <GoogleMap
+          onLoad={handleMapLoad}
+          center={
+            selectedClinic < 0
+              ? UserLocation
+              : {
+                  lat: topHospitals[selectedClinic].location.lat,
+                  lng: topHospitals[selectedClinic].location.lng - 0.02,
+                }
+          }
+          mapContainerStyle={{ width: "100%", height: "100%" }}
+          zoom={selectedClinic < 0 ? 13 : 13.5}
+          options={{
+            mapTypeControl: false,
+            streetViewControl: false,
+            zoomControl: false,
+            scrollwheel: false,
+            fullscreenControl: false,
+            styles: [
+              {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }],
+              },
+            ],
+          }}
+        >
+          {map &&
+            topHospitals.map((hospital, index) => (
+              <OverlayViewF
+                position={{
+                  lat: hospital.location.lat,
+                  lng: hospital.location.lng,
+                }}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                key={index + 10000}
+              >
+                <div onClick={() => handleSelectClinic(index)}>
+                  <IconMarker
+                    key={index}
+                    index={index}
+                    busyness={busynessSetter(hospital.totalTime)}
+                    isActive={index === selectedClinic}
+                  />
+                </div>
+              </OverlayViewF>
+            ))}
+        </GoogleMap>
+      )}
     </div>
   );
 }

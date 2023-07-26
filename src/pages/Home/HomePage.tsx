@@ -47,21 +47,15 @@ const HomePage = () => {
       );
       setData(clinics);
       setDataState("loaded");
-      getTopHospitals(data, setLoading).then((topHospitals) => {
+      await getTopHospitals(clinics, setLoading).then((topHospitals) => {
         setTopHospitals(topHospitals);
-        console.log(topHospitals);
       });
     } catch (error) {
       console.error("Failed to fetch clinics:", error);
     }
   };
-  useEffect(() => {
-    console.log(topHospitals, "changed");
-    setTopHospitals(topHospitals);
-  }, [topHospitals]);
 
   useEffect(() => {
-    console.log("fetching data");
     fetchData();
   }, [locationCoords]);
   useEffect(() => {
@@ -74,7 +68,6 @@ const HomePage = () => {
   useEffect(() => {
     if (locationCoords.lat !== 0 || locationCoords.lng !== 0) {
       fetchCoordinates();
-      fetchData();
     }
   }, [locationAddress]);
 
@@ -248,7 +241,7 @@ const HomePage = () => {
               topHospitals[0] === "waiting" &&
               data.length === 0 ? null : (
                 <GoogleMaps
-                  topHospitals={data}
+                  topHospitals={topHospitals}
                   setLoading={setLoading}
                   UserLocation={locationCoords}
                   selectedClinic={selectedClinic}
