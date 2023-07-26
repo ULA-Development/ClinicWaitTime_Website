@@ -18,7 +18,6 @@ import {
   getTopHospitals,
   sortData,
 } from "../../data/mapdata";
-import { set } from "firebase/database";
 
 const HomePage = () => {
   const [activeButton, setActiveButton] = useState("");
@@ -47,7 +46,7 @@ const HomePage = () => {
       );
       setData(clinics);
       setDataState("loaded");
-      await getTopHospitals(clinics, setLoading).then((topHospitals) => {
+      await getTopHospitals(clinics, setLoading, locationCoords).then((topHospitals) => {
         setTopHospitals(topHospitals);
       });
     } catch (error) {
@@ -247,6 +246,7 @@ const HomePage = () => {
                   selectedClinic={selectedClinic}
                   setSelectedClinic={setSelectedClinic}
                   activeFilter={activeButton}
+                  isMobile={0}
                 ></GoogleMaps>
               )}
               {

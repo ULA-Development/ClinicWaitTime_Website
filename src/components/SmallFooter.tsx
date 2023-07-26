@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SmallFooter.css";
-import logo from "../assets/icons/umbrella-solid.svg";
+import logo from "../assets/download.svg";
 import { useSelector } from "react-redux";
 
 const SmallFooter = () => {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./MobileHeader.css";
 import { ReactComponent as HamMenu } from "../../assets/icons/bars-solid.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icons/times-solid.svg";
+import { ReactComponent as BGC } from "../../assets/download.svg";
 
 function MobileHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,12 +21,27 @@ function MobileHeader() {
       </div>
 
       <div className="dropdown-menu">
-        <div className="dropdown-menu-title">
-          <div className="sign-buttons">
+        <div
+          className="dropdown-menu-title"
+          style={{ position: "relative", overflow: "hidden" }}
+        >
+          
+          <BGC
+            style={{
+              position: "absolute",
+              width: "350px",
+              height: "350px",
+              top: "-160px",
+              left: "-70px",
+              fill: "#00655a",
+              opacity: "100%"
+            }}
+          />
+          {/* <div className="sign-buttons">
             <a href="/signup" className="sign-up-button">Sign me up</a>
             <a href="/signin" className="sign-in-button">Log me in</a>
-          </div>
-          <CloseIcon className="dropmenu-close-button" onClick={handleToggle} />
+          </div> */}
+          <CloseIcon className="dropmenu-close-button" style={{position: "absolute"}} onClick={handleToggle} />
         </div>
 
         <div className="header-links">
@@ -46,16 +62,16 @@ function MobileHeader() {
             Contact
           </a>
           <a
-            href="/signup"
-            className={`dropdown-menu-item ${
+            // href="/signup"
+            className={`dropmenu-item-disabled ${
               selectedMenu === "products" ? "selected" : ""
             }`}
           >
             Products
           </a>
           <a
-            href="/signin"
-            className={`dropdown-menu-item ${
+            // href="/signin"
+            className={`dropmenu-item-disabled  ${
               selectedMenu === "blog" ? "selected" : ""
             }`}
           >
@@ -71,24 +87,36 @@ function MobileHeader() {
           }}
         />
         <div className="footer-links">
-          <a href="/about-us" className="dropdown-footer-item">
-            About Us
-          </a>
           <a href="/terms-of-use" className="dropdown-footer-item">
             Terms of Use
           </a>
-          <a href="/terms-of-use" className="dropdown-footer-item">
-            Privacy Policy
-          </a>
-          <a href="/terms-of-use" className="dropdown-footer-item">
+          <a href="/feedback" className="dropdown-footer-item">
             Feedback
           </a>
-          <a href="/terms-of-use" className="dropdown-footer-item">
+          <a
+            // href="/about-us"
+            className="dropdown-footer-item"
+            style={{ color: "lightgrey" }}
+          >
+            About Us
+          </a>
+          <a
+            // href="/terms-of-use"
+            className="dropdown-footer-item"
+            style={{ color: "lightgrey" }}
+          >
+            Privacy Policy
+          </a>
+
+          <a
+            // href="/terms-of-use"
+            className="dropdown-footer-item"
+            style={{ color: "lightgrey" }}
+          >
             FAQ
           </a>
         </div>
       </div>
-      {/* <div style={{width: "100%", height: "100%", backgroundColor:"black", opacity:"15%", position: "absolute"}}/> */}
     </div>
   );
 }
