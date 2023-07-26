@@ -10,6 +10,7 @@
     width: 150px;
     transition: background-color 0.1s, color 0.1s;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .filter-buttons.active {

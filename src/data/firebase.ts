@@ -51,37 +51,44 @@ const handleErrorMessages = (code: string) => {
 
 async function fetchClinics(currLat: number, currLong: number) {
   const clinicRef = ref(database, "clinics");
-  let closeClincis: any[] = [];
-  onValue(clinicRef, (snapshot) => {
-    const data = snapshot.val();
-    const clinicIds = Object.keys(data);
-    const closeDist = 30;
-    clinicIds.forEach((id: string) => {
-      if (id.includes("*")) {
-        const coords = id.split("|");
-        const clinicLat = Number(coords[0].replace("*", "."));
-        const clinicLong = Number(coords[1].replace("*", "."));
-        const distance = distanceOfCoords(
-          currLat,
-          currLong,
-          clinicLat,
-          clinicLong
-        );
-        if (distance <= closeDist) {
-          const clinicInfo = {
-            location: {
-              lat: clinicLat,
-              lng: clinicLong,
-              distance: distance,
-            },
-            info: data[id],
-          };
-          closeClincis.push(clinicInfo);
-        }
+  
+  return new Promise<any[]>((resolve, reject) => { // Replace any[] with the actual type you expect to resolve with
+    onValue(clinicRef, (snapshot) => {
+      let closeClincis: any[] = [];
+      try {
+        const data = snapshot.val();
+        const clinicIds = Object.keys(data);
+        const closeDist = 30;
+        clinicIds.forEach((id: string) => {
+          if (id.includes("*")) {
+            const coords = id.split("|");
+            const clinicLat = Number(coords[0].replace("*", "."));
+            const clinicLong = Number(coords[1].replace("*", "."));
+            const distance = distanceOfCoords(
+              currLat,
+              currLong,
+              clinicLat,
+              clinicLong
+            );
+            if (distance <= closeDist) {
+              const clinicInfo = {
+                location: {
+                  lat: clinicLat,
+                  lng: clinicLong,
+                  distance: distance,
+                },
+                info: data[id],
+              };
+              closeClincis.push(clinicInfo);
+            }
+          }
+        });
+        resolve(closeClincis);
+      } catch (error) {
+        reject(error);
       }
-    });
+    }, reject);
   });
-  return closeClincis;
 }
 
 const distanceOfCoords = (
