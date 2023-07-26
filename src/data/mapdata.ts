@@ -1,5 +1,10 @@
 import axios from "axios";
-import { HERE_MAPS_KEY, Location, HospitalWithTime, Hospital } from "../assets/globals";
+import {
+  HERE_MAPS_KEY,
+  Location,
+  HospitalWithTime,
+  Hospital,
+} from "../assets/globals";
 
 export async function getTravelTimeAndDistance(
   origin: any,
@@ -96,14 +101,16 @@ export async function getCoordinates(address: string) {
   }
 }
 
-export async function getTopHospitals(hospitals: Hospital[], setLoading: (arg0: boolean) => void){
+declare var H: any;
+export async function getTopHospitals(
+  hospitals: Hospital[],
+  setLoading: (arg0: boolean) => void,
+  userLocation: Location
+) {
+  var platform = new H.service.Platform({ apikey: HERE_MAPS_KEY });
   const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
     // let { time: travelTime, distance: routeDistance } =
-    //   await getTravelTimeAndDistance(
-    //     UserLocation,
-    //     hospital.location,
-    //     platform
-    //   );
+    //   await getTravelTimeAndDistance(userLocation, hospital.location, platform);
     // Keep the above code commented out for now for testing purposes
 
     let routeDistance = hospital.location.distance || 0; // in km
@@ -113,7 +120,6 @@ export async function getTopHospitals(hospitals: Hospital[], setLoading: (arg0: 
     let totalWaitTime =
       hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;
     let totalTime = totalWaitTime + travelTime; // in minutes
-
     return {
       ...hospital,
       totalTime,
@@ -124,14 +130,18 @@ export async function getTopHospitals(hospitals: Hospital[], setLoading: (arg0: 
   });
   const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
   hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
+  setTimeout(() => {
+    setLoading(false);
+  }, 200);
 
-  setLoading(false)
   return hospitalWithTimes.slice(0, 5);
 }
 
-
-export function sortData(hospitalWithTimes: HospitalWithTime[], setTopHospitals: (arg0: HospitalWithTime[]) => void, activeFilter: string){
-
+export function sortData(
+  hospitalWithTimes: HospitalWithTime[],
+  setTopHospitals: (arg0: HospitalWithTime[]) => void,
+  activeFilter: string
+) {
   if (activeFilter === "waitTime") {
     hospitalWithTimes.sort((a, b) => a.totalWaitTime - b.totalWaitTime);
   } else if (activeFilter === "travelTime") {
@@ -140,5 +150,4 @@ export function sortData(hospitalWithTimes: HospitalWithTime[], setTopHospitals:
     hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
   }
   setTopHospitals(hospitalWithTimes);
-
 }

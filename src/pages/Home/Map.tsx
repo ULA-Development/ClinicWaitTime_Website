@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import { GoogleMap, OverlayViewF, OverlayView } from "@react-google-maps/api";
 import IconMarker from "./IconMarker";
 import {
-  HERE_MAPS_KEY,
   busynessSetter,
   Location,
-  Hospital,
   HospitalWithTime,
 } from "../../assets/globals";
-import { getTravelTimeAndDistance } from "../../data/mapdata";
 
 declare var H: any, google: any;
 
@@ -20,13 +16,14 @@ type HereMapComponentProps = {
   selectedClinic: number;
   setSelectedClinic: (selectedClinic: number) => void;
   activeFilter: string;
-  show?: boolean;
+  isMobile?: number;
 };
 function GoogleMapComponent({
   topHospitals,
   UserLocation,
   selectedClinic,
   setSelectedClinic,
+  isMobile = 1, // 1 for desktop 0 for mobile
 }: HereMapComponentProps) {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const markerRef = useRef<google.maps.Marker | null>(null);
@@ -59,10 +56,7 @@ function GoogleMapComponent({
     }
     if (typeof google !== "undefined" && google.maps && map) {
       processMap();
-    } else {
-      console.log("google not available");
-      return;
-    }
+    } 
   }, [UserLocation, map]);
 
   const handleSelectClinic = (index: number) => {
@@ -72,12 +66,6 @@ function GoogleMapComponent({
       setSelectedClinic(index);
     }
   };
-  // console.log("selectedClinic", selectedClinic);
-  // console.log("activeFilter", activeFilter);
-  // console.log("hospitals", hospitals);
-  // console.log("hospitalWithTimes", hospitalWithTimes);
-  // console.log("bestHospitals", bestHospitals);
-  // console.log("UserLocation", UserLocation.lat);
   return (
     <div style={{ width: "100%", height: "100%" }}>
       {topHospitals.length === 0 ? null : (
@@ -88,7 +76,7 @@ function GoogleMapComponent({
               ? UserLocation
               : {
                   lat: topHospitals[selectedClinic].location.lat,
-                  lng: topHospitals[selectedClinic].location.lng - 0.02,
+                  lng: topHospitals[selectedClinic].location.lng - (isMobile * 0.018),
                 }
           }
           mapContainerStyle={{ width: "100%", height: "100%" }}
