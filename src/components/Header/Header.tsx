@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./Navbar";
 import "./Header.css";
-import { ReactComponent as Logo } from "../../assets/icons/umbrella-solid.svg";
+import { ReactComponent as Logo } from "../../assets/download.svg";
 import { useSelector } from "react-redux";
 import MobileHeader from "./MobileHeader";
 interface HeaderProps {

@@ -28,25 +28,28 @@ function Navbar({ selectedItem }: NavbarProps) {
   return (
     <section className="navbar">
       <a
-        href="/register"
+        // href="/register"
         className={`navbar-item ${
           selectedPath === "register" ? "selected" : ""
         }`}
-        onClick={() => handleItemClick("register")}
+        style={{ color: "lightgrey" }}
+        // onClick={() => handleItemClick("register")}
       >
         Register
       </a>
       <a
-        href="/signup"
+        style={{ color: "lightgrey" }}
+        // href="/signup"
         className={`navbar-item ${selectedPath === "signup" ? "selected" : ""}`}
-        onClick={() => handleItemClick("signup")}
+        // onClick={() => handleItemClick("signup")}
       >
         Sign Up
       </a>
       <a
-        href="/signin"
+        style={{ color: "lightgrey" }}
+        // href="/signin"
         className={`navbar-item ${selectedPath === "signin" ? "selected" : ""}`}
-        onClick={() => handleItemClick("login")}
+        // onClick={() => handleItemClick("login")}
       >
         Sign In
       </a>
