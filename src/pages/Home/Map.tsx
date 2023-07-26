@@ -28,6 +28,7 @@ type Hospital = {
       current: number;
       capacity: number;
       avgWaitTime: number;
+      numDoctors: number;
     };
   };
 };
@@ -93,7 +94,6 @@ function GoogleMapComponent({
           strokeWeight: 4,
         },
       });
-      console.log("marker created");
       markerRef.current = marker;
       const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
         // let { time: travelTime, distance: routeDistance } =
@@ -141,7 +141,7 @@ function GoogleMapComponent({
     } else {
       hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
     }
-    const topHospitals = hospitalWithTimes.slice(0, 5);
+    const topHospitals = hospitalWithTimes.slice(0, 10);
 
     setBestHospitals(topHospitals);
     setTopHospitals(topHospitals);

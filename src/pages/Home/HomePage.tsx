@@ -13,6 +13,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
 import OptionSlider from "./OptionSlider";
+import { set } from "firebase/database";
 type Location = {
   lat: number;
   lng: number;
@@ -29,6 +30,8 @@ type Hospital = {
     occupancy: {
       current: number;
       capacity: number;
+      avgWaitTime: number;
+      numDoctors: number;
     };
   };
 };
@@ -50,58 +53,74 @@ const HomePage = () => {
     lat: 0,
     lng: 0,
   });
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Hospital[]>([]);
   const [selectedClinic, setSelectedClinic] = useState(-1);
   const [topHospitals, setTopHospitals] = useState<Array<any>>(["waiting"]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("list");
   const [dataState, setDataState] = useState("not loaded");
   useEffect(() => {
-    if (locationCoords.lat === 0 && locationCoords.lng === 0) {
-      getCurrLocation();
-    }
-    dbHandler
-      .fetchClinics(locationCoords.lat, locationCoords.lng)
-      .then((clinics: any) => {
+    const fetchData = async () => {
+      if (locationCoords.lat === 0 && locationCoords.lng === 0) {
+        await getCurrLocation();
+      }
+      try {
+        const clinics = await dbHandler.fetchClinics(
+          locationCoords.lat,
+          locationCoords.lng
+        );
         setData(clinics);
         setDataState("loaded");
-      });
+      } catch (error) {
+        console.error("Failed to fetch clinics:", error);
+      }
+    };
+
+    fetchData();
   }, [locationCoords]);
+
   useEffect(() => {
-    setSelectedClinic(-1)
-  }, [activeButton])
+    setSelectedClinic(-1);
+  }, [activeButton]);
   useEffect(() => {
     setActive("list");
   }, [resize]);
   const getCurrLocation = () => {
     setLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position: GeolocationPosition) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const apiKey = HERE_API_KEY;
-          const apiUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${apiKey}&at=${latitude},${longitude}`;
+    return new Promise((resolve, reject) => {
+      // Replace YourType with the type of data you expect to resolve with
+      navigator.geolocation.getCurrentPosition(
+        async (position: GeolocationPosition) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            const apiKey = HERE_API_KEY;
+            const apiUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${apiKey}&at=${latitude},${longitude}`;
 
-          const response = (await axios.get(apiUrl)).data.items[0];
-          const currInfo = {
-            location: {
-              lat: response.position.lat,
-              lng: response.position.lng,
-            },
-            address: response.address.label,
-          };
-          setLocationAddress("Current Location");
-          setLocationCoords(currInfo.location);
-        } catch (error) {
-          alert(error);
+            const response = (await axios.get(apiUrl)).data.items[0];
+            const currInfo = {
+              location: {
+                lat: response.position.lat,
+                lng: response.position.lng,
+              },
+              address: response.address.label,
+            };
+            setLocationAddress("Current Location");
+            setLocationCoords(currInfo.location);
+            resolve(currInfo); // Resolve the Promise with the desired data
+          } catch (error) {
+            reject(error); // Reject the Promise with the error
+          }
+        },
+        (error) => {
+          reject(error); // Reject the Promise if getting the current position fails
         }
-      }
-    );
+      );
+    });
   };
 
   const handleSearch = () => {
     setSelectedClinic(-1);
-    setActive("list")
+    setActive("list");
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -158,8 +177,7 @@ const HomePage = () => {
     <div className="home-container">
       {!resize ? (
         <div className="map-container">
-          {dataState === "not loaded" &&
-          topHospitals[0] === "waiting" ? null : (
+          {dataState === "not loaded" ? null : (
             <GoogleMaps
               hospitals={data}
               setTopHospitals={setTopHospitals}
@@ -218,8 +236,8 @@ const HomePage = () => {
                   style={{
                     alignSelf: "center",
                     position: "absolute",
-                    left: "100px",
-                    top: "40px",
+                    top: "10%",
+                    left: "40%",
                   }}
                 />
               ) : (
@@ -246,9 +264,7 @@ const HomePage = () => {
                     topHospitals.length === 0 ? (
                     <div className="no-results">
                       <div style={{ display: "block" }}>
-                        <span style={{ fontSize: "17px" }}>
-                          No results ... try different address
-                        </span>
+                        <span style={{ fontSize: "17px" }}>No results ...</span>
                         <span
                           style={{
                             display: "block",
@@ -284,7 +300,8 @@ const HomePage = () => {
           ) : (
             <div className="map-container-mobile">
               {dataState === "not loaded" &&
-              topHospitals[0] === "waiting" ? null : (
+              topHospitals[0] === "waiting" &&
+              data.length === 0 ? null : (
                 <GoogleMaps
                   hospitals={data}
                   setTopHospitals={setTopHospitals}
