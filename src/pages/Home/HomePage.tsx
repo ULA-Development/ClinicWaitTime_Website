@@ -12,7 +12,12 @@ import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
 import OptionSlider from "./OptionSlider";
 import { busynessSetter, Hospital, Location } from "../../assets/globals";
-import { getCurrLocation, getCoordinates } from "../../data/mapdata";
+import {
+  getCurrLocation,
+  getCoordinates,
+  getTopHospitals,
+} from "../../data/mapdata";
+
 const HomePage = () => {
   const [activeButton, setActiveButton] = useState("");
   const [locationAddress, setLocationAddress] = useState("Current Location");
@@ -40,6 +45,9 @@ const HomePage = () => {
       );
       setData(clinics);
       setDataState("loaded");
+      getTopHospitals(data, setLoading).then((topHospitals) =>
+        setTopHospitals(topHospitals)
+      );
     } catch (error) {
       console.error("Failed to fetch clinics:", error);
     }
@@ -92,6 +100,7 @@ const HomePage = () => {
       setLoading(false);
     }, 1000);
   };
+
   const handleSelectClinic = (index: number) => {
     if (selectedClinic === index) {
       setSelectedClinic(-1);
@@ -106,8 +115,7 @@ const HomePage = () => {
         <div className="map-container">
           {dataState === "not loaded" ? null : (
             <GoogleMaps
-              hospitals={data}
-              setTopHospitals={setTopHospitals}
+              topHospitals={data}
               setLoading={setLoading}
               UserLocation={locationCoords}
               selectedClinic={selectedClinic}
@@ -230,8 +238,7 @@ const HomePage = () => {
               topHospitals[0] === "waiting" &&
               data.length === 0 ? null : (
                 <GoogleMaps
-                  hospitals={data}
-                  setTopHospitals={setTopHospitals}
+                  topHospitals={data}
                   setLoading={setLoading}
                   UserLocation={locationCoords}
                   selectedClinic={selectedClinic}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { HERE_MAPS_KEY, Location } from "../assets/globals";
+import { HERE_MAPS_KEY, Location, HospitalWithTime, Hospital } from "../assets/globals";
 
 export async function getTravelTimeAndDistance(
   origin: any,
@@ -94,4 +94,37 @@ export async function getCoordinates(address: string) {
       `Failed to get coordinates for the address: ${address}. ${error}`
     );
   }
+}
+
+export async function getTopHospitals(hospitals: Hospital[], setLoading: (arg0: boolean) => void){
+  const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
+    // let { time: travelTime, distance: routeDistance } =
+    //   await getTravelTimeAndDistance(
+    //     UserLocation,
+    //     hospital.location,
+    //     platform
+    //   );
+    // Keep the above code commented out for now for testing purposes
+
+    let routeDistance = hospital.location.distance || 0; // in km
+    let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
+    // comment out the above two lines for deployment
+
+    let totalWaitTime =
+      hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;
+    let totalTime = totalWaitTime + travelTime; // in minutes
+
+    return {
+      ...hospital,
+      totalTime,
+      totalWaitTime,
+      travelTime,
+      routeDistance,
+    } as HospitalWithTime & { routeDistance: number };
+  });
+
+  const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
+  hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
+  setLoading(false)
+  return hospitalWithTimes.slice(0, 5);
 }
