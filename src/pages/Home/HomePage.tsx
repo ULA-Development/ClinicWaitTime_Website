@@ -16,7 +16,9 @@ import {
   getCurrLocation,
   getCoordinates,
   getTopHospitals,
+  sortData,
 } from "../../data/mapdata";
+import { set } from "firebase/database";
 
 const HomePage = () => {
   const [activeButton, setActiveButton] = useState("");
@@ -45,19 +47,26 @@ const HomePage = () => {
       );
       setData(clinics);
       setDataState("loaded");
-      getTopHospitals(data, setLoading).then((topHospitals) =>
-        setTopHospitals(topHospitals)
-      );
+      getTopHospitals(data, setLoading).then((topHospitals) => {
+        setTopHospitals(topHospitals);
+        console.log(topHospitals);
+      });
     } catch (error) {
       console.error("Failed to fetch clinics:", error);
     }
   };
+  useEffect(() => {
+    console.log(topHospitals, "changed");
+    setTopHospitals(topHospitals);
+  }, [topHospitals]);
 
   useEffect(() => {
+    console.log("fetching data");
     fetchData();
   }, [locationCoords]);
   useEffect(() => {
     setSelectedClinic(-1);
+    sortData(topHospitals, setTopHospitals, activeButton);
   }, [activeButton]);
   useEffect(() => {
     setActive("list");
@@ -65,6 +74,7 @@ const HomePage = () => {
   useEffect(() => {
     if (locationCoords.lat !== 0 || locationCoords.lng !== 0) {
       fetchCoordinates();
+      fetchData();
     }
   }, [locationAddress]);
 
@@ -115,7 +125,7 @@ const HomePage = () => {
         <div className="map-container">
           {dataState === "not loaded" ? null : (
             <GoogleMaps
-              topHospitals={data}
+              topHospitals={topHospitals}
               setLoading={setLoading}
               UserLocation={locationCoords}
               selectedClinic={selectedClinic}

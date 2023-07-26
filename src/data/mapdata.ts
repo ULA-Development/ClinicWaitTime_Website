@@ -122,9 +122,23 @@ export async function getTopHospitals(hospitals: Hospital[], setLoading: (arg0: 
       routeDistance,
     } as HospitalWithTime & { routeDistance: number };
   });
-
   const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
   hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
+
   setLoading(false)
   return hospitalWithTimes.slice(0, 5);
+}
+
+
+export function sortData(hospitalWithTimes: HospitalWithTime[], setTopHospitals: (arg0: HospitalWithTime[]) => void, activeFilter: string){
+
+  if (activeFilter === "waitTime") {
+    hospitalWithTimes.sort((a, b) => a.totalWaitTime - b.totalWaitTime);
+  } else if (activeFilter === "travelTime") {
+    hospitalWithTimes.sort((a, b) => a.travelTime - b.travelTime);
+  } else {
+    hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
+  }
+  setTopHospitals(hospitalWithTimes);
+
 }
