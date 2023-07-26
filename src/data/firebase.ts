@@ -7,19 +7,9 @@ import {
   sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
-import { rejects } from "assert";
+import { FIREBASE_CONFIG } from "../assets/globals";
 
-const config = {
-  apiKey: "AIzaSyBCMS5SqL8cf1-MuEGDFQbsb_NZL0DKtDM",
-  authDomain: "ula-web.firebaseapp.com",
-  projectId: "ula-web",
-  storageBucket: "ula-web.appspot.com",
-  messagingSenderId: "965297657216",
-  appId: "1:965297657216:web:b731cd989cc3545475dd65",
-  measurementId: "G-40WXY814K1",
-};
-
-const app = initializeApp(config);
+const app = initializeApp(FIREBASE_CONFIG);
 const database = getDatabase(app);
 const authenticator = getAuth(app);
 
@@ -51,8 +41,7 @@ const handleErrorMessages = (code: string) => {
 
 async function fetchClinics(currLat: number, currLong: number) {
   const clinicRef = ref(database, "clinics");
-  
-  return new Promise<any[]>((resolve, reject) => { // Replace any[] with the actual type you expect to resolve with
+  return new Promise<any[]>((resolve, reject) => {
     onValue(clinicRef, (snapshot) => {
       let closeClincis: any[] = [];
       try {

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
-import axios from "axios";
-import { useSelector } from "react-redux";
 import SelectionPanel from "./Selection/SelectionPanel";
 import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
@@ -13,42 +11,18 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
 import OptionSlider from "./OptionSlider";
+import { busynessSetter, Hospital, Location } from "../../assets/globals";
+import {
+  getCurrLocation,
+  getCoordinates,
+  getTopHospitals,
+  sortData,
+} from "../../data/mapdata";
 import { set } from "firebase/database";
-type Location = {
-  lat: number;
-  lng: number;
-};
-type Hospital = {
-  location: Location;
-  info: {
-    name: string;
-    address: string;
-    email: string;
-    phone: string;
-    website: string;
-    rating: number;
-    occupancy: {
-      current: number;
-      capacity: number;
-      avgWaitTime: number;
-      numDoctors: number;
-    };
-  };
-};
-type HospitalWithTime = Hospital & {
-  totalTime: number;
-  totalWaitTime: number;
-  travelTime: number;
-  routeDistance: number;
-};
-const HERE_API_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
+
 const HomePage = () => {
-  const [resize, setResize] = useState(window.innerWidth <= 990);
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 990)); //990
   const [activeButton, setActiveButton] = useState("");
-  // The location of the origin as a string
   const [locationAddress, setLocationAddress] = useState("Current Location");
-  // The location of the origin as a lat lng object
   const [locationCoords, setLocationCoords] = useState<Location>({
     lat: 0,
     lng: 0,
@@ -59,63 +33,66 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("list");
   const [dataState, setDataState] = useState("not loaded");
-  useEffect(() => {
-    const fetchData = async () => {
-      if (locationCoords.lat === 0 && locationCoords.lng === 0) {
-        await getCurrLocation();
-      }
-      try {
-        const clinics = await dbHandler.fetchClinics(
-          locationCoords.lat,
-          locationCoords.lng
-        );
-        setData(clinics);
-        setDataState("loaded");
-      } catch (error) {
-        console.error("Failed to fetch clinics:", error);
-      }
-    };
+  const [resize, setResize] = useState(window.innerWidth <= 990);
+  window.addEventListener("resize", () => setResize(window.innerWidth <= 990));
 
+  const fetchData = async () => {
+    if (locationCoords.lat === 0 && locationCoords.lng === 0) {
+      await handleCurrLocation();
+    }
+    try {
+      const clinics = await dbHandler.fetchClinics(
+        locationCoords.lat,
+        locationCoords.lng
+      );
+      setData(clinics);
+      setDataState("loaded");
+      await getTopHospitals(clinics, setLoading).then((topHospitals) => {
+        setTopHospitals(topHospitals);
+      });
+    } catch (error) {
+      console.error("Failed to fetch clinics:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, [locationCoords]);
-
   useEffect(() => {
     setSelectedClinic(-1);
+    sortData(topHospitals, setTopHospitals, activeButton);
   }, [activeButton]);
   useEffect(() => {
     setActive("list");
   }, [resize]);
-  const getCurrLocation = () => {
-    setLoading(true);
-    return new Promise((resolve, reject) => {
-      // Replace YourType with the type of data you expect to resolve with
-      navigator.geolocation.getCurrentPosition(
-        async (position: GeolocationPosition) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            const apiKey = HERE_API_KEY;
-            const apiUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${apiKey}&at=${latitude},${longitude}`;
+  useEffect(() => {
+    if (locationCoords.lat !== 0 || locationCoords.lng !== 0) {
+      fetchCoordinates();
+    }
+  }, [locationAddress]);
 
-            const response = (await axios.get(apiUrl)).data.items[0];
-            const currInfo = {
-              location: {
-                lat: response.position.lat,
-                lng: response.position.lng,
-              },
-              address: response.address.label,
-            };
-            setLocationAddress("Current Location");
-            setLocationCoords(currInfo.location);
-            resolve(currInfo); // Resolve the Promise with the desired data
-          } catch (error) {
-            reject(error); // Reject the Promise with the error
-          }
-        },
-        (error) => {
-          reject(error); // Reject the Promise if getting the current position fails
-        }
-      );
-    });
+  const handleCurrLocation = async () => {
+    setLoading(true);
+    await getCurrLocation()
+      .then((currInfo: any) => {
+        setLocationAddress("Current Location");
+        setLocationCoords(currInfo.location);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const fetchCoordinates = async () => {
+    try {
+      if (locationAddress !== "Current Location" && locationAddress !== "") {
+        const locationCoords = await getCoordinates(locationAddress);
+        setLocationCoords(locationCoords);
+      } else {
+        return;
+      }
+    } catch (error) {
+      setDataState("failed");
+      console.error(error);
+    }
   };
 
   const handleSearch = () => {
@@ -126,29 +103,6 @@ const HomePage = () => {
       setLoading(false);
     }, 1000);
   };
-  useEffect(() => {
-    const fetchCoordinates = async () => {
-      try {
-        if (locationAddress !== "Current Location" && locationAddress !== "") {
-          const locationCoords = await getCoordinates(
-            locationAddress,
-            setLocationAddress
-          );
-          setLocationCoords(locationCoords);
-        } else {
-          return;
-        }
-      } catch (error) {
-        setDataState("failed");
-        console.error(error);
-      }
-    };
-
-    if (locationCoords.lat === 0 && locationCoords.lng === 0) {
-      return;
-    }
-    fetchCoordinates();
-  }, [locationAddress]);
 
   const handleSelectClinic = (index: number) => {
     if (selectedClinic === index) {
@@ -158,29 +112,13 @@ const HomePage = () => {
     }
   };
 
-  const busynessSetter = (time: number) => {
-    if (time < 15) {
-      return 1;
-    } else if (time < 25) {
-      return 2;
-    } else if (time < 35) {
-      return 3;
-    } else if (time < 45) {
-      return 4;
-    } else if (time < 60) {
-      return 5;
-    } else {
-      return 6;
-    }
-  };
   return (
     <div className="home-container">
       {!resize ? (
         <div className="map-container">
           {dataState === "not loaded" ? null : (
             <GoogleMaps
-              hospitals={data}
-              setTopHospitals={setTopHospitals}
+              topHospitals={topHospitals}
               setLoading={setLoading}
               UserLocation={locationCoords}
               selectedClinic={selectedClinic}
@@ -217,7 +155,7 @@ const HomePage = () => {
           <LocaitonInput
             value={locationAddress}
             onChange={setLocationAddress}
-            currLocation={getCurrLocation}
+            currLocation={handleCurrLocation}
             handleSearch={handleSearch}
           />
         </div>
@@ -303,8 +241,7 @@ const HomePage = () => {
               topHospitals[0] === "waiting" &&
               data.length === 0 ? null : (
                 <GoogleMaps
-                  hospitals={data}
-                  setTopHospitals={setTopHospitals}
+                  topHospitals={topHospitals}
                   setLoading={setLoading}
                   UserLocation={locationCoords}
                   selectedClinic={selectedClinic}
@@ -339,39 +276,4 @@ const HomePage = () => {
     </div>
   );
 };
-// export the default component and the getCoordinates function
 export default HomePage;
-
-export async function getCoordinates(address: string, setLocation?: any) {
-  try {
-    const response = await axios.get(
-      `https://geocode.search.hereapi.com/v1/geocode`,
-      {
-        params: {
-          apiKey: HERE_API_KEY,
-          q: address,
-        },
-      }
-    );
-    if (response.data.items.length === 0) {
-      // if (!setLocation === undefined) {
-      //   setLocation(null);
-      // }
-      throw new Error("The provided address is not valid.");
-    }
-    const location = response.data.items[0].position;
-
-    return {
-      lat: location.lat,
-      lng: location.lng,
-    } as Location;
-  } catch (error) {
-    // if (!setLocation === undefined) {
-    //   setLocation(null);
-    // }
-    throw new Error(
-      `Failed to get coordinates for the address: ${address}. ${error}`
-    );
-    // return;
-  }
-}
