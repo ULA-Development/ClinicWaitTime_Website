@@ -2,43 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { GoogleMap, OverlayView } from "@react-google-maps/api";
 import IconMarker from "./IconMarker";
-import ReactDOM from "react-dom";
-import { set } from "firebase/database";
+import { HERE_MAPS_KEY, busynessSetter, Location, Hospital, HospitalWithTime } from "../../assets/globals";
 
 declare var H: any, google: any;
-
-const HERE_MAP_KEY = "J73GMzFDN4sVuswUGmqeuj2CTJQ9uAeFfNvIpNVjrGI";
-
-type Location = {
-  lat: number;
-  lng: number;
-  distance?: number;
-};
-
-type Hospital = {
-  location: Location;
-  info: {
-    name: string;
-    address: string;
-    email: string;
-    phone: string;
-    website: string;
-    rating: number;
-    occupancy: {
-      current: number;
-      capacity: number;
-      avgWaitTime: number;
-      numDoctors: number;
-    };
-  };
-};
-
-type HospitalWithTime = Hospital & {
-  totalTime: number;
-  totalWaitTime: number;
-  travelTime: number;
-  routeDistance: number;
-};
 
 type HereMapComponentProps = {
   hospitals: Hospital[];
@@ -59,7 +25,6 @@ function GoogleMapComponent({
   setSelectedClinic,
   activeFilter,
 }: HereMapComponentProps) {
-  console.log("Component re-rendering");
   const [bestHospitals, setBestHospitals] = useState<HospitalWithTime[]>([]);
   const [hospitalWithTimes, setHospitalWithTimes] = useState<
     HospitalWithTime[]
@@ -67,7 +32,6 @@ function GoogleMapComponent({
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const markerRef = useRef<google.maps.Marker | null>(null);
   const handleMapLoad = async (map: google.maps.Map) => {
-    console.log("Map instance created and handleMapLoad called");
     setMap(map);
   };
   useEffect(() => {
@@ -80,7 +44,7 @@ function GoogleMapComponent({
     }
     const processMap = async () => {
       const platform = new H.service.Platform({
-        apikey: HERE_MAP_KEY,
+        apikey: HERE_MAPS_KEY,
       });
       const marker = new google.maps.Marker({
         position: UserLocation,
@@ -128,7 +92,6 @@ function GoogleMapComponent({
     if (typeof google !== "undefined" && google.maps && map) {
       processMap();
     } else {
-      console.log("map ref not ready yet");
       return;
     }
   }, [UserLocation, hospitals, map]);
@@ -141,26 +104,12 @@ function GoogleMapComponent({
     } else {
       hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
     }
-    const topHospitals = hospitalWithTimes.slice(0, 10);
+    const topHospitals = hospitalWithTimes.slice(0, 5);
 
     setBestHospitals(topHospitals);
     setTopHospitals(topHospitals);
   }, [activeFilter, hospitalWithTimes]);
-  const busynessSetter = (time: number) => {
-    if (time < 15) {
-      return 1;
-    } else if (time < 25) {
-      return 2;
-    } else if (time < 35) {
-      return 3;
-    } else if (time < 45) {
-      return 4;
-    } else if (time < 60) {
-      return 5;
-    } else {
-      return 6;
-    }
-  };
+
   const handleSelectClinic = (index: number) => {
     if (selectedClinic === index) {
       setSelectedClinic(-1);
@@ -169,7 +118,6 @@ function GoogleMapComponent({
     }
   };
   useEffect(() => {
-    console.log("Component mounted");
     return () => console.log("Component unmounting");
   }, []);
   // console.log("selectedClinic", selectedClinic);
