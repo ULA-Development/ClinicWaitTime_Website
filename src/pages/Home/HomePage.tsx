@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
-import axios from "axios";
-import { useSelector } from "react-redux";
 import SelectionPanel from "./Selection/SelectionPanel";
 import ClinicOption from "./ClinicComponent/ClinicOption";
 import "./HomePage.css";
@@ -14,7 +12,7 @@ import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
 import OptionSlider from "./OptionSlider";
 import { busynessSetter, Hospital, Location } from "../../assets/globals";
-import { HERE_MAPS_KEY } from "../../assets/globals";
+import { getCurrLocation, getCoordinates } from "../../data/mapdata";
 const HomePage = () => {
   const [activeButton, setActiveButton] = useState("");
   const [locationAddress, setLocationAddress] = useState("Current Location");
@@ -30,10 +28,10 @@ const HomePage = () => {
   const [dataState, setDataState] = useState("not loaded");
   const [resize, setResize] = useState(window.innerWidth <= 990);
   window.addEventListener("resize", () => setResize(window.innerWidth <= 990));
-  
+
   const fetchData = async () => {
     if (locationCoords.lat === 0 && locationCoords.lng === 0) {
-      await getCurrLocation();
+      await handleCurrLocation();
     }
     try {
       const clinics = await dbHandler.fetchClinics(
@@ -62,46 +60,20 @@ const HomePage = () => {
     }
   }, [locationAddress]);
 
-  const getCurrLocation = () => {
+  const handleCurrLocation = async () => {
     setLoading(true);
-    return new Promise((resolve, reject) => {
-      // Replace YourType with the type of data you expect to resolve with
-      navigator.geolocation.getCurrentPosition(
-        async (position: GeolocationPosition) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            const apiKey = HERE_MAPS_KEY;
-            const apiUrl = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${apiKey}&at=${latitude},${longitude}`;
-
-            const response = (await axios.get(apiUrl)).data.items[0];
-            const currInfo = {
-              location: {
-                lat: response.position.lat,
-                lng: response.position.lng,
-              },
-              address: response.address.label,
-            };
-            setLocationAddress("Current Location");
-            setLocationCoords(currInfo.location);
-            resolve(currInfo); // Resolve the Promise with the desired data
-          } catch (error) {
-            reject(error); // Reject the Promise with the error
-          }
-        },
-        (error) => {
-          reject(error); // Reject the Promise if getting the current position fails
-        }
-      );
-    });
+    await getCurrLocation()
+      .then((currInfo: any) => {
+        setLocationAddress("Current Location");
+        setLocationCoords(currInfo.location);
+      })
+      .catch((error) => console.log(error));
   };
 
   const fetchCoordinates = async () => {
     try {
       if (locationAddress !== "Current Location" && locationAddress !== "") {
-        const locationCoords = await getCoordinates(
-          locationAddress,
-          setLocationAddress
-        );
+        const locationCoords = await getCoordinates(locationAddress);
         setLocationCoords(locationCoords);
       } else {
         return;
@@ -172,7 +144,7 @@ const HomePage = () => {
           <LocaitonInput
             value={locationAddress}
             onChange={setLocationAddress}
-            currLocation={getCurrLocation}
+            currLocation={handleCurrLocation}
             handleSearch={handleSearch}
           />
         </div>
@@ -295,37 +267,3 @@ const HomePage = () => {
   );
 };
 export default HomePage;
-
-export async function getCoordinates(address: string, setLocation?: any) {
-  try {
-    const response = await axios.get(
-      `https://geocode.search.hereapi.com/v1/geocode`,
-      {
-        params: {
-          apiKey: HERE_MAPS_KEY,
-          q: address,
-        },
-      }
-    );
-    if (response.data.items.length === 0) {
-      // if (!setLocation === undefined) {
-      //   setLocation(null);
-      // }
-      throw new Error("The provided address is not valid.");
-    }
-    const location = response.data.items[0].position;
-
-    return {
-      lat: location.lat,
-      lng: location.lng,
-    } as Location;
-  } catch (error) {
-    // if (!setLocation === undefined) {
-    //   setLocation(null);
-    // }
-    throw new Error(
-      `Failed to get coordinates for the address: ${address}. ${error}`
-    );
-    // return;
-  }
-}

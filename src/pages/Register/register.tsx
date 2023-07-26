@@ -7,7 +7,7 @@ import { ReactComponent as SignupIcon } from "../../assets/icons/folder-plus-sol
 import { dbHandler } from "../../data/firebase";
 import "./register.css";
 import { useSelector } from "react-redux";
-import { getCoordinates } from "../Home/HomePage";
+import { getCoordinates } from "../../data/mapdata";
 
 const RegisterPage = () => {
   const isMobile = useSelector((state: any) => state.isMobile.value);

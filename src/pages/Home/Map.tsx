@@ -2,7 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { GoogleMap, OverlayView } from "@react-google-maps/api";
 import IconMarker from "./IconMarker";
-import { HERE_MAPS_KEY, busynessSetter, Location, Hospital, HospitalWithTime } from "../../assets/globals";
+import {
+  HERE_MAPS_KEY,
+  busynessSetter,
+  Location,
+  Hospital,
+  HospitalWithTime,
+} from "../../assets/globals";
+import { getTravelTimeAndDistance } from "../../data/mapdata";
 
 declare var H: any, google: any;
 
@@ -34,6 +41,53 @@ function GoogleMapComponent({
   const handleMapLoad = async (map: google.maps.Map) => {
     setMap(map);
   };
+  const processMap = async () => {
+    const platform = new H.service.Platform({
+      apikey: HERE_MAPS_KEY,
+    });
+    const marker = new google.maps.Marker({
+      position: UserLocation,
+      map: map,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 12,
+        fillColor: "#4285F4",
+        fillOpacity: 1,
+        strokeColor: "#fff",
+        strokeWeight: 4,
+      },
+    });
+    markerRef.current = marker;
+    const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
+      // let { time: travelTime, distance: routeDistance } =
+      //   await getTravelTimeAndDistance(
+      //     UserLocation,
+      //     hospital.location,
+      //     platform
+      //   );
+      // Keep the above code commented out for now for testing purposes
+
+      let routeDistance = hospital.location.distance || 0; // in km
+      let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
+      // comment out the above two lines for deployment
+
+      let totalWaitTime =
+        hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;
+      let totalTime = totalWaitTime + travelTime; // in minutes
+
+      return {
+        ...hospital,
+        totalTime,
+        totalWaitTime,
+        travelTime,
+        routeDistance,
+      } as HospitalWithTime & { routeDistance: number };
+    });
+
+    const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
+    setHospitalWithTimes(hospitalWithTimes);
+    setLoading(false);
+  };
   useEffect(() => {
     if (!UserLocation) {
       return;
@@ -42,53 +96,6 @@ function GoogleMapComponent({
       markerRef.current.setMap(null);
       markerRef.current = null;
     }
-    const processMap = async () => {
-      const platform = new H.service.Platform({
-        apikey: HERE_MAPS_KEY,
-      });
-      const marker = new google.maps.Marker({
-        position: UserLocation,
-        map: map,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 12,
-          fillColor: "#4285F4",
-          fillOpacity: 1,
-          strokeColor: "#fff",
-          strokeWeight: 4,
-        },
-      });
-      markerRef.current = marker;
-      const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-        // let { time: travelTime, distance: routeDistance } =
-        //   await getTravelTimeAndDistance(
-        //     UserLocation,
-        //     hospital.location,
-        //     platform
-        //   );
-        // Keep the above code commented out for now for testing purposes
-
-        let routeDistance = hospital.location.distance || 0; // in km
-        let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
-        // comment out the above two lines for deployment
-
-        let totalWaitTime =
-          hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;
-        let totalTime = totalWaitTime + travelTime; // in minutes
-
-        return {
-          ...hospital,
-          totalTime,
-          totalWaitTime,
-          travelTime,
-          routeDistance,
-        } as HospitalWithTime & { routeDistance: number };
-      });
-
-      const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
-      setHospitalWithTimes(hospitalWithTimes);
-      setLoading(false);
-    };
     if (typeof google !== "undefined" && google.maps && map) {
       processMap();
     } else {
@@ -118,7 +125,6 @@ function GoogleMapComponent({
     }
   };
   useEffect(() => {
-    return () => console.log("Component unmounting");
   }, []);
   // console.log("selectedClinic", selectedClinic);
   // console.log("activeFilter", activeFilter);
@@ -177,45 +183,6 @@ function GoogleMapComponent({
       </GoogleMap>
     </div>
   );
-}
-
-async function getTravelTimeAndDistance(
-  origin: any,
-  destination: any,
-  platform: any
-): Promise<{ time: number; distance: number }> {
-  const router = platform.getRoutingService(null, 8);
-  const routeRequestParams = {
-    routingMode: "fast",
-    transportMode: "car",
-    origin: `${origin.lat},${origin.lng}`,
-    destination: `${destination.lat},${destination.lng}`,
-    return: "polyline,travelSummary",
-  };
-  const routePromise = new Promise<{ time: number; distance: number }>(
-    (resolve: any, reject: any) => {
-      router.calculateRoute(
-        routeRequestParams,
-        (result: any) => {
-          if (result.routes.length) {
-            const travelTimeInMinutes =
-              result.routes[0].sections[0].travelSummary.duration / 60;
-            const routeDistanceInMeters =
-              result.routes[0].sections[0].travelSummary.length / 1000; // converting to km
-            resolve({
-              time: Math.round(travelTimeInMinutes), // rounding to the nearest integer
-              distance: routeDistanceInMeters,
-            });
-          } else {
-            reject(new Error("Could not find any routes."));
-          }
-        },
-        reject
-      );
-    }
-  );
-
-  return routePromise;
 }
 
 export default GoogleMapComponent;
