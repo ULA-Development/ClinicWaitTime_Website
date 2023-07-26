@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { GoogleMap, OverlayView } from "@react-google-maps/api";
 import IconMarker from "./IconMarker";
-import ReactDOM from "react-dom";
-import { set } from "firebase/database";
+import * as M from "../../data/MapData";
 
 declare var H: any, google: any;
 
@@ -78,53 +77,7 @@ function GoogleMapComponent({
       markerRef.current.setMap(null);
       markerRef.current = null;
     }
-    const processMap = async () => {
-      const platform = new H.service.Platform({
-        apikey: HERE_MAP_KEY,
-      });
-      const marker = new google.maps.Marker({
-        position: UserLocation,
-        map: map,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 12,
-          fillColor: "#4285F4",
-          fillOpacity: 1,
-          strokeColor: "#fff",
-          strokeWeight: 4,
-        },
-      });
-      markerRef.current = marker;
-      const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-        // let { time: travelTime, distance: routeDistance } =
-        //   await getTravelTimeAndDistance(
-        //     UserLocation,
-        //     hospital.location,
-        //     platform
-        //   );
-        // Keep the above code commented out for now for testing purposes
 
-        let routeDistance = hospital.location.distance || 0; // in km
-        let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
-        // comment out the above two lines for deployment
-
-        let totalWaitTime =
-          hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;
-        let totalTime = totalWaitTime + travelTime; // in minutes
-
-        return {
-          ...hospital,
-          totalTime,
-          totalWaitTime,
-          travelTime,
-          routeDistance,
-        } as HospitalWithTime & { routeDistance: number };
-      });
-
-      const hospitalWithTimes = await Promise.all(hospitalWithTimesPromises);
-      setHospitalWithTimes(hospitalWithTimes);
-      setLoading(false);
-    };
     if (typeof google !== "undefined" && google.maps && map) {
       processMap();
     } else {
