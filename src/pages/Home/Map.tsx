@@ -68,56 +68,56 @@ function GoogleMapComponent({
   };
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {topHospitals.length === 0 ? null : (
-        // <GoogleMap
-        //   onLoad={handleMapLoad}
-        //   center={
-        //     selectedClinic < 0
-        //       ? UserLocation
-        //       : {
-        //           lat: topHospitals[selectedClinic].location.lat,
-        //           lng: topHospitals[selectedClinic].location.lng - (isMobile * 0.018),
-        //         }
-        //   }
-        //   mapContainerStyle={{ width: "100%", height: "100%" }}
-        //   zoom={selectedClinic < 0 ? 13 : 13.5}
-        //   options={{
-        //     mapTypeControl: false,
-        //     streetViewControl: false,
-        //     zoomControl: false,
-        //     scrollwheel: false,
-        //     fullscreenControl: false,
-        //     styles: [
-        //       {
-        //         featureType: "poi",
-        //         elementType: "labels",
-        //         stylers: [{ visibility: "off" }],
-        //       },
-        //     ],
-        //   }}
-        // >
-        //   {map &&
-        //     topHospitals.map((hospital, index) => (
-        //       <OverlayViewF
-        //         position={{
-        //           lat: hospital.location.lat,
-        //           lng: hospital.location.lng,
-        //         }}
-        //         mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-        //         key={index + 10000}
-        //       >
-        //         <div onClick={() => handleSelectClinic(index)}>
-        //           <IconMarker
-        //             key={index}
-        //             index={index}
-        //             busyness={busynessSetter(hospital.totalTime)}
-        //             isActive={index === selectedClinic}
-        //           />
-        //         </div>
-        //       </OverlayViewF>
-        //     ))}
-        // </GoogleMap>
-      )}
+{/*       {topHospitals.length === 0 ? null : (
+        <GoogleMap
+          onLoad={handleMapLoad}
+          center={
+            selectedClinic < 0
+              ? UserLocation
+              : {
+                  lat: topHospitals[selectedClinic].location.lat,
+                  lng: topHospitals[selectedClinic].location.lng - (isMobile * 0.018),
+                }
+          }
+          mapContainerStyle={{ width: "100%", height: "100%" }}
+          zoom={selectedClinic < 0 ? 13 : 13.5}
+          options={{
+            mapTypeControl: false,
+            streetViewControl: false,
+            zoomControl: false,
+            scrollwheel: false,
+            fullscreenControl: false,
+            styles: [
+              {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }],
+              },
+            ],
+          }}
+        >
+          {map &&
+            topHospitals.map((hospital, index) => (
+              <OverlayViewF
+                position={{
+                  lat: hospital.location.lat,
+                  lng: hospital.location.lng,
+                }}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                key={index + 10000}
+              >
+                <div onClick={() => handleSelectClinic(index)}>
+                  <IconMarker
+                    key={index}
+                    index={index}
+                    busyness={busynessSetter(hospital.totalTime)}
+                    isActive={index === selectedClinic}
+                  />
+                </div>
+              </OverlayViewF>
+            ))}
+        </GoogleMap>
+      )} */}
     </div>
   );
 }
