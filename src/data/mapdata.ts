@@ -134,20 +134,21 @@ export async function getTopHospitals(
     setLoading(false);
   }, 200);
 
-  return hospitalWithTimes.slice(0, 5);
+  return hospitalWithTimes;
 }
 
 export function sortData(
   hospitalWithTimes: HospitalWithTime[],
-  setTopHospitals: (arg0: HospitalWithTime[]) => void,
   activeFilter: string
-) {
+): HospitalWithTime[] {
+  let sortedHospitals = [...hospitalWithTimes]; // creates a new copy
   if (activeFilter === "waitTime") {
-    hospitalWithTimes.sort((a, b) => a.totalWaitTime - b.totalWaitTime);
+    sortedHospitals.sort((a, b) => a.totalWaitTime - b.totalWaitTime);
   } else if (activeFilter === "travelTime") {
-    hospitalWithTimes.sort((a, b) => a.travelTime - b.travelTime);
+    sortedHospitals.sort((a, b) => a.travelTime - b.travelTime);
   } else {
-    hospitalWithTimes.sort((a, b) => a.totalTime - b.totalTime);
+    sortedHospitals.sort((a, b) => a.totalTime - b.totalTime);
   }
-  setTopHospitals(hospitalWithTimes);
+  return sortedHospitals;
 }
+

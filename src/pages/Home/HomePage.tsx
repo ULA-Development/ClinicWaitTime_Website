@@ -11,6 +11,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
 import OptionSlider from "./OptionSlider";
+import ClinicList from "./ClinicList";
 import { busynessSetter, Hospital, Location } from "../../assets/globals";
 import {
   getCurrLocation,
@@ -46,9 +47,11 @@ const HomePage = () => {
       );
       setData(clinics);
       setDataState("loaded");
-      await getTopHospitals(clinics, setLoading, locationCoords).then((topHospitals) => {
-        setTopHospitals(topHospitals);
-      });
+      await getTopHospitals(clinics, setLoading, locationCoords).then(
+        (topHospitals) => {
+          setTopHospitals(topHospitals);
+        }
+      );
     } catch (error) {
       console.error("Failed to fetch clinics:", error);
     }
@@ -59,7 +62,8 @@ const HomePage = () => {
   }, [locationCoords]);
   useEffect(() => {
     setSelectedClinic(-1);
-    sortData(topHospitals, setTopHospitals, activeButton);
+    let sortedHospitals = sortData(topHospitals, activeButton);
+    setTopHospitals(sortedHospitals);
   }, [activeButton]);
   useEffect(() => {
     setActive("list");
@@ -214,22 +218,13 @@ const HomePage = () => {
                       </div>
                     </div>
                   ) : (
-                    topHospitals.map((hospital: any, index: number) => (
-                      <div
-                        key={index}
-                        onClick={() => handleSelectClinic(index)}
-                        className="clinic-option"
-                      >
-                        <ClinicOption
-                          name={hospital.info.name}
-                          number={String(index + 1)}
-                          distance={hospital.routeDistance}
-                          busyness={busynessSetter(hospital.totalTime)}
-                          rating={hospital.info.rating}
-                          isActive={selectedClinic === index}
-                        />
-                      </div>
-                    ))
+                    <div className="clinic-option">
+                      <ClinicList
+                        hospitals={topHospitals}
+                        selectedClinic={selectedClinic}
+                        handleSelectClinic={handleSelectClinic}
+                      />
+                    </div>
                   )}
                 </div>
               )}
