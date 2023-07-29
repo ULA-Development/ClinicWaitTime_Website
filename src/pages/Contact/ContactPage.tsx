@@ -41,7 +41,7 @@ const Contact = () => {
     }
   };
   return (
-    <div className="contact-container">
+    <div>
       <Header selectedItem={"Home"} />
       <div className="contact-content">
         <h2>Contact Us</h2>
