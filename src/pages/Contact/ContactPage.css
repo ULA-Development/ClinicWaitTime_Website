@@ -1,0 +1,56 @@
+@import url("./../../assets/common.css");
+.contact-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+    color: var(--main);
+  }
+  
+  .contact-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    margin: 5% auto;
+    
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .input-field {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--main);
+  }
+  
+  .submit-button {
+    font-size: 16px;
+    background-color: var(--main);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+  }
+  .submit-button:hover {
+    background-color: var(--main-dark);
+  }
+  

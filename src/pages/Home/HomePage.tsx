@@ -167,6 +167,7 @@ const HomePage = () => {
           setActiveButton={setActiveButton}
           activeButton={activeButton}
         />
+
         {resize ? <OptionSlider active={active} setActive={setActive} /> : null}
         <div className="results-container">
           {!resize || (resize && active == "list") ? (
