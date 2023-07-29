@@ -36,11 +36,11 @@
     flex-direction: column;
     margin-left: -20px;
     padding-left: 25px;
-    margin-top: -20px;
+    margin-top: -27px;
     scroll-behavior: smooth;
     width: calc(100% - 3px);
-    bottom: -10px;
-    height: calc(100% - 280px);
+    bottom: -25px;
+    height: calc(100% - 265px);
     padding-bottom: 10px;
     overflow-y: auto;
 }
@@ -56,13 +56,13 @@
     border-radius: 9px;
 }
 .clinic-option{
-    margin-top: 20px;
+    margin-top: 25px;
     margin-left: -10px;
 }
 .info-popup{
     position: absolute;
-    left: 130px;
-    bottom: 130px;
+    left: 30px;
+    bottom: 30px;
 
 }
 .location-icon{

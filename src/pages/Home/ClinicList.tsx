@@ -26,10 +26,43 @@ const ClinicListComponent = ({
       setDisplayedHospitals(hospitals.slice(0, 5));
     }
   }, [showMore, hospitals]);
+  const moreButtons = () => {
+    if(showMore){
+      return (<button
+        style={{
+          padding: "10px 20px",
+          fontSize: "16px",
+          backgroundColor: "white",
+          color: "grey",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+        onClick={() => setShowMore(false)}
+      >
+        Show Less
+      </button>)
+    }else{
+      return (     <button
+        style={{
+          padding: "10px 20px",
+          fontSize: "16px",
+          backgroundColor: "white",
+          color: "grey",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+        onClick={() => setShowMore(true)}
+      >
+        Load More
+      </button>)
+    }
+  }
   return (
     <div>
       {displayedHospitals.map((hospital: any, index: number) => (
-        <div key={index} onClick={() => handleSelectClinic(index)}>
+        <div key={index} onClick={() => handleSelectClinic(index)} style={{marginBottom:"15px"}}>
           <ClinicOption
             name={hospital.info.name}
             number={String(index + 1)}
@@ -49,37 +82,8 @@ const ClinicListComponent = ({
           left: "35%",
         }}
       >
-        {showMore ? (
-          <button
-            style={{
-              padding: "10px 20px",
-              fontSize: "16px",
-              backgroundColor: "white",
-              color: "grey",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-            onClick={() => setShowMore(false)}
-          >
-            Show Less
-          </button>
-        ) : (
-          <button
-            style={{
-              padding: "10px 20px",
-              fontSize: "16px",
-              backgroundColor: "white",
-              color: "grey",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-            onClick={() => setShowMore(true)}
-          >
-            Load More
-          </button>
-        )}
+        {hospitals.length <= 5 ? null : moreButtons()}
+          
       </div>
     </div>
   );

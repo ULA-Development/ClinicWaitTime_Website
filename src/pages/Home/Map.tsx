@@ -66,6 +66,7 @@ function GoogleMapComponent({
       setSelectedClinic(index);
     }
   };
+  console.log("loaded")
   return (
     <div style={{ width: "100%", height: "100%" }}>
 {/*       {topHospitals.length === 0 ? null : (

@@ -19,6 +19,7 @@ import {
   getTopHospitals,
   sortData,
 } from "../../data/mapdata";
+import TermsPopUp from "../../components/TermsPopUp";
 
 const HomePage = () => {
   const [activeButton, setActiveButton] = useState("");
@@ -230,7 +231,10 @@ const HomePage = () => {
               )}
             </div>
           ) : (
-            <div className="map-container-mobile">
+            <div
+              className="map-container-mobile"
+              style={active === "map" ? {} : { width: "0px" }}
+            >
               {dataState === "not loaded" &&
               topHospitals[0] === "waiting" &&
               data.length === 0 ? null : (
@@ -268,6 +272,7 @@ const HomePage = () => {
         </div>
       </div>
       <SmallFooter />
+      {/* <TermsPopUp/> */}
     </div>
   );
 };
