@@ -68,7 +68,7 @@ function GoogleMapComponent({
   };
   return (
     <div style={{ width: "100%", height: "100%" }}>
-{/*       {topHospitals.length === 0 ? null : (
+      {/* {topHospitals.length === 0 ? null : (
         <GoogleMap
           onLoad={handleMapLoad}
           center={

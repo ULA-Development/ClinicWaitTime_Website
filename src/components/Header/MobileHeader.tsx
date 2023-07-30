@@ -3,8 +3,11 @@ import "./MobileHeader.css";
 import { ReactComponent as HamMenu } from "../../assets/icons/bars-solid.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icons/times-solid.svg";
 import { ReactComponent as BGC } from "../../assets/download.svg";
+import { show } from "../../reducers/termsReducer";
+import { useDispatch } from "react-redux";
 
 function MobileHeader() {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false);
   const selectedMenu = window.location.href.split("/").at(-1);
   const handleToggle = () => {
@@ -87,7 +90,7 @@ function MobileHeader() {
           }}
         />
         <div className="footer-links">
-          <a href="/terms-of-use" className="dropdown-footer-item">
+          <a className="dropdown-footer-item" onClick={() => dispatch(show())}>
             Terms of Use
           </a>
           <a href="/feedback" className="dropdown-footer-item">
@@ -96,14 +99,14 @@ function MobileHeader() {
           <a
             // href="/about-us"
             className="dropdown-footer-item"
-            style={{ color: "lightgrey" }}
+            style={{ color: "lightgrey", cursor: "default" }}
           >
             About Us
           </a>
           <a
             // href="/terms-of-use"
             className="dropdown-footer-item"
-            style={{ color: "lightgrey" }}
+            style={{ color: "lightgrey", cursor: "default"  }}
           >
             Privacy Policy
           </a>
@@ -111,7 +114,7 @@ function MobileHeader() {
           <a
             // href="/terms-of-use"
             className="dropdown-footer-item"
-            style={{ color: "lightgrey" }}
+            style={{ color: "lightgrey", cursor: "default"  }}
           >
             FAQ
           </a>
