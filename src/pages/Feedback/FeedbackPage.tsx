@@ -9,7 +9,8 @@ import { ReactComponent as CheckIcon } from "../../assets/icons/check-circle-sol
 import "./FeedbackPage.css";
 
 const FeedbackPage = () => {
-  const isMobile = useSelector((state: any) => state.isMobile.value);
+  const [resize, setResize] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () => setResize(window.innerWidth <= 700));
   const [cookies, setCookie, removeCookie] = useCookies(["feedbackSubmitted"]);
   const [invalid, setInvalid] = useState(false);
   const [submitted, setSubmitted] = useState(
@@ -91,7 +92,7 @@ const FeedbackPage = () => {
       <div className="feedback-main-container">
         <div
           className="feedback-content"
-          style={isMobile ? { width: "90%" } : { width: "600px" }}
+          style={resize ? { width: "90%" } : { width: "600px" }}
         >
           {submitted ? successSubmitSection() : submitInfoSection()}
         </div>
