@@ -53,7 +53,7 @@ function Navbar({ selectedItem }: NavbarProps) {
       >
         Sign In
       </a>
-      <a
+      {/* <a
         href="/contact"
         className={`navbar-item ${
           selectedPath === "contact" ? "selected" : ""
@@ -61,7 +61,7 @@ function Navbar({ selectedItem }: NavbarProps) {
         onClick={() => handleItemClick("contact")}
       >
         Contact
-      </a>
+      </a> */}
       <a
         href="/"
         className={`navbar-item ${selectedPath === "home" ? "selected" : ""}`}
