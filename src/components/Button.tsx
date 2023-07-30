@@ -1,15 +1,17 @@
 import { ReactNode, useState, useRef, useEffect } from "react";
 import icon from "../assets/icons/arrow-right-solid.svg";
 import "./Button.css";
+import { AnyTxtRecord } from "dns";
 
 interface Props {
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   style?: React.CSSProperties;
   noImg?: boolean;
+  typeOf?: any
 }
 
-const Button = ({ children, onClick, style, noImg = false }: Props) => {
+const Button = ({ children, onClick = () => null, style, noImg = false, typeOf = "button" }: Props) => {
   const [clicked, setClicked] = useState(false);
   const buttonRef = useRef<HTMLDivElement>(null);
   return (
@@ -21,6 +23,7 @@ const Button = ({ children, onClick, style, noImg = false }: Props) => {
       }}
       onAnimationEnd={() => setClicked(false)}
       style={style}
+      type={typeOf}
     >
       <div className="button-content" ref={buttonRef}>
         {children}{" "}

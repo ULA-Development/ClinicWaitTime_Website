@@ -50,7 +50,7 @@ const FeedbackPage = () => {
             setInvalid(text.target.value.length === 0),
           ]}
           onBlur={() => setInvalid(feedback.length === 0)}
-          className={invalid ? "invalid-textarea" : ""}
+          className={invalid ? "invalid-textarea" : "textarea-feedback"}
         />
         {invalid ? (
           <span className="required-feild-error">This field is required</span>
