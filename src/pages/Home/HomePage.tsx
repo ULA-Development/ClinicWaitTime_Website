@@ -12,7 +12,7 @@ import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
 import OptionSlider from "./OptionSlider";
 import ClinicList from "./ClinicList";
-import { busynessSetter, Hospital, Location } from "../../assets/globals";
+import { Hospital, Location } from "../../assets/globals";
 import {
   getCurrLocation,
   getCoordinates,
@@ -21,6 +21,8 @@ import {
 } from "../../data/mapdata";
 
 const HomePage = () => {
+  const [showMore, setShowMore] = useState(false)
+
   const [activeButton, setActiveButton] = useState("");
   const [locationAddress, setLocationAddress] = useState("Current Location");
   const [locationCoords, setLocationCoords] = useState<Location>({
@@ -35,7 +37,6 @@ const HomePage = () => {
   const [dataState, setDataState] = useState("not loaded");
   const [resize, setResize] = useState(window.innerWidth <= 990);
   window.addEventListener("resize", () => setResize(window.innerWidth <= 990));
-
   const fetchData = async () => {
     if (locationCoords.lat === 0 && locationCoords.lng === 0) {
       await handleCurrLocation();
@@ -129,7 +130,7 @@ const HomePage = () => {
           }}
         />
       );
-    // BAD LOCATION INPUT 
+      // BAD LOCATION INPUT
     } else if (dataState === "failed") {
       return (
         <div className="no-results">
@@ -149,7 +150,7 @@ const HomePage = () => {
           </div>
         </div>
       );
-    // NO CLINIC NEAR BY
+      // NO CLINIC NEAR BY
     } else if (
       dataState === "loaded" &&
       topHospitals[0] !== "waiting" &&
@@ -171,12 +172,14 @@ const HomePage = () => {
           </div>
         </div>
       );
-    // RESULTS
+      // RESULTS
     } else {
       return (
         <div className="clinic-option">
           <ClinicList
-            hospitals={topHospitals}
+            displayedHospitals={!showMore ? topHospitals.slice(0, 5) : topHospitals}
+            setShowMore={setShowMore}
+            showMore={showMore}
             selectedClinic={selectedClinic}
             handleSelectClinic={handleSelectClinic}
           />
@@ -191,7 +194,7 @@ const HomePage = () => {
         <div className="map-container">
           {dataState === "not loaded" ? null : (
             <GoogleMaps
-              topHospitals={topHospitals}
+              topHospitals={!showMore ? topHospitals.slice(0, 5) : topHospitals}
               setLoading={setLoading}
               UserLocation={locationCoords}
               selectedClinic={selectedClinic}
@@ -241,19 +244,14 @@ const HomePage = () => {
         {resize ? <OptionSlider active={active} setActive={setActive} /> : null}
         <div className="results-container">
           {!resize ? (
-            <div>
-              {listSection()}
-            </div>
+            <div>{listSection()}</div>
           ) : (
             <div>
               {active === "list" ? listSection() : null}
-            <div
-              className="map-container-mobile"
-              hidden={active !== "map"}
-            >
-              {dataState === "not loaded" ? null : (
+              <div className="map-container-mobile" hidden={active !== "map"}>
+                {dataState === "not loaded" ? null : (
                   <GoogleMaps
-                    topHospitals={topHospitals}
+                    topHospitals={!showMore ? topHospitals.slice(0, 5) : topHospitals}
                     setLoading={setLoading}
                     UserLocation={locationCoords}
                     selectedClinic={selectedClinic}
@@ -261,7 +259,7 @@ const HomePage = () => {
                     activeFilter={activeButton}
                     isMobile={0}
                   ></GoogleMaps>
-              )}
+                )}
               </div>
               {/* {
                 selectedClinic < 0 ? null : <div>Popup</div>
@@ -282,7 +280,6 @@ const HomePage = () => {
                 //   />
                 // </div>
               } */}
-              
             </div>
           )}
         </div>

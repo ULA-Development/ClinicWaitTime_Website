@@ -5,27 +5,27 @@ import { busynessSetter } from "../../assets/globals";
 
 type ClinicListProps = {
   handleSelectClinic: (index: number) => void;
-  hospitals: HospitalWithTime[];
   selectedClinic: Number;
+  displayedHospitals: any;
+  setShowMore: (arg0: any) => void;
+  showMore: boolean;
 };
 
 const ClinicListComponent = ({
   handleSelectClinic,
-  hospitals,
   selectedClinic,
+  displayedHospitals,
+  showMore,
+  setShowMore
 }: ClinicListProps) => {
-  const [showMore, setShowMore] = useState(false);
-  const [displayedHospitals, setDisplayedHospitals] = useState<
-    HospitalWithTime[]
-  >([]);
 
-  useEffect(() => {
-    if (showMore) {
-      setDisplayedHospitals(hospitals);
-    } else {
-      setDisplayedHospitals(hospitals.slice(0, 5));
-    }
-  }, [showMore, hospitals]);
+  // useEffect(() => {
+  //   if (showMore) {
+  //     setDisplayedHospitals(displayedHospitals);
+  //   } else {
+  //     setDisplayedHospitals(displayedHospitals.slice(0, 5));
+  //   }
+  // }, [showMore, displayedHospitals]);
   const moreButtons = () => {
     if(showMore){
       return (<button
@@ -82,7 +82,7 @@ const ClinicListComponent = ({
           left: "35%",
         }}
       >
-        {hospitals.length <= 5 ? null : moreButtons()}
+        {(displayedHospitals.length <= 5 && showMore === true) ? null : moreButtons()}
           
       </div>
     </div>
