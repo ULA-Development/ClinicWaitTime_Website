@@ -163,6 +163,7 @@
   text-decoration: none;
   margin-left: 16px;
   margin-top: 20px;
+  cursor: pointer;
 }
 
 .header-links {

@@ -19,7 +19,6 @@ import {
   getTopHospitals,
   sortData,
 } from "../../data/mapdata";
-import TermsPopUp from "../../components/TermsPopUp";
 
 const HomePage = () => {
   const [activeButton, setActiveButton] = useState("");
@@ -116,6 +115,76 @@ const HomePage = () => {
     }
   };
 
+  const listSection = () => {
+    // LOADING DATA
+    if (loading) {
+      return (
+        <LoadingSpinner
+          text="Locating..."
+          style={{
+            alignSelf: "center",
+            position: "absolute",
+            top: "10%",
+            left: "40%",
+          }}
+        />
+      );
+    // BAD LOCATION INPUT 
+    } else if (dataState === "failed") {
+      return (
+        <div className="no-results">
+          <div style={{ display: "block" }}>
+            <span style={{ fontSize: "17px" }}>
+              No results ... try different address
+            </span>
+            <span
+              style={{
+                display: "block",
+                fontSize: "13px",
+                color: "dimgrey",
+              }}
+            >
+              make sure city is included{" "}
+            </span>
+          </div>
+        </div>
+      );
+    // NO CLINIC NEAR BY
+    } else if (
+      dataState === "loaded" &&
+      topHospitals[0] !== "waiting" &&
+      topHospitals.length === 0
+    ) {
+      return (
+        <div className="no-results">
+          <div style={{ display: "block" }}>
+            <span style={{ fontSize: "17px" }}>No results ...</span>
+            <span
+              style={{
+                display: "block",
+                fontSize: "13px",
+                color: "dimgrey",
+              }}
+            >
+              unfortunately, there no clinics in this area{" "}
+            </span>
+          </div>
+        </div>
+      );
+    // RESULTS
+    } else {
+      return (
+        <div className="clinic-option">
+          <ClinicList
+            hospitals={topHospitals}
+            selectedClinic={selectedClinic}
+            handleSelectClinic={handleSelectClinic}
+          />
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="home-container">
       {!resize ? (
@@ -170,85 +239,30 @@ const HomePage = () => {
         />
         {resize ? <OptionSlider active={active} setActive={setActive} /> : null}
         <div className="results-container">
-          {!resize || (resize && active == "list") ? (
-            <div className="">
-              {loading ? (
-                <LoadingSpinner
-                  text="Locating..."
-                  style={{
-                    alignSelf: "center",
-                    position: "absolute",
-                    top: "10%",
-                    left: "40%",
-                  }}
-                />
-              ) : (
-                <div>
-                  {dataState == "failed" ? (
-                    <div className="no-results">
-                      <div style={{ display: "block" }}>
-                        <span style={{ fontSize: "17px" }}>
-                          No results ... try different address
-                        </span>
-                        <span
-                          style={{
-                            display: "block",
-                            fontSize: "13px",
-                            color: "dimgrey",
-                          }}
-                        >
-                          make sure city is included{" "}
-                        </span>
-                      </div>
-                    </div>
-                  ) : dataState === "loaded" &&
-                    topHospitals[0] !== "waiting" &&
-                    topHospitals.length === 0 ? (
-                    <div className="no-results">
-                      <div style={{ display: "block" }}>
-                        <span style={{ fontSize: "17px" }}>No results ...</span>
-                        <span
-                          style={{
-                            display: "block",
-                            fontSize: "13px",
-                            color: "dimgrey",
-                          }}
-                        >
-                          unfortunately, there no clinics in this area{" "}
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="clinic-option">
-                      <ClinicList
-                        hospitals={topHospitals}
-                        selectedClinic={selectedClinic}
-                        handleSelectClinic={handleSelectClinic}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
+          {!resize ? (
+            <div>
+              {listSection()}
             </div>
           ) : (
+            <div>
+              {active === "list" ? listSection() : null}
             <div
               className="map-container-mobile"
-              style={active === "map" ? {} : { width: "0px" }}
+              hidden={active !== "map"}
             >
-              {dataState === "not loaded" &&
-              topHospitals[0] === "waiting" &&
-              data.length === 0 ? null : (
-                <GoogleMaps
-                  topHospitals={topHospitals}
-                  setLoading={setLoading}
-                  UserLocation={locationCoords}
-                  selectedClinic={selectedClinic}
-                  setSelectedClinic={setSelectedClinic}
-                  activeFilter={activeButton}
-                  isMobile={0}
-                ></GoogleMaps>
+              {dataState === "not loaded" ? null : (
+                  <GoogleMaps
+                    topHospitals={topHospitals}
+                    setLoading={setLoading}
+                    UserLocation={locationCoords}
+                    selectedClinic={selectedClinic}
+                    setSelectedClinic={setSelectedClinic}
+                    activeFilter={activeButton}
+                    isMobile={0}
+                  ></GoogleMaps>
               )}
-              {
+              </div>
+              {/* {
                 selectedClinic < 0 ? null : <div>Popup</div>
                 // <div className="info-popup">
                 //   <ClinicInfoSection
@@ -266,13 +280,13 @@ const HomePage = () => {
                 //     seedState={selectedClinic}
                 //   />
                 // </div>
-              }
+              } */}
+              
             </div>
           )}
         </div>
       </div>
       <SmallFooter />
-      {/* <TermsPopUp/> */}
     </div>
   );
 };

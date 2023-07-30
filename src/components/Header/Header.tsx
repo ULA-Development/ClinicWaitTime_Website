@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Navbar";
 import "./Header.css";
 import { ReactComponent as Logo } from "../../assets/download.svg";
-import { useSelector } from "react-redux";
 import MobileHeader from "./MobileHeader";
 interface HeaderProps {
   selectedItem: string | null;
 }
 
 function Header({ selectedItem }: HeaderProps) {
-  const isMobile = useSelector((state: any) => state.isMobile.value);
+  const [resize, setResize] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () => setResize(window.innerWidth <= 700));
 
   const desktopHeader = () => {
     return (
@@ -26,7 +26,7 @@ function Header({ selectedItem }: HeaderProps) {
   const mobileHeader = () => {
     return <MobileHeader />;
   };
-  return isMobile ? mobileHeader() : desktopHeader();
+  return resize ? mobileHeader() : desktopHeader();
 }
 
 export default Header;

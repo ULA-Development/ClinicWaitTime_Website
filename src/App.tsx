@@ -4,26 +4,18 @@ import LoginPage from "./pages/Signin/SigninPage";
 import SignupPage from "./pages/Signup/SignupPage";
 import ContactPage from "./pages/Contact/ContactPage";
 import RegisterPage from "./pages/Register/register";
-import { useDispatch } from "react-redux";
-import { updateBrowserView } from "./reducers/mobileReducer";
 import FeedbackPage from "./pages/Feedback/FeedbackPage";
-import TermsPage from "./pages/Terms/TermsPage";
+import TermsPopUp from "./components/TermsPopUp";
+import { useSelector } from "react-redux";
 
 function App() {
-  // Handle browser view updating
-  const dispatch = useDispatch();
-  const handleResize = () => {
-    dispatch(updateBrowserView());
-  };
- 
-  // Path
-  const [currentPath, setCurrentPath] = useState<string | null>("/");
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    setCurrentPath(window.location.pathname);
-  }, [dispatch]);
-
-  return <div>{renderContent(currentPath)}</div>;
+  const showTerms = useSelector((state: any) => state.termsReducer.value)
+  return (
+    <div>
+      {renderContent(window.location.pathname)}
+      { showTerms ? <TermsPopUp/> : null}
+    </div>
+  );
 }
 
 // Conditional Rendering
@@ -40,9 +32,6 @@ function renderContent(path: string | null) {
     }
     case "feedback": {
       return <FeedbackPage />;
-    }
-    case "terms-of-use": {
-      return <TermsPage />;
     }
     case "register": {
       return <RegisterPage />;
