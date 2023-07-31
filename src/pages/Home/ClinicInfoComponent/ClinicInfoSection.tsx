@@ -17,7 +17,8 @@ interface ClinicInfoProps {
   address: string;
   location: Location;
   currLocation: Location;
-  seedState?: number
+  seedState?: number;
+  isMobile?: boolean;
   setShowInfo: (arg0: boolean) => void
 }
 type Location = {
@@ -38,6 +39,7 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
   location,
   currLocation,
   seedState,
+  isMobile = false,
   setShowInfo
 }) => {
   const [focusData, setFocusData] = useState(true);
@@ -57,7 +59,7 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
   
   return (
     <div className="info-section-container">
-      <CloseIcon className="clinic-close-button" onClick={() => setShowInfo(false)}/>
+      {!isMobile ? null :<CloseIcon className="clinic-close-button" onClick={() => setShowInfo(false)}/>}
       <div className="clinic-info-heading">
         <h3 className="clinic-title">{name}</h3>
         <StarRating rating={rating} />

@@ -20,6 +20,7 @@ import {
   sortData,
 } from "../../data/mapdata";
 import { show } from "../../reducers/termsReducer";
+import { secureHeapUsed } from "crypto";
 
 const HomePage = () => {
   const [showMore, setShowMore] = useState(false);
@@ -209,7 +210,7 @@ const HomePage = () => {
               activeFilter={activeButton}
             ></GoogleMaps>
           )}
-          {showInfo === true ? null : (
+          {selectedClinic < 0 ? null : (
             <div className="info-popup">
               <ClinicInfoSection
                 setShowInfo={setShowInfo}
@@ -271,7 +272,7 @@ const HomePage = () => {
                   ></GoogleMaps>
                 )}
               </div>
-              {showInfo === false && resize === true ? null : (
+              {showInfo == false && resize === true ? null : (
                 <div className="mobile-clinic-screen">
                   <div
                     className="dim-background-mobile"
@@ -291,6 +292,7 @@ const HomePage = () => {
                     currLocation={locationCoords}
                     setShowInfo={setShowInfo}
                     seedState={selectedClinic}
+                    isMobile={true}
                   />
                 </div>
               )}
