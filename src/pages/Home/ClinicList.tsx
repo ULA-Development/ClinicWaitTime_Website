@@ -4,6 +4,7 @@ import ClinicOption from "./ClinicComponent/ClinicOption";
 import { busynessSetter } from "../../assets/globals";
 
 type ClinicListProps = {
+  topHospitals: HospitalWithTime[];
   handleSelectClinic: (index: number) => void;
   selectedClinic: Number;
   displayedHospitals: any;
@@ -16,16 +17,10 @@ const ClinicListComponent = ({
   selectedClinic,
   displayedHospitals,
   showMore,
-  setShowMore
+  setShowMore,
+  topHospitals
 }: ClinicListProps) => {
 
-  // useEffect(() => {
-  //   if (showMore) {
-  //     setDisplayedHospitals(displayedHospitals);
-  //   } else {
-  //     setDisplayedHospitals(displayedHospitals.slice(0, 5));
-  //   }
-  // }, [showMore, displayedHospitals]);
   const moreButtons = () => {
     if(showMore){
       return (<button
@@ -59,10 +54,11 @@ const ClinicListComponent = ({
       </button>)
     }
   }
+
   return (
-    <div>
+    <div style={{backgroundColor:"transparent", top: "20px"}}>
       {displayedHospitals.map((hospital: any, index: number) => (
-        <div key={index} onClick={() => handleSelectClinic(index)} style={{marginBottom:"15px"}}>
+        <div key={index} onClick={() => handleSelectClinic(index)} style={{paddingTop: "15px"}}>
           <ClinicOption
             name={hospital.info.name}
             number={String(index + 1)}
@@ -76,13 +72,11 @@ const ClinicListComponent = ({
       <div
         style={{
           display: "flex",
-          justifyContent: "space-around",
-          alignContent: "center",
-          position: "absolute",
-          left: "35%",
+          marginTop: "10px",
+          justifyContent: "center",
         }}
-      >
-        {(displayedHospitals.length <= 5 && showMore === true) ? null : moreButtons()}
+      > 
+        {(topHospitals.length <= 5 ) ? null : moreButtons()}
           
       </div>
     </div>
