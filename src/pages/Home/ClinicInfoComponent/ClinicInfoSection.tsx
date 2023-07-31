@@ -3,6 +3,7 @@ import StarRating from "../StarRating";
 import "./ClinicInfoSection.css";
 import ContactInfo from "./ContacInfo";
 import ClinicData from "./ClinicData";
+import { ReactComponent as CloseIcon } from "../../../assets/icons/times-solid.svg";
 
 interface ClinicInfoProps {
   name: string;
@@ -16,7 +17,9 @@ interface ClinicInfoProps {
   address: string;
   location: Location;
   currLocation: Location;
-  seedState?: number
+  seedState?: number;
+  isMobile?: boolean;
+  setShowInfo: (arg0: boolean) => void
 }
 type Location = {
   lat: number;
@@ -36,6 +39,8 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
   location,
   currLocation,
   seedState,
+  isMobile = false,
+  setShowInfo
 }) => {
   const [focusData, setFocusData] = useState(true);
   const [hourly, setHourly] = useState(hourlyData())
@@ -54,6 +59,7 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
   
   return (
     <div className="info-section-container">
+      {!isMobile ? null :<CloseIcon className="clinic-close-button" onClick={() => setShowInfo(false)}/>}
       <div className="clinic-info-heading">
         <h3 className="clinic-title">{name}</h3>
         <StarRating rating={rating} />

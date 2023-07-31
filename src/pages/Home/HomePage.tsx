@@ -19,10 +19,12 @@ import {
   getTopHospitals,
   sortData,
 } from "../../data/mapdata";
+import { show } from "../../reducers/termsReducer";
+import { secureHeapUsed } from "crypto";
 
 const HomePage = () => {
-  const [showMore, setShowMore] = useState(false)
-
+  const [showMore, setShowMore] = useState(false);
+  
   const [activeButton, setActiveButton] = useState("");
   const [locationAddress, setLocationAddress] = useState("Current Location");
   const [locationCoords, setLocationCoords] = useState<Location>({
@@ -31,6 +33,7 @@ const HomePage = () => {
   });
   const [data, setData] = useState<Hospital[]>([]);
   const [selectedClinic, setSelectedClinic] = useState(-1);
+  const [showInfo, setShowInfo] = useState(selectedClinic >= 0)
   const [topHospitals, setTopHospitals] = useState<Array<any>>(["waiting"]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("list");
@@ -59,6 +62,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+    setShowMore(false);
     fetchData();
   }, [locationCoords]);
   useEffect(() => {
@@ -115,7 +119,9 @@ const HomePage = () => {
       setSelectedClinic(index);
     }
   };
-
+  useEffect(() => {
+    setShowInfo(selectedClinic >= 0)
+  }, [selectedClinic])
   const listSection = () => {
     // LOADING DATA
     if (loading) {
@@ -177,7 +183,10 @@ const HomePage = () => {
       return (
         <div className="clinic-option">
           <ClinicList
-            displayedHospitals={!showMore ? topHospitals.slice(0, 5) : topHospitals}
+            topHospitals={topHospitals}
+            displayedHospitals={
+              !showMore ? topHospitals.slice(0, 5) : topHospitals
+            }
             setShowMore={setShowMore}
             showMore={showMore}
             selectedClinic={selectedClinic}
@@ -187,7 +196,6 @@ const HomePage = () => {
       );
     }
   };
-
   return (
     <div className="home-container">
       {!resize ? (
@@ -205,6 +213,7 @@ const HomePage = () => {
           {selectedClinic < 0 ? null : (
             <div className="info-popup">
               <ClinicInfoSection
+                setShowInfo={setShowInfo}
                 name={topHospitals[selectedClinic].info.name}
                 totalTime={topHospitals[selectedClinic].totalTime}
                 waitTime={topHospitals[selectedClinic].totalWaitTime}
@@ -251,7 +260,9 @@ const HomePage = () => {
               <div className="map-container-mobile" hidden={active !== "map"}>
                 {dataState === "not loaded" ? null : (
                   <GoogleMaps
-                    topHospitals={!showMore ? topHospitals.slice(0, 5) : topHospitals}
+                    topHospitals={
+                      !showMore ? topHospitals.slice(0, 5) : topHospitals
+                    }
                     setLoading={setLoading}
                     UserLocation={locationCoords}
                     selectedClinic={selectedClinic}
@@ -261,25 +272,30 @@ const HomePage = () => {
                   ></GoogleMaps>
                 )}
               </div>
-              {/* {
-                selectedClinic < 0 ? null : <div>Popup</div>
-                // <div className="info-popup">
-                //   <ClinicInfoSection
-                //     name={topHospitals[selectedClinic].info.name}
-                //     totalTime={topHospitals[selectedClinic].totalTime}
-                //     waitTime={topHospitals[selectedClinic].totalWaitTime}
-                //     travelTime={topHospitals[selectedClinic].travelTime}
-                //     email={topHospitals[selectedClinic].info.email}
-                //     website={topHospitals[selectedClinic].info.website}
-                //     phone={topHospitals[selectedClinic].info.phone}
-                //     address={topHospitals[selectedClinic].info.address}
-                //     rating={topHospitals[selectedClinic].info.rating}
-                //     location={topHospitals[selectedClinic].location}
-                //     currLocation={locationCoords}
-                //     seedState={selectedClinic}
-                //   />
-                // </div>
-              } */}
+              {showInfo == false && resize === true ? null : (
+                <div className="mobile-clinic-screen">
+                  <div
+                    className="dim-background-mobile"
+                    onClick={() => setSelectedClinic(-1)}
+                  />
+                  <ClinicInfoSection
+                    name={topHospitals[selectedClinic].info.name}
+                    totalTime={topHospitals[selectedClinic].totalTime}
+                    waitTime={topHospitals[selectedClinic].totalWaitTime}
+                    travelTime={topHospitals[selectedClinic].travelTime}
+                    email={topHospitals[selectedClinic].info.email}
+                    website={topHospitals[selectedClinic].info.website}
+                    phone={topHospitals[selectedClinic].info.phone}
+                    address={topHospitals[selectedClinic].info.address}
+                    rating={topHospitals[selectedClinic].info.rating}
+                    location={topHospitals[selectedClinic].location}
+                    currLocation={locationCoords}
+                    setShowInfo={setShowInfo}
+                    seedState={selectedClinic}
+                    isMobile={true}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>

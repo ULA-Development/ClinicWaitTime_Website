@@ -28,6 +28,8 @@
   background-color: white;
   flex-direction: column;
   overflow: hidden;
+  z-index: 100;
+  position: relative;
 }
 .clinic-title {
   text-overflow: ellipsis;
@@ -140,4 +142,13 @@
 
 .section-curve-tail-left {
   left: -53px;
+}
+.clinic-close-button{
+  margin-top: 23px;
+  width: 20px;
+  position: absolute;
+  height: 20px;
+  right: 23px;
+  fill: var(--main);
+  cursor: pointer;
 }

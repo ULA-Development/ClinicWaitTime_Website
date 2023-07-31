@@ -10,8 +10,20 @@ const TermsPopUp = () => {
   window.addEventListener("resize", () => setResize(window.innerWidth <= 700));
   return (
     <div className="screen-container">
-      <div className="dim-background" />
-      <div className="terms-pop-container" style={resize ? {width: "100vw", height: "100vh", borderRadius: "0px", top: "0px"} : {}}>
+      <div className="dim-background" onClick={() => dispatch(hide())} />
+      <div
+        className="terms-pop-container"
+        style={
+          resize
+            ? {
+                width: "100vw",
+                height: "100vh",
+                borderRadius: "0px",
+                top: "0px",
+              }
+            : {}
+        }
+      >
         <div className="title-card">
           <h3>Terms of Use</h3>
           <div
