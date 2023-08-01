@@ -15,14 +15,14 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <LoadScript googleMapsApiKey={GOOGLE_MAPS_KEY}>
-  <CookiesProvider>
-    <Provider store={store}>
-      {/* <React.StrictMode> */}
-        <App />
-      {/* </React.StrictMode> Remove strict mode for deployment */}
-    </Provider>
-  </CookiesProvider>
+    <CookiesProvider>
+      <Provider store={store}>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </Provider>
+    </CookiesProvider>
   </LoadScript>
 );
-
+// report web vitals to google analytics
 reportWebVitals();
