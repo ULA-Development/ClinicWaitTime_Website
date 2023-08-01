@@ -88,7 +88,7 @@ const FeedbackPage = () => {
   };
   return (
     <>
-      <Header selectedItem={"Home"} />
+      <Header/>
       <div className="feedback-main-container">
         <div
           className="feedback-content"

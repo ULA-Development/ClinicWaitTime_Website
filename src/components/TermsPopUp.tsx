@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ReactComponent as CloseIcon } from "../assets/icons/times-solid.svg";
 import { useDispatch } from "react-redux";
 import { hide } from "../reducers/termsReducer";
@@ -6,15 +6,17 @@ import "./TermsPopUp.css";
 
 const TermsPopUp = () => {
   const dispatch = useDispatch();
-  const [resize, setResize] = useState(window.innerWidth <= 700);
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 700));
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () =>
+    setIsMobile(window.innerWidth <= 700)
+  );
   return (
     <div className="screen-container">
       <div className="dim-background" onClick={() => dispatch(hide())} />
       <div
         className="terms-pop-container"
         style={
-          resize
+          isMobile
             ? {
                 width: "100vw",
                 height: "100vh",

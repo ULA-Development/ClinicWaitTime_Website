@@ -1,32 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { ReactComponent as Logo } from "../../assets/logo.svg";
 import Navbar from "./Navbar";
-import "./Header.css";
-import { ReactComponent as Logo } from "../../assets/download.svg";
 import MobileHeader from "./MobileHeader";
-interface HeaderProps {
-  selectedItem: string | null;
-}
+import "./Header.css";
 
-function Header({ selectedItem }: HeaderProps) {
-  const [resize, setResize] = useState(window.innerWidth <= 700);
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 700));
+function Header() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () =>
+    setIsMobile(window.innerWidth <= 700)
+  );
 
-  const desktopHeader = () => {
-    return (
-      <section className="header">
-        <section className="header-logo">
-          <Logo className="logo" />
-        </section>
-        <section className="header-navbar">
-          <Navbar selectedItem={selectedItem} />
-        </section>
+  return isMobile ? (
+    <MobileHeader />
+  ) : (
+    <section className="header">
+      <section className="header-logo">
+        <Logo className="logo" />
       </section>
-    );
-  };
-  const mobileHeader = () => {
-    return <MobileHeader />;
-  };
-  return resize ? mobileHeader() : desktopHeader();
+      <section className="header-navbar">
+        <Navbar />
+      </section>
+    </section>
+  );
 }
 
 export default Header;

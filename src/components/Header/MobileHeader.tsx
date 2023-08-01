@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "./MobileHeader.css";
 import { ReactComponent as HamMenu } from "../../assets/icons/bars-solid.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icons/times-solid.svg";
-import { ReactComponent as BGC } from "../../assets/download.svg";
+import { ReactComponent as TopBackground } from "../../assets/logo.svg";
 import { show } from "../../reducers/termsReducer";
 import { useDispatch } from "react-redux";
 
 function MobileHeader() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const selectedMenu = window.location.href.split("/").at(-1);
   const handleToggle = () => {
@@ -28,23 +28,16 @@ function MobileHeader() {
           className="dropdown-menu-title"
           style={{ position: "relative", overflow: "hidden" }}
         >
-          
-          <BGC
-            style={{
-              position: "absolute",
-              width: "350px",
-              height: "350px",
-              top: "-160px",
-              left: "-70px",
-              fill: "#00655a",
-              opacity: "100%"
-            }}
-          />
+          <TopBackground className="top-background-icon"/>
           {/* <div className="sign-buttons">
             <a href="/signup" className="sign-up-button">Sign me up</a>
             <a href="/signin" className="sign-in-button">Log me in</a>
           </div> */}
-          <CloseIcon className="dropmenu-close-button" style={{position: "absolute"}} onClick={handleToggle} />
+          <CloseIcon
+            className="dropmenu-close-button"
+            style={{ position: "absolute" }}
+            onClick={handleToggle}
+          />
         </div>
 
         <div className="header-links">
@@ -106,7 +99,7 @@ function MobileHeader() {
           <a
             // href="/terms-of-use"
             className="dropdown-footer-item"
-            style={{ color: "lightgrey", cursor: "default"  }}
+            style={{ color: "lightgrey", cursor: "default" }}
           >
             Privacy Policy
           </a>
@@ -114,7 +107,7 @@ function MobileHeader() {
           <a
             // href="/terms-of-use"
             className="dropdown-footer-item"
-            style={{ color: "lightgrey", cursor: "default"  }}
+            style={{ color: "lightgrey", cursor: "default" }}
           >
             FAQ
           </a>

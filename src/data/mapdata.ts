@@ -45,7 +45,6 @@ export async function getTravelTimeAndDistance(
   return routePromise;
 }
 export function getCurrLocation() {
-  // setLoading(true);
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
@@ -110,12 +109,10 @@ export async function getTopHospitals(
   var platform = new H.service.Platform({ apikey: HERE_MAPS_KEY });
   const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
     // let { time: travelTime, distance: routeDistance } =
-    //   await getTravelTimeAndDistance(userLocation, hospital.location, platform);
-    // Keep the above code commented out for now for testing purposes
+    //   await getTravelTimeAndDistance(userLocation, hospital.location, platform); // Comment out for development
 
-    let routeDistance = hospital.location.distance || 0; // in km
-    let travelTime = routeDistance / 0.66; // in minutes (assuming 40km/h)
-    // comment out the above two lines for deployment
+    let routeDistance = hospital.location.distance || 0; // Comment out for production
+    let travelTime = routeDistance / 0.66; // Comment out for production
 
     let totalWaitTime =
       hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;

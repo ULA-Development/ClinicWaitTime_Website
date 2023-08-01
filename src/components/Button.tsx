@@ -1,22 +1,27 @@
-import { ReactNode, useState, useRef, useEffect } from "react";
+import { ReactNode, useState, useRef } from "react";
 import icon from "../assets/icons/arrow-right-solid.svg";
 import "./Button.css";
-import { AnyTxtRecord } from "dns";
 
-interface Props {
+interface ButtonProps {
   children: ReactNode;
   onClick?: () => void;
   style?: React.CSSProperties;
   noImg?: boolean;
-  typeOf?: any
+  typeOf?: any;
 }
 
-const Button = ({ children, onClick = () => null, style, noImg = false, typeOf = "button" }: Props) => {
+const Button = ({
+  children,
+  onClick = () => null,
+  style,
+  noImg = false,
+  typeOf = "button",
+}: ButtonProps) => {
   const [clicked, setClicked] = useState(false);
   const buttonRef = useRef<HTMLDivElement>(null);
   return (
     <button
-      className={`Button ${clicked ? "Button-clicked" : ""}`}
+      className={`button-container ${clicked ? "button-clicked" : ""}`}
       onClick={() => {
         onClick();
         setClicked(true);

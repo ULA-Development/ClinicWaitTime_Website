@@ -1,6 +1,4 @@
-@import url("../assets/common.css");
-
-.Button {
+.button-container {
   position: relative;
   border-radius: 15px;
   font-weight: bold;
@@ -17,7 +15,7 @@
   height: 50px;
   cursor: pointer;
 }
-img {
+.button-content img {
   position: relative;
   padding: 0;
 }
@@ -25,59 +23,116 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 
-.Button-clicked {
-
+.button-clicked {
   animation: button-click 0.3s;
 }
 
 @keyframes button-click {
   0% {
-    background-image: radial-gradient(circle at center, var(--main-dark) 0%, var(--main-dark) 0%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main-dark) 0%,
+      var(--main-dark) 0%
+    );
   }
   10% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 10%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 10%
+    );
   }
   20% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 20%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 20%
+    );
   }
   30% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 30%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 30%
+    );
   }
   40% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 40%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 40%
+    );
   }
   50% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 50%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 50%
+    );
   }
   60% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 60%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 60%
+    );
   }
   70% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 70%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 70%
+    );
   }
   80% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 80%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 80%
+    );
   }
   90% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 90%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 90%
+    );
   }
   95% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 95%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 95%
+    );
   }
   96.5% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 96.5%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 96.5%
+    );
   }
   98% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 98%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 98%
+    );
   }
   99% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 99%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 99%
+    );
   }
   100% {
-    background-image: radial-gradient(circle at center, var(--main) 0%, var(--main-dark) 100%);
+    background-image: radial-gradient(
+      circle at center,
+      var(--main) 0%,
+      var(--main-dark) 100%
+    );
   }
 }
-

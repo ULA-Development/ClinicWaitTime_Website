@@ -1,5 +1,3 @@
-@import url("../assets/common.css");
-
 .footer {
   display: flex;
   position: absolute;
@@ -8,7 +6,7 @@
   width: 100%;
   align-items: center;
   padding: 1%;
-  background: linear-gradient(to right, var(--main-dark2), var(--main));
+  background: linear-gradient(to right, var(--main-dark), var(--main));
   flex-shrink: 0;
   height: 70px;
   box-sizing: border-box;
@@ -46,6 +44,6 @@
 .footer-logo:hover {
   transform: rotate(180deg);
 }
-p {
+.footer p {
   color: white;
 }

@@ -130,7 +130,7 @@ const RegisterPage = () => {
   };
   return (
     <div>
-      <Header selectedItem={"Signup"} />
+      <Header/>
       <div className="content-container-register">
         <div
           className="content-register"

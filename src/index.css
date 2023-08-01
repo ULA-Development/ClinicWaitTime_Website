@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
+@import url("./assets/common.css");
 body{
     font-family: 'Lexend', sans-serif;
 }

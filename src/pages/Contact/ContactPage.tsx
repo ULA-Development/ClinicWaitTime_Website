@@ -20,7 +20,7 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (message.length !== 0 && cookies.contactedAlready === undefined) {
       setCookie("contactedAlready", true, { maxAge: 60 * 60 * 24 });
-      // sendEmail(e, form);
+      sendEmail(e, form);
     }
   };
 
@@ -126,7 +126,7 @@ const Contact = () => {
   };
   return (
     <>
-      <Header selectedItem={"Home"} />
+      <Header/>
       {submitted ? successSubmitSection() : contactForm()}
       <SmallFooter />
     </>

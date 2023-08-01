@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./Navbar.css";
 
-interface NavbarProps {
-  selectedItem: string | null;
-}
-
-function Navbar({ selectedItem }: NavbarProps) {
+function Navbar() {
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
 
   useEffect(() => {
     const pathname = window.location.pathname;
     setSelectedPath(getSelectedItem(pathname));
-  }, []);
-
-  const handleItemClick = (item: string) => {
-    setSelectedPath(item);
-  };
+  }, [window.location.pathname]);
 
   const getSelectedItem = (pathname: string) => {
-    const item = pathname.slice(1); // Remove the leading "/"
+    const item = pathname.slice(1);
     if (item === "") {
       return "home";
     }
@@ -33,7 +25,6 @@ function Navbar({ selectedItem }: NavbarProps) {
           selectedPath === "register" ? "selected" : ""
         }`}
         style={{ color: "lightgrey" }}
-        // onClick={() => handleItemClick("register")}
       >
         Register
       </a>
@@ -41,7 +32,6 @@ function Navbar({ selectedItem }: NavbarProps) {
         style={{ color: "lightgrey" }}
         // href="/signup"
         className={`navbar-item ${selectedPath === "signup" ? "selected" : ""}`}
-        // onClick={() => handleItemClick("signup")}
       >
         Sign Up
       </a>
@@ -49,7 +39,6 @@ function Navbar({ selectedItem }: NavbarProps) {
         style={{ color: "lightgrey" }}
         // href="/signin"
         className={`navbar-item ${selectedPath === "signin" ? "selected" : ""}`}
-        // onClick={() => handleItemClick("login")}
       >
         Sign In
       </a>
@@ -58,14 +47,12 @@ function Navbar({ selectedItem }: NavbarProps) {
         className={`navbar-item ${
           selectedPath === "contact" ? "selected" : ""
         }`}
-        onClick={() => handleItemClick("contact")}
       >
         Contact
       </a> */}
       <a
         href="/"
         className={`navbar-item ${selectedPath === "home" ? "selected" : ""}`}
-        onClick={() => handleItemClick("home")}
       >
         Home
       </a>

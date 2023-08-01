@@ -130,8 +130,7 @@ const HomePage = () => {
           text="Locating..."
           style={{
             alignSelf: "center",
-            position: "absolute",
-            top: "10%",
+            marginTop: "30px",
             left: "40%",
           }}
         />
@@ -231,7 +230,7 @@ const HomePage = () => {
           )}
         </div>
       ) : null}
-      <Header selectedItem={"Home"} />
+      <Header/>
       <div
         className="home-content"
         style={resize ? { width: "calc(100% - 14px)" } : {}}
