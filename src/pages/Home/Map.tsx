@@ -7,7 +7,7 @@ import {
   HospitalWithTime,
 } from "../../assets/globals";
 
-declare var H: any, google: any;
+declare var google: any;
 
 type HereMapComponentProps = {
   topHospitals: HospitalWithTime[];
@@ -29,6 +29,13 @@ function GoogleMapComponent({
   const markerRef = useRef<google.maps.Marker | null>(null);
   const handleMapLoad = async (map: google.maps.Map) => {
     setMap(map);
+  };
+  const handleSelectClinic = (index: number) => {
+    if (selectedClinic === index) {
+      setSelectedClinic(-1);
+    } else {
+      setSelectedClinic(index);
+    }
   };
   const processMap = async () => {
     // const marker = new google.maps.Marker({
@@ -59,13 +66,7 @@ function GoogleMapComponent({
     }
   }, [UserLocation, map]);
 
-  const handleSelectClinic = (index: number) => {
-    if (selectedClinic === index) {
-      setSelectedClinic(-1);
-    } else {
-      setSelectedClinic(index);
-    }
-  };
+  
   return (
     <div style={{ width: "100%", height: "100%" }}>
       {/* <GoogleMap

@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { ReactComponent as SignupIcon } from "../../assets/icons/folder-plus-solid.svg";
 import Header from "../../components/Header/Header";
 import TextInput from "../../components/TextInput";
 import SmallFooter from "../../components/SmallFooter";
 import Button from "../../components/Button";
-import { ReactComponent as SignupIcon } from "../../assets/icons/folder-plus-solid.svg";
 import {
   dbHandler,
   authHandler,
   handleErrorMessages,
 } from "../../data/firebase";
-import "./SignupPage.css";
 import { UserCredential } from "firebase/auth";
-import { useSelector } from "react-redux";
+import "./SignupPage.css";
 
 const SignupPage = () => {
-  const isMobile = useSelector((state: any) => state.isMobile.value);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () =>
+    setIsMobile(window.innerWidth <= 700)
+  );
   const [resetInput, setResetInput] = useState(false);
   const [emailText, setEmailText] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
@@ -78,7 +80,7 @@ const SignupPage = () => {
   };
   return (
     <div>
-      <Header/>
+      <Header />
       <div className="content-container">
         <div
           className="content"

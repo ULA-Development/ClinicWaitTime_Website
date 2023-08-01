@@ -7,7 +7,7 @@ function Navbar() {
   useEffect(() => {
     const pathname = window.location.pathname;
     setSelectedPath(getSelectedItem(pathname));
-  }, [window.location.pathname]);
+  }, []);
 
   const getSelectedItem = (pathname: string) => {
     const item = pathname.slice(1);

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as Search } from "../../assets/icons/magnifying-glass-solid.svg";
 import { ReactComponent as Location } from "../../assets/icons/location-arrow-solid.svg";
 import "./LocationInput.css";
@@ -8,6 +8,7 @@ interface Props {
   currLocation: () => void;
   value: string;
   handleSearch: () => void;
+  isLoading: boolean;
 }
 
 const LocationInput = ({
@@ -15,8 +16,8 @@ const LocationInput = ({
   onChange,
   currLocation,
   handleSearch,
+  isLoading,
 }: Props) => {
-
   const [localValue, setLocalValue] = useState(value);
 
   function handleChange(input: React.ChangeEvent<HTMLInputElement>) {
@@ -25,40 +26,52 @@ const LocationInput = ({
   }
 
   function handleKeyDown(e?: React.KeyboardEvent<HTMLInputElement>) {
+    if (isLoading) {
+      return;
+    }
     if (e && e.key === "Enter") {
       e.preventDefault();
       handleSearch();
       onChange(localValue);
     }
-    if(!e){
+    if (!e) {
       handleSearch();
       onChange(localValue);
     }
   }
-
+  function handleCurrLocationClick() {
+    if (isLoading) {
+      return;
+    }
+    currLocation();
+  }
   useEffect(() => {
     setLocalValue(value);
   }, [value]);
 
   return (
-    <div
-      className="location-input-container"
-    >
-
+    <div className="location-input-container">
       <input
         value={localValue === "Current Location" ? "" : localValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder={localValue === "Current Location" ? "Current Location" : "Your location ..."}
+        placeholder={
+          localValue === "Current Location"
+            ? "Current Location"
+            : "Your location ..."
+        }
         type="text"
         className="location-input"
         autoComplete="off"
       />
-      <div className="curr-loction-container" onClick={currLocation}>
+      <div
+        className="curr-loction-container"
+        onClick={() => handleCurrLocationClick()}
+      >
         <Location className="curr-location-icon" />
       </div>
       <div className="search-loction-container">
-      <Search className="search-icon" onClick={() => handleKeyDown()} />
+        <Search className="search-icon" onClick={() => handleKeyDown()} />
       </div>
     </div>
   );

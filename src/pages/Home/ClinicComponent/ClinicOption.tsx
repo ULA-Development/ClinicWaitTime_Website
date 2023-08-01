@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ClinicOption.css";
 import BusinessIndicator from "./BusynessIndicator";
 import StarRating from "../StarRating";

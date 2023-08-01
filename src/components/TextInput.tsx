@@ -11,6 +11,7 @@ import { ReactComponent as WebsiteIcon } from "../assets/icons/globe-solid.svg";
 import { ReactComponent as CapaIcon } from "../assets/icons/database-solid.svg";
 import { ReactComponent as DocIcon } from "../assets/icons/user-doctor-solid.svg";
 import { ReactComponent as ClockIcon } from "../assets/icons/clock-regular.svg";
+import { ReactComponent as StarIcon } from "../assets/icons/star-solid.svg";
 import VisEyeIcon from "../assets/icons/eye-solid.svg";
 import InvisEyeIcon from "../assets/icons/eye-slash-solid.svg";
 import "./TextInput.css";
@@ -19,8 +20,8 @@ interface TextInputProps {
   onChange: (arg0: string) => void;
   value: string;
   type: string;
-  errorMessage: string | null;
-  setError: (arg0: any) => void;
+  errorMessage?: string | null;
+  setError?: (arg0: any) => void;
   reset?: boolean;
   setReset: (arg0: boolean) => void;
 }
@@ -30,7 +31,7 @@ const TextInput = ({
   value,
   type,
   errorMessage = null,
-  setError,
+  setError = (arg0: null | string) => null,
   reset = false,
   setReset,
 }: TextInputProps) => {
@@ -70,7 +71,7 @@ const TextInput = ({
       }
       case "Full Address": {
         return {
-          placeholder: "Address",
+          placeholder: "Address (streetNum cityName, postal)",
           icon: <LocationIcon className={iconClass} />,
         };
       }
@@ -92,7 +93,18 @@ const TextInput = ({
           icon: <ClockIcon className={iconClass} />,
         };
       }
-
+      case "stars": {
+        return {
+          placeholder: "Num stars (0, 0.5, 1, 1.5 ... 5) ",
+          icon: <StarIcon className={iconClass} />,
+        };
+      }
+      case "hoursOperation": {
+        return {
+          placeholder: "Hours (example ... 9am - 5pm | Monday - Friday)",
+          icon: <ClockIcon className={iconClass} />,
+        };
+      }
       case "Confirm Password": {
         return {
           placeholder: "Confirm password",
@@ -135,7 +147,7 @@ const TextInput = ({
       inputRef.current?.blur();
       setReset(false);
     }
-  }, [reset]);
+  }, [reset === true]);
 
   useEffect(
     function handleError() {

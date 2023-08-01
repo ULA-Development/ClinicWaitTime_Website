@@ -1,27 +1,25 @@
-@import url("./../../assets/common.css");
-
 .filter-buttons {
-    border-radius: 50px 50px;
-    padding: 5px 10px;
-    margin: 4px 2px;
-    border: 2px solid var(--main);
-    background-color: white;
-    box-shadow: none;
-    width: 150px;
-    transition: background-color 0.1s, color 0.1s;
-    cursor: pointer;
-    margin-right: 10px;
+  border-radius: 50px 50px;
+  padding: 5px 10px;
+  margin: 4px 2px;
+  border: 2px solid var(--main);
+  background-color: white;
+  box-shadow: none;
+  width: 150px;
+  transition: background-color 0.1s, color 0.1s;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
 .filter-buttons.active {
-    background-color: var(--main);
-    color: white;
+  background-color: var(--main);
+  color: white;
 }
 .title-filter-results {
-    font-size: 25px;
-    margin-bottom: 5px;
-    grid-column: 1/ -1;
-    font-weight: normal;
-    margin-left:7px;
-    color: black;
+  font-size: 25px;
+  margin-bottom: 5px;
+  grid-column: 1/ -1;
+  font-weight: normal;
+  margin-left: 7px;
+  color: black;
 }

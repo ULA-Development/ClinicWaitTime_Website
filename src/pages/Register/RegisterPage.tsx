@@ -1,80 +1,61 @@
 import React, { useState } from "react";
+import { ReactComponent as SignupIcon } from "../../assets/icons/folder-plus-solid.svg";
 import Header from "../../components/Header/Header";
 import TextInput from "../../components/TextInput";
 import SmallFooter from "../../components/SmallFooter";
 import Button from "../../components/Button";
-import { ReactComponent as SignupIcon } from "../../assets/icons/folder-plus-solid.svg";
 import { dbHandler } from "../../data/firebase";
-import "./register.css";
-import { useSelector } from "react-redux";
 import { getCoordinates } from "../../data/mapdata";
+import "./RegisterPage.css";
 
 const RegisterPage = () => {
-  const isMobile = useSelector((state: any) => state.isMobile.value);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () =>
+    setIsMobile(window.innerWidth <= 700)
+  );
   const [resetInput, setResetInput] = useState(false);
   const [emailText, setEmailText] = useState("");
   const [addressText, setAddressText] = useState("");
   const [phoneText, setPhoneText] = useState("");
   const [websiteText, setWebsiteText] = useState("");
-
+  const [starsText, setStarsText] = useState("");
+  const [hoursText, setHoursText] = useState("");
   const [nameText, setNameText] = useState("");
   const [numDoctorsText, setNumDoctorsText] = useState("");
   const [capacityText, setCapacityText] = useState("");
   const [avgWaitTimeText, setAvgWaitTimeText] = useState("");
-  const [nameErrorMessage, setNameErrorMessage] = useState<null | string>(null);
-  const [addressErrorMessage, setAddressErrorMessage] = useState<null | string>(
-    null
-  );
-  const [phoneErrorMessage, setPhoneErrorMessage] = useState<null | string>(
-    null
-  );
-  const [websiteErrorMessage, setWebsiteErrorMessage] = useState<null | string>(
-    null
-  );
-  const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
-    null
-  );
-  const [numDoctorsErrorMessage, setNumDoctorsErrorMessage] = useState<
-    null | string
-  >(null);
-  const [capacityErrorMessage, setCapacityErrorMessage] = useState<
-    null | string
-  >(null);
-  const [avgWaitTimeErrorMessage, setAvgWaitTimeErrorMessage] = useState<
-    null | string
-  >(null);
 
   const handleRegister = () => {
     // check if nameText contains letters and spaces only
     if (!/^[a-zA-Z\s-]+$/.test(nameText)) {
-      setNameErrorMessage("Name can only contain letters");
+      alert("Name can only contain letters");
       return;
     }
     if (addressText.length === 0) {
-      setAddressErrorMessage("Address cannot be empty");
+      alert("Address cannot be empty");
       return;
     }
     if (nameText.length === 0) {
-      setNameErrorMessage("Name cannot be empty");
+      alert("Name cannot be empty");
       return;
     }
     if (!/^[0-9]+$/.test(numDoctorsText) && numDoctorsText !== "") {
-      setNumDoctorsErrorMessage("Number of doctors must be a number");
+      alert("Number of doctors must be a number");
       return;
     }
     if (!/^[0-9]+$/.test(capacityText) && capacityText !== "") {
-      setCapacityErrorMessage("Capacity must be a number");
+      alert("Capacity must be a number");
       return;
     }
     if (!/^[0-9]+$/.test(avgWaitTimeText) && avgWaitTimeText !== "") {
-      setAvgWaitTimeErrorMessage("Average wait time must be a number");
+      alert("Average wait time must be a number");
       return;
     }
 
-    try {
-      getCoordinates(addressText).then((coords) => {
+    getCoordinates(addressText)
+      .then((coords) => {
         if (coords === undefined) {
-          setAddressErrorMessage("Address not found");
+          alert("Address not found");
           return;
         }
         const occupancy = {
@@ -100,7 +81,7 @@ const RegisterPage = () => {
           !/^[0-9]+$/.test(phoneText) &&
           phoneText !== ""
         ) {
-          setPhoneErrorMessage("Phone number must be 10 digits");
+          alert("Phone number must be 10 digits");
           return;
         }
         if (phoneText !== "") {
@@ -119,18 +100,17 @@ const RegisterPage = () => {
         if (websiteText !== "") {
           clinicData.website = websiteText;
         }
-
+        clinicData.rating = Number(starsText);
+        clinicData.hours = hoursText;
         dbHandler.createClinic(clinicData);
         alert("Clinic created successfully");
         setResetInput(true);
-      });
-    } catch (error) {
-      setAddressErrorMessage("Address not found");
-    }
+      })
+      .catch(() => alert("Address not found!"));
   };
   return (
     <div>
-      <Header/>
+      <Header />
       <div className="content-container-register">
         <div
           className="content-register"
@@ -145,8 +125,6 @@ const RegisterPage = () => {
               value={nameText}
               onChange={setNameText}
               type="Name"
-              errorMessage={nameErrorMessage}
-              setError={setNameErrorMessage}
               reset={resetInput}
               setReset={setResetInput}
             />
@@ -154,8 +132,6 @@ const RegisterPage = () => {
               value={addressText}
               onChange={setAddressText}
               type="Full Address"
-              errorMessage={addressErrorMessage}
-              setError={setAddressErrorMessage}
               reset={resetInput}
               setReset={setResetInput}
             />
@@ -163,8 +139,6 @@ const RegisterPage = () => {
               value={emailText}
               onChange={setEmailText}
               type="Email"
-              errorMessage={emailErrorMessage}
-              setError={setEmailErrorMessage}
               reset={resetInput}
               setReset={setResetInput}
             />
@@ -172,8 +146,6 @@ const RegisterPage = () => {
               value={phoneText}
               onChange={setPhoneText}
               type="Phone"
-              errorMessage={phoneErrorMessage}
-              setError={setPhoneErrorMessage}
               reset={resetInput}
               setReset={setResetInput}
             />
@@ -181,8 +153,20 @@ const RegisterPage = () => {
               value={websiteText}
               onChange={setWebsiteText}
               type="Website"
-              errorMessage={websiteErrorMessage}
-              setError={setWebsiteErrorMessage}
+              reset={resetInput}
+              setReset={setResetInput}
+            />
+            <TextInput
+              value={hoursText}
+              onChange={setHoursText}
+              type="hoursOperation"
+              reset={resetInput}
+              setReset={setResetInput}
+            />
+            <TextInput
+              value={starsText}
+              onChange={setStarsText}
+              type="stars"
               reset={resetInput}
               setReset={setResetInput}
             />
@@ -198,8 +182,6 @@ const RegisterPage = () => {
                 value={numDoctorsText}
                 onChange={setNumDoctorsText}
                 type="numDoctors"
-                errorMessage={numDoctorsErrorMessage}
-                setError={setNumDoctorsErrorMessage}
                 reset={resetInput}
                 setReset={setResetInput}
               />
@@ -207,8 +189,6 @@ const RegisterPage = () => {
                 value={capacityText}
                 onChange={setCapacityText}
                 type="capacity"
-                errorMessage={capacityErrorMessage}
-                setError={setCapacityErrorMessage}
                 reset={resetInput}
                 setReset={setResetInput}
               />
@@ -216,8 +196,6 @@ const RegisterPage = () => {
                 value={avgWaitTimeText}
                 onChange={setAvgWaitTimeText}
                 type="avgWaitTime"
-                errorMessage={avgWaitTimeErrorMessage}
-                setError={setAvgWaitTimeErrorMessage}
                 reset={resetInput}
                 setReset={setResetInput}
               />

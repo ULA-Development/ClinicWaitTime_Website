@@ -42,41 +42,43 @@ const handleErrorMessages = (code: string) => {
 async function fetchClinics(currLat: number, currLong: number) {
   const clinicRef = ref(database, "clinics");
   return new Promise<any[]>((resolve, reject) => {
-    onValue(clinicRef, (snapshot) => {
-      let closeClincis: any[] = [];
-      try {
-        const data = snapshot.val();
-        const clinicIds = Object.keys(data);
-        const closeDist = 30;
-        clinicIds.forEach((id: string) => {
-          if (id.includes("*")) {
-            const coords = id.split("|");
-            const clinicLat = Number(coords[0].replace("*", "."));
-            const clinicLong = Number(coords[1].replace("*", "."));
-            const distance = distanceOfCoords(
-              currLat,
-              currLong,
-              clinicLat,
-              clinicLong
-            );
-            if (distance <= closeDist) {
-              const clinicInfo = {
-                location: {
-                  lat: clinicLat,
-                  lng: clinicLong,
-                  distance: distance,
-                },
-                info: data[id],
-              };
-              closeClincis.push(clinicInfo);
-            }
-          }
-        });
-        resolve(closeClincis);
-      } catch (error) {
-        reject(error);
-      }
-    }, reject);
+    onValue(
+      clinicRef,
+      (snapshot) => {
+        let closeClincis: any[] = [];
+        try {
+          const data = snapshot.val();
+          const clinicIds = Object.keys(data);
+          const closeDist = 30;
+          clinicIds.forEach((id: string) => {
+              const coords = id.split("|");
+              const clinicLat = Number(coords[0].replace("*", "."));
+              const clinicLong = Number(coords[1].replace("*", "."));
+              const distance = distanceOfCoords(
+                currLat,
+                currLong,
+                clinicLat,
+                clinicLong
+              );
+              if (distance <= closeDist) {
+                const clinicInfo = {
+                  location: {
+                    lat: clinicLat,
+                    lng: clinicLong,
+                    distance: distance,
+                  },
+                  info: data[id],
+                };
+                closeClincis.push(clinicInfo);
+              }
+          });
+          resolve(closeClincis);
+        } catch (error) {
+          reject(error);
+        }
+      },
+      reject
+    );
   });
 }
 
@@ -112,7 +114,8 @@ const dbCreateUser = (uid: string, name: string, email: string) => {
 };
 
 const dbCreateClinic = (clinicData: any) => {
-  const { name, address, coords, occupancy, phoneNumber, email, website } = clinicData;
+  const { name, address, coords, occupancy, phoneNumber, email, website } =
+    clinicData;
   set(ref(database, "clinics/" + coords), {
     name: name,
     address: address,
@@ -123,23 +126,22 @@ const dbCreateClinic = (clinicData: any) => {
   });
 };
 
-function dbCreateFeedback(message: string){
-  const promise = new Promise ((resolve, reject) => {
+function dbCreateFeedback(message: string) {
+  const promise = new Promise((resolve, reject) => {
     const ticketCode = Math.random().toString(36).substring(2, 12);
-    get(ref(database, "feedback/" + ticketCode)).then( (snapshot) => {
-      if(!snapshot.exists()){
+    get(ref(database, "feedback/" + ticketCode)).then((snapshot) => {
+      if (!snapshot.exists()) {
         set(ref(database, "feedback/" + ticketCode), {
           message: message,
         });
-        resolve(true)
-      }else{
-        reject("Error occured, please try again")
+        resolve(true);
+      } else {
+        reject("Error occured, please try again");
       }
-    })
+    });
   });
-  return promise
+  return promise;
 }
-
 
 const dbHandler = {
   db: database,

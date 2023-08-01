@@ -1,6 +1,6 @@
 import emailjs from "@emailjs/browser";
 
-export function sendEmail(e: any , form: any) {
+export function sendEmail(e: any , form: any, setSubmitted: (arg0: boolean) => void) {
     e.preventDefault();
 
     if (form.current) {
@@ -26,10 +26,11 @@ export function sendEmail(e: any , form: any) {
               form.current.removeChild(hiddenInput);
             }
             e.target.reset();
-            alert("Email sent successfully!");
+            setSubmitted(true)
           },
           (error) => {
             alert("Failed to send email: " + error.text);
+            setSubmitted(false)
           }
         );
     }
