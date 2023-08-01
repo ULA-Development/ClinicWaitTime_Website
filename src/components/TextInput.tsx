@@ -2,28 +2,26 @@ import React, { useState, useEffect, useRef } from "react";
 import { ReactComponent as EmailIcon } from "../assets/icons/envelope-solid.svg";
 import { ReactComponent as PasswordIcon } from "../assets/icons/lock-solid.svg";
 import { ReactComponent as NameIcon } from "../assets/icons/user-solid.svg";
-import InvisEyeIcon from "../assets/icons/eye-slash-solid.svg";
 import { ReactComponent as NPIIcon } from "../assets/icons/slack-hash.svg";
-import VisEyeIcon from "../assets/icons/eye-solid.svg";
 import { ReactComponent as ReferIcon } from "../assets/icons/user-friends-solid.svg";
 import { ReactComponent as ErrorIcon } from "../assets/icons/exclamation-circle-solid.svg";
-import { ReactComponent as SearchIcon } from "../assets/icons/search-solid.svg";
 import { ReactComponent as LocationIcon } from "../assets/icons/map-marker-alt-solid.svg";
 import { ReactComponent as PhoneIcon } from "../assets/icons/phone-solid.svg";
 import { ReactComponent as WebsiteIcon } from "../assets/icons/globe-solid.svg";
 import { ReactComponent as CapaIcon } from "../assets/icons/database-solid.svg";
 import { ReactComponent as DocIcon } from "../assets/icons/user-doctor-solid.svg";
 import { ReactComponent as ClockIcon } from "../assets/icons/clock-regular.svg";
-
+import { ReactComponent as StarIcon } from "../assets/icons/star-solid.svg";
+import VisEyeIcon from "../assets/icons/eye-solid.svg";
+import InvisEyeIcon from "../assets/icons/eye-slash-solid.svg";
 import "./TextInput.css";
-import { useSelector } from "react-redux";
 
-interface Props {
+interface TextInputProps {
   onChange: (arg0: string) => void;
   value: string;
   type: string;
-  errorMessage: string | null;
-  setError: (arg0: any) => void;
+  errorMessage?: string | null;
+  setError?: (arg0: any) => void;
   reset?: boolean;
   setReset: (arg0: boolean) => void;
 }
@@ -33,11 +31,14 @@ const TextInput = ({
   value,
   type,
   errorMessage = null,
-  setError,
+  setError = (arg0: null | string) => null,
   reset = false,
   setReset,
-}: Props) => {
-  const isMobile = useSelector((state: any) => state.isMobile.value);
+}: TextInputProps) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () =>
+    setIsMobile(window.innerWidth <= 700)
+  );
   const inputRef = useRef<HTMLInputElement>(null);
   const [focus, setFocus] = useState(value !== "");
   const [iconClass, setIconClass] = useState("icon");
@@ -70,7 +71,7 @@ const TextInput = ({
       }
       case "Full Address": {
         return {
-          placeholder: "Address",
+          placeholder: "Address (streetNum cityName, postal)",
           icon: <LocationIcon className={iconClass} />,
         };
       }
@@ -92,7 +93,18 @@ const TextInput = ({
           icon: <ClockIcon className={iconClass} />,
         };
       }
-
+      case "stars": {
+        return {
+          placeholder: "Num stars (0, 0.5, 1, 1.5 ... 5) ",
+          icon: <StarIcon className={iconClass} />,
+        };
+      }
+      case "hoursOperation": {
+        return {
+          placeholder: "Hours (example ... 9am - 5pm | Monday - Friday)",
+          icon: <ClockIcon className={iconClass} />,
+        };
+      }
       case "Confirm Password": {
         return {
           placeholder: "Confirm password",
@@ -135,8 +147,20 @@ const TextInput = ({
       inputRef.current?.blur();
       setReset(false);
     }
-  }, [reset]);
+  }, [reset === true]);
 
+  useEffect(
+    function handleError() {
+      if (errorMessage != null) {
+        setIconClass("icon error");
+        onChange("");
+        setFocus(false);
+      } else {
+        setIconClass("icon");
+      }
+    },
+    [errorMessage]
+  );
   function handleFocus() {
     if (errorMessage !== null && focus === false) {
       setError(null);
@@ -152,19 +176,6 @@ const TextInput = ({
     const { value } = input.target;
     onChange(value);
   }
-
-  useEffect(
-    function handleError() {
-      if (errorMessage != null) {
-        setIconClass("icon error");
-        onChange("");
-        setFocus(false);
-      } else {
-        setIconClass("icon");
-      }
-    },
-    [errorMessage]
-  );
 
   return (
     <div

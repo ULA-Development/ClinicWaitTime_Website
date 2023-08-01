@@ -1,4 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
-body{
-    font-family: 'Lexend', sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Lexend&display=swap");
+@import url("./assets/common.css");
+body {
+  font-family: "Lexend", sans-serif;
+}
+::-webkit-scrollbar {
+  background: transparent;
+  width: 10px;
+  height: 0px;
+}
+::-webkit-scrollbar-track {
+  background: var(--hover-grey);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--main);
+  border-radius: 9px;
 }

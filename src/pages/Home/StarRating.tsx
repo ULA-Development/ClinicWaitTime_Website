@@ -1,4 +1,4 @@
-import React, { ReactComponentElement } from "react";
+import React from "react";
 import { ReactComponent as Full } from "../../assets/icons/star-solid.svg";
 import { ReactComponent as Empty } from "../../assets/icons/star-regular.svg";
 import { ReactComponent as Half } from "../../assets/icons/star-half-alt-solid.svg";
@@ -8,7 +8,7 @@ interface StarRatingProps {
   rating: number;
 }
 
-const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
+const StarRating = ({ rating }: StarRatingProps) => {
   // Rating ranges between 0-5 and can have .5
   const stars = () => {
     const stars: any = [];
@@ -33,7 +33,6 @@ const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
         id: i,
       });
     }
-
     return stars;
   };
 

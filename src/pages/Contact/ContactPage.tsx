@@ -1,26 +1,28 @@
 import React, { useRef, useState } from "react";
 import Header from "../../components/Header/Header";
 import SmallFooter from "../../components/SmallFooter";
-import "./ContactPage.css";
+import Button from "../../components/Button";
+import SuccessSubmit from "../../components/SuccessSubmit";
 import { sendEmail } from "../../data/email";
 import { useCookies } from "react-cookie";
-import Button from "../../components/Button";
-import { ReactComponent as CheckIcon } from "../../assets/icons/check-circle-solid.svg";
+import "./ContactPage.css";
 
 const Contact = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["contactedAlready"]);
+  const [cookies, setCookie] = useCookies(["contactedAlready"]);
   const [submitted, setSubmitted] = useState(
-    cookies.contactedAlready != undefined
+    cookies.contactedAlready !== undefined
   );
   const [message, setMessage] = useState("");
   const [invalid, setInvalid] = useState(false);
-  const [resize, setResize] = useState(window.innerWidth <= 700);
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 700));
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () =>
+    setIsMobile(window.innerWidth <= 700)
+  );
   const form = useRef<HTMLFormElement>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (message.length !== 0 && cookies.contactedAlready === undefined) {
       setCookie("contactedAlready", true, { maxAge: 60 * 60 * 24 });
-      // sendEmail(e, form);
+      sendEmail(e, form, setSubmitted);
     }
   };
 
@@ -29,7 +31,7 @@ const Contact = () => {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div
           className="contact-content"
-          style={resize ? { width: "90%" } : { width: "600px" }}
+          style={isMobile ? { width: "90%" } : { width: "600px" }}
         >
           <div className="contact-title">
             <span style={{ display: "block", fontSize: "35px" }}>
@@ -96,38 +98,14 @@ const Contact = () => {
       </div>
     );
   };
-  const successSubmitSection = () => {
-    return (
-      <div className="success-main-container">
-        <div
-          className="success-content"
-          style={resize ? { width: "90%" } : { width: "600px" }}
-        >
-          <h1>Thank you.</h1>
-          <h5 className="contact-subtitle">Your message has been sent.</h5>
-          <span>
-            {" "}
-            We appreciate your support and will review your message very soon.
-          </span>
-          <h5 className="contact-subtitle">
-            While we process and respond to your message, submitting emails will
-            be disabled for 24 hours.
-          </h5>
-          <CheckIcon className="check-icon" />
-          <button
-            onClick={() => removeCookie("contactedAlready")}
-            style={{ display: "block", marginTop: "50px" }}
-          >
-            Reset cookies
-          </button>
-        </div>
-      </div>
-    );
-  };
   return (
     <>
-      <Header selectedItem={"Home"} />
-      {submitted ? successSubmitSection() : contactForm()}
+      <Header />
+      {submitted ? (
+        <SuccessSubmit cookie={["contactedAlready"]} />
+      ) : (
+        contactForm()
+      )}
       <SmallFooter />
     </>
   );

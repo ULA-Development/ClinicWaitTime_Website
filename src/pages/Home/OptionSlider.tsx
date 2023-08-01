@@ -1,4 +1,3 @@
-import React from "react";
 import "./OptionSlider.css";
 type OptionSliderProps = {
   active: string;
@@ -7,20 +6,13 @@ type OptionSliderProps = {
 const OptionSlider = ({ active, setActive }: OptionSliderProps) => {
   return (
     <div className="slider-container">
-        
-      <div
-        onClick={() => setActive("list")}
-        className="option-slider"
-      >
+      <div onClick={() => setActive("list")} className="option-slider">
         List
       </div>
-      <div
-        onClick={() => setActive("map")}
-        className="option-slider"
-      >
+      <div onClick={() => setActive("map")} className="option-slider">
         Map
       </div>
-      <div className={active === "list" ? "slide-out" : "slide-in"}/>
+      <div className={active === "list" ? "slide-out" : "slide-in"} />
     </div>
   );
 };

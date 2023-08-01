@@ -6,11 +6,10 @@ interface LoadingSpinnerProps {
   text?: string;
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+const LoadingSpinner = ({
   text = "Loading...",
   style,
-}) => {
-
+}: LoadingSpinnerProps) => {
   return (
     <div className="loading-spinner" style={style}>
       <div className="spinner"></div>

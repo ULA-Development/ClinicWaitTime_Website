@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Signin/SigninPage";
 import SignupPage from "./pages/Signup/SignupPage";
 import ContactPage from "./pages/Contact/ContactPage";
-import RegisterPage from "./pages/Register/register";
+import RegisterPage from "./pages/Register/RegisterPage";
 import FeedbackPage from "./pages/Feedback/FeedbackPage";
 import TermsPopUp from "./components/TermsPopUp";
 import { useSelector } from "react-redux";

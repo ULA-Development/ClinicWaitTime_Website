@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import { ReactComponent as SigninIcon } from "../../assets/icons/sign-in-alt-solid.svg";
 import Header from "../../components/Header/Header";
 import TextInput from "../../components/TextInput";
 import SmallFooter from "../../components/SmallFooter";
 import Button from "../../components/Button";
-import { ReactComponent as SigninIcon } from "../../assets/icons/sign-in-alt-solid.svg";
-import "./SigninPage.css";
 import { authHandler, handleErrorMessages } from "../../data/firebase";
-import { useSelector } from "react-redux";
+import "./SigninPage.css";
 
 const SigninPage = () => {
-  const isMobile = useSelector((state: any) => state.isMobile.value);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
+  window.addEventListener("resize", () =>
+    setIsMobile(window.innerWidth <= 700)
+  );
   const [resetInput, setResetInput] = useState(false);
   const [emailText, setEmailText] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState<null | string>(
@@ -50,7 +52,7 @@ const SigninPage = () => {
 
   return (
     <div>
-      <Header selectedItem={"Login"} />
+      <Header />
       <div className="content-container">
         <div
           className="content-signin"

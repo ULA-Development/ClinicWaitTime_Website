@@ -1,7 +1,6 @@
 :root {
     --main: #007e70;
     --main-dark:#00655a;
-    --main-dark2: #00655a;
     --secondary: white;
     --grey: #868585;
     --grey-text: rgb(86,86,86);
@@ -13,4 +12,5 @@
     --faded-red: #e1897b;
     --light-hover-grey: #f7f6f6;
     --dark-error-red: #c80a2a;
+    --main-hover: #1a8b7e;
 }

@@ -1,4 +1,3 @@
-@import url("../../assets/common.css");
 .mobile-header {
   display: flex;
   justify-content: center;
@@ -27,18 +26,6 @@
   height: 30px;
   fill: var(--main);
   cursor: pointer;
-}
-
-.menu-icon.open span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-
-.menu-icon.open span:nth-child(2) {
-  opacity: 0;
-}
-
-.menu-icon.open span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
 }
 
 .dropdown-menu {
@@ -84,16 +71,15 @@
   background-color: var(--main);
   height: 110px;
 }
-.sign-buttons{
+.sign-buttons {
   display: flex;
   flex-direction: column;
   left: 20px;
   top: 10px;
   position: absolute;
   align-items: center;
-
 }
-.sign-in-button{
+.sign-in-button {
   color: white;
   font-size: 17px;
   margin-top: 10px;
@@ -106,11 +92,11 @@
   cursor: pointer;
   text-decoration: none;
 }
-.sign-in-button:hover{
+.sign-in-button:hover {
   background-color: white;
-  color: var(--main)
+  color: var(--main);
 }
-.sign-up-button{
+.sign-up-button {
   color: var(--main);
   font-size: 17px;
   margin-top: 10px;
@@ -135,7 +121,7 @@
   position: relative;
   border-radius: 4px;
 }
-.dropmenu-item-disabled{
+.dropmenu-item-disabled {
   color: lightgrey;
   text-decoration: none;
   padding-left: 20px;
@@ -152,7 +138,7 @@
   border-radius: 0px;
 }
 
-.dropdown-menu-item.selected{
+.dropdown-menu-item.selected {
   background-color: var(--hover-grey);
   box-shadow: -5px 0px 0px 0px var(--main);
   border-radius: 0px;
@@ -168,7 +154,7 @@
 
 .header-links {
   display: flex;
-  flex-direction: column; /* Set the flex direction to column */
+  flex-direction: column;
   margin-top: 10px;
   margin-left: -6px;
   margin-bottom: 20px;
@@ -176,8 +162,16 @@
 }
 .footer-links {
   display: flex;
-  flex-direction: column; /* Set the flex direction to column */
+  flex-direction: column;
   margin-top: 50px;
   background-color: white;
 }
-
+.top-background-icon {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  top: -160px;
+  left: -70px;
+  fill: var(--main-dark);
+  opacity: 100%;
+}

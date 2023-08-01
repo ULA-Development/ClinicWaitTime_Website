@@ -1,101 +1,87 @@
-@import url("../../assets/common.css");
-.home-container{
-    display: flex;
-    height: 100%;
-    width: 100%;
-    flex-direction: column;
+.home-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
 }
-.home-content{
-    padding-top: 40px;
-    padding-left: 20px;
-    width: max(400px, min(calc(40% - 20px), 600px));
-    height: calc(100vh - 200px);
-    position: relative;
-    display: flex;
-    flex-direction: column;
+.home-content {
+  padding-top: 40px;
+  padding-left: 20px;
+  width: max(400px, min(calc(40% - 20px), 600px));
+  height: calc(100vh - 200px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
-.map-container{
-    width: max(60%, calc(100% - 430px));
-    height: calc(100% - 151px);
-    margin-top: 73px;
-    margin-bottom: -50px;
-    position: absolute;
-    left: max(430px, min(40%, 630px));
-    overflow: hidden;
-    background-color: var(--light-hover-grey);
+.map-container {
+  width: max(min(60%, calc(100vw - 430px)), calc(100vw - 630px));
+  height: calc(100% - 151px);
+  margin-top: 73px;
+  margin-bottom: -50px;
+  position: absolute;
+  left: max(430px, min(40%, 630px));
+  overflow: hidden;
+  background-color: var(--light-hover-grey);
 }
-.map-container-mobile{
-    margin-top: 10px;
-    width: 93%;
-    height: calc(100vh - 100px - 440px);
-    background-color: var(--light-hover-grey);
+.map-container-mobile {
+  margin-top: 10px;
+  width: 93%;
+  height: calc(100vh - 100px - 440px);
+  background-color: var(--light-hover-grey);
 }
-.results-container{
-    display: flex;
-    flex-direction: column;
-    margin-left: -20px;
-    padding-left: 25px;
-    scroll-behavior: smooth;
-    width: calc(100% - 3px);
-    padding-bottom: 0px;
-    overflow-y: auto;
+.results-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: -20px;
+  padding-left: 25px;
+  scroll-behavior: smooth;
+  width: calc(100% - 3px);
+  padding-bottom: 0px;
+  overflow-y: auto;
 }
-::-webkit-scrollbar{
-    background: transparent;
-    height: 0px;
+.clinic-option {
+  position: relative;
+  margin-left: -10px;
+  padding-bottom: 10px;
 }
-::-webkit-scrollbar-track{
-    background: var(--hover-grey);
+.info-popup {
+  position: absolute;
+  left: 30px;
+  bottom: 30px;
 }
-::-webkit-scrollbar-thumb{
-    background-color: var(--main);
-    border-radius: 9px;
+.location-icon {
+  width: 27px;
+  height: 27px;
+  fill: var(--main);
+  right: 0px;
+  display: flexbox;
+  margin-left: 10px;
+  cursor: pointer;
 }
-.clinic-option{
-    position: relative;
-    margin-left: -10px;
-    padding-bottom: 10px;
+.location-container {
+  width: 94%;
+  display: flex;
+  align-items: center;
 }
-.info-popup{
-    position: absolute;
-    left: 30px;
-    bottom: 30px;
+.no-results {
+  display: block;
+  text-align: center;
+  margin-top: 30px;
 }
-.location-icon{
-    width: 27px;
-    height: 27px;
-    fill: var(--main);
-    right: 0px;
-    display: flexbox;
-    margin-left: 10px;
-    cursor: pointer;
+.mobile-clinic-screen {
+  justify-content: center;
+  position: absolute;
+  align-items: center;
+  display: flex;
+  width: 100vw;
+  height: calc(100vh - 150px);
+  left: -8px;
+  top: 0px;
 }
-.location-container{
-    width: 94%;
-    display: flex;
-    align-items: center;
-
-}
-.no-results{
-    display: block;
-    text-align: center;
-    margin-top: 30px;
-}
-.mobile-clinic-screen{
-    justify-content: center;
-    position: absolute;
-    align-items: center;
-    display: flex;
-    width: 100vw;
-    height: calc(100vh - 150px);
-    left: -8px;
-    top: 0px;
-    
-}
-.dim-background-mobile{
-    opacity: 50%;
-    background-color: black;
-    position: absolute;
-    width: 100%;
-    height: 100%;
+.dim-background-mobile {
+  opacity: 50%;
+  background-color: black;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }

@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import SelectionPanel from "./Selection/SelectionPanel";
-import ClinicOption from "./ClinicComponent/ClinicOption";
-import "./HomePage.css";
 import SmallFooter from "../../components/SmallFooter";
 import ClinicInfoSection from "./ClinicInfoComponent/ClinicInfoSection";
-import GoogleMaps from "./Map";
-import { dbHandler } from "../../data/firebase";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import FilterResults from "./FilterResults";
 import LocaitonInput from "./LocationInput";
 import OptionSlider from "./OptionSlider";
 import ClinicList from "./ClinicList";
+import GoogleMaps from "./Map";
+import { dbHandler } from "../../data/firebase";
 import { Hospital, Location } from "../../assets/globals";
 import {
   getCurrLocation,
@@ -19,28 +17,28 @@ import {
   getTopHospitals,
   sortData,
 } from "../../data/mapdata";
-import { show } from "../../reducers/termsReducer";
-import { secureHeapUsed } from "crypto";
+import "./HomePage.css";
 
 const HomePage = () => {
   const [showMore, setShowMore] = useState(false);
-  
   const [activeButton, setActiveButton] = useState("");
   const [locationAddress, setLocationAddress] = useState("Current Location");
   const [locationCoords, setLocationCoords] = useState<Location>({
     lat: 0,
     lng: 0,
   });
-  const [data, setData] = useState<Hospital[]>([]);
   const [selectedClinic, setSelectedClinic] = useState(-1);
-  const [showInfo, setShowInfo] = useState(selectedClinic >= 0)
+  const [showInfo, setShowInfo] = useState(selectedClinic >= 0);
   const [topHospitals, setTopHospitals] = useState<Array<any>>(["waiting"]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("list");
   const [dataState, setDataState] = useState("not loaded");
-  const [resize, setResize] = useState(window.innerWidth <= 990);
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 990));
-  const fetchData = async () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 990);
+  window.addEventListener("resize", () => {
+    setIsMobile(window.innerWidth <= 990);
+  });
+
+  async function fetchData() {
     if (locationCoords.lat === 0 && locationCoords.lng === 0) {
       await handleCurrLocation();
     }
@@ -49,7 +47,6 @@ const HomePage = () => {
         locationCoords.lat,
         locationCoords.lng
       );
-      setData(clinics);
       setDataState("loaded");
       await getTopHospitals(clinics, setLoading, locationCoords).then(
         (topHospitals) => {
@@ -57,39 +54,21 @@ const HomePage = () => {
         }
       );
     } catch (error) {
-      console.error("Failed to fetch clinics:", error);
+      alert(
+        "Error occured, sorry for the inconvenince. Please try again later"
+      );
     }
-  };
-
-  useEffect(() => {
-    setShowMore(false);
-    fetchData();
-  }, [locationCoords]);
-  useEffect(() => {
-    setSelectedClinic(-1);
-    let sortedHospitals = sortData(topHospitals, activeButton);
-    setTopHospitals(sortedHospitals);
-  }, [activeButton]);
-  useEffect(() => {
-    setActive("list");
-  }, [resize]);
-  useEffect(() => {
-    if (locationCoords.lat !== 0 || locationCoords.lng !== 0) {
-      fetchCoordinates();
-    }
-  }, [locationAddress]);
-
-  const handleCurrLocation = async () => {
+  }
+  async function handleCurrLocation() {
     setLoading(true);
     await getCurrLocation()
       .then((currInfo: any) => {
         setLocationAddress("Current Location");
         setLocationCoords(currInfo.location);
       })
-      .catch((error) => console.log(error));
-  };
-
-  const fetchCoordinates = async () => {
+      .catch(() => alert("Can't find current locaiton. Try again later"));
+  }
+  async function fetchCoordinates() {
     try {
       if (locationAddress !== "Current Location" && locationAddress !== "") {
         const locationCoords = await getCoordinates(locationAddress);
@@ -99,29 +78,27 @@ const HomePage = () => {
       }
     } catch (error) {
       setDataState("failed");
-      console.error(error);
     }
-  };
-
-  const handleSearch = () => {
+  }
+  function handleSearch() {
     setSelectedClinic(-1);
     setActive("list");
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  };
-
-  const handleSelectClinic = (index: number) => {
+  }
+  function handleSelectClinic(index: number) {
     if (selectedClinic === index) {
-      setSelectedClinic(-1);
+      if (isMobile) {
+        setShowInfo(true);
+      } else {
+        setSelectedClinic(-1);
+      }
     } else {
       setSelectedClinic(index);
     }
-  };
-  useEffect(() => {
-    setShowInfo(selectedClinic >= 0)
-  }, [selectedClinic])
+  }
   const listSection = () => {
     // LOADING DATA
     if (loading) {
@@ -130,8 +107,7 @@ const HomePage = () => {
           text="Locating..."
           style={{
             alignSelf: "center",
-            position: "absolute",
-            top: "10%",
+            marginTop: "30px",
             left: "40%",
           }}
         />
@@ -196,45 +172,65 @@ const HomePage = () => {
       );
     }
   };
+  const desktopMapsInfo = () => {
+    return (
+      <div className="map-container">
+        {dataState === "not loaded" ? null : (
+          <GoogleMaps
+            topHospitals={!showMore ? topHospitals.slice(0, 5) : topHospitals}
+            setLoading={setLoading}
+            UserLocation={locationCoords}
+            selectedClinic={selectedClinic}
+            setSelectedClinic={setSelectedClinic}
+            activeFilter={activeButton}
+          ></GoogleMaps>
+        )}
+        {selectedClinic < 0 ? null : (
+          <div className="info-popup">
+            <ClinicInfoSection
+              data={topHospitals[selectedClinic]}
+              setShowInfo={setShowInfo}
+              currLocation={locationCoords}
+              seedState={selectedClinic}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    setShowMore(false);
+    fetchData();
+  }, [locationCoords]);
+
+  useEffect(() => {
+    if (locationCoords.lat !== 0 || locationCoords.lng !== 0) {
+      fetchCoordinates();
+    }
+  }, [locationAddress]);
+
+  useEffect(() => {
+    setShowInfo(selectedClinic >= 0);
+  }, [selectedClinic]);
+
+  useEffect(() => {
+    setSelectedClinic(-1);
+    let sortedHospitals = sortData(topHospitals, activeButton);
+    setTopHospitals(sortedHospitals);
+  }, [activeButton]);
+
+  useEffect(() => {
+    setActive("list");
+  }, [isMobile]);
+
   return (
     <div className="home-container">
-      {!resize ? (
-        <div className="map-container">
-          {dataState === "not loaded" ? null : (
-            <GoogleMaps
-              topHospitals={!showMore ? topHospitals.slice(0, 5) : topHospitals}
-              setLoading={setLoading}
-              UserLocation={locationCoords}
-              selectedClinic={selectedClinic}
-              setSelectedClinic={setSelectedClinic}
-              activeFilter={activeButton}
-            ></GoogleMaps>
-          )}
-          {selectedClinic < 0 ? null : (
-            <div className="info-popup">
-              <ClinicInfoSection
-                setShowInfo={setShowInfo}
-                name={topHospitals[selectedClinic].info.name}
-                totalTime={topHospitals[selectedClinic].totalTime}
-                waitTime={topHospitals[selectedClinic].totalWaitTime}
-                travelTime={topHospitals[selectedClinic].travelTime}
-                email={topHospitals[selectedClinic].info.email}
-                website={topHospitals[selectedClinic].info.website}
-                phone={topHospitals[selectedClinic].info.phone}
-                address={topHospitals[selectedClinic].info.address}
-                rating={topHospitals[selectedClinic].info.rating}
-                location={topHospitals[selectedClinic].location}
-                currLocation={locationCoords}
-                seedState={selectedClinic}
-              />
-            </div>
-          )}
-        </div>
-      ) : null}
-      <Header selectedItem={"Home"} />
+      {!isMobile ? desktopMapsInfo() : null}
+      <Header />
       <div
         className="home-content"
-        style={resize ? { width: "calc(100% - 14px)" } : {}}
+        style={isMobile ? { width: "calc(100% - 14px)" } : {}}
       >
         <div className="location-container">
           <LocaitonInput
@@ -242,6 +238,7 @@ const HomePage = () => {
             onChange={setLocationAddress}
             currLocation={handleCurrLocation}
             handleSearch={handleSearch}
+            isLoading={loading}
           />
         </div>
         <SelectionPanel />
@@ -250,9 +247,11 @@ const HomePage = () => {
           activeButton={activeButton}
         />
 
-        {resize ? <OptionSlider active={active} setActive={setActive} /> : null}
+        {isMobile ? (
+          <OptionSlider active={active} setActive={setActive} />
+        ) : null}
         <div className="results-container">
-          {!resize ? (
+          {!isMobile ? (
             <div>{listSection()}</div>
           ) : (
             <div>
@@ -272,23 +271,14 @@ const HomePage = () => {
                   ></GoogleMaps>
                 )}
               </div>
-              {showInfo == false && resize === true ? null : (
+              {showInfo === false && isMobile === true ? null : (
                 <div className="mobile-clinic-screen">
                   <div
                     className="dim-background-mobile"
-                    onClick={() => setSelectedClinic(-1)}
+                    onClick={() => setShowInfo(false)}
                   />
                   <ClinicInfoSection
-                    name={topHospitals[selectedClinic].info.name}
-                    totalTime={topHospitals[selectedClinic].totalTime}
-                    waitTime={topHospitals[selectedClinic].totalWaitTime}
-                    travelTime={topHospitals[selectedClinic].travelTime}
-                    email={topHospitals[selectedClinic].info.email}
-                    website={topHospitals[selectedClinic].info.website}
-                    phone={topHospitals[selectedClinic].info.phone}
-                    address={topHospitals[selectedClinic].info.address}
-                    rating={topHospitals[selectedClinic].info.rating}
-                    location={topHospitals[selectedClinic].location}
+                    data={topHospitals[selectedClinic]}
                     currLocation={locationCoords}
                     setShowInfo={setShowInfo}
                     seedState={selectedClinic}

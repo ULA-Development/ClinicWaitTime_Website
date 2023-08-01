@@ -7,7 +7,7 @@ import {
   HospitalWithTime,
 } from "../../assets/globals";
 
-declare var H: any, google: any;
+declare var google: any;
 
 type HereMapComponentProps = {
   topHospitals: HospitalWithTime[];
@@ -30,20 +30,27 @@ function GoogleMapComponent({
   const handleMapLoad = async (map: google.maps.Map) => {
     setMap(map);
   };
+  const handleSelectClinic = (index: number) => {
+    if (selectedClinic === index) {
+      setSelectedClinic(-1);
+    } else {
+      setSelectedClinic(index);
+    }
+  };
   const processMap = async () => {
-    // const marker = new google.maps.Marker({
-    //   position: UserLocation,
-    //   map: map,
-    //   icon: {
-    //     path: google.maps.SymbolPath.CIRCLE,
-    //     scale: 12,
-    //     fillColor: "#4285F4",
-    //     fillOpacity: 1,
-    //     strokeColor: "#fff",
-    //     strokeWeight: 4,
-    //   },
-    // });
-    // markerRef.current = marker;
+    const marker = new google.maps.Marker({
+      position: UserLocation,
+      map: map,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 12,
+        fillColor: "#4285F4",
+        fillOpacity: 1,
+        strokeColor: "#fff",
+        strokeWeight: 4,
+      },
+    });
+    markerRef.current = marker;
   };
 
   useEffect(() => {
@@ -59,16 +66,10 @@ function GoogleMapComponent({
     }
   }, [UserLocation, map]);
 
-  const handleSelectClinic = (index: number) => {
-    if (selectedClinic === index) {
-      setSelectedClinic(-1);
-    } else {
-      setSelectedClinic(index);
-    }
-  };
+  
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {/* <GoogleMap
+      <GoogleMap
         onLoad={handleMapLoad}
         center={
           selectedClinic < 0
@@ -116,7 +117,7 @@ function GoogleMapComponent({
               </div>
             </OverlayViewF>
           ))}
-      </GoogleMap> */}
+      </GoogleMap>
     </div>
   );
 }

@@ -1,5 +1,3 @@
-@import url("../../assets/common.css");
-@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
 .locaiton-label {
   height: 20px;
   color: var(--grey-text);
@@ -38,7 +36,7 @@
   background-color: transparent;
   padding-right: 50px;
   height: 44px;
-  font-family: 'Lexend', sans-serif;
+  font-family: "Lexend", sans-serif;
 }
 
 .search-icon {
@@ -47,7 +45,7 @@
   fill: var(--main);
   align-self: center;
 }
-.search-loction-container{
+.search-loction-container {
   width: 38px;
   height: 38px;
   position: absolute;
@@ -60,27 +58,27 @@
   top: 5px;
   cursor: pointer;
 }
-.search-loction-container:hover{
+.search-loction-container:hover {
   background-color: var(--light-hover-grey);
 }
 .curr-loction-container {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    right: 5px;
-    top: 5px;
-    cursor: pointer;
-    background-color: var(--main);
-  }
-.curr-loction-container:hover{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  background-color: var(--main);
+}
+.curr-loction-container:hover {
   background-color: var(--main-dark);
 }
-.curr-location-icon{
-    width: 18px;
-    height: 18px;
-    fill: white;
+.curr-location-icon {
+  width: 18px;
+  height: 18px;
+  fill: white;
 }

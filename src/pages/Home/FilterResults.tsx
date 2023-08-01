@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./FilterResults.css";
 
 interface FilterResultsProps {
@@ -6,12 +6,12 @@ interface FilterResultsProps {
   activeButton: string;
 }
 
-const FilterResults: React.FC<FilterResultsProps> = ({
+const FilterResults = ({
   setActiveButton,
   activeButton,
-}) => {
-  const [resize, setResize] = useState(window.innerWidth <= 360)
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 360))
+}: FilterResultsProps) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 360);
+  window.addEventListener("resize", () => setIsMobile(window.innerWidth <= 360));
 
   const handleWaitTimeClick = () => {
     if (activeButton == "waitTime") {
@@ -37,7 +37,7 @@ const FilterResults: React.FC<FilterResultsProps> = ({
           activeButton == "waitTime" ? "active" : ""
         }`}
         onClick={handleWaitTimeClick}
-        style={resize ? {width: "94%"} : {}}
+        style={isMobile ? { width: "94%" } : {}}
       >
         Wait Time
       </button>
@@ -46,7 +46,7 @@ const FilterResults: React.FC<FilterResultsProps> = ({
           activeButton == "travelTime" ? "active" : ""
         }`}
         onClick={handleTravelTimeClick}
-        style={resize ? {width: "94%"} : {}}
+        style={isMobile ? { width: "94%" } : {}}
       >
         Travel Time
       </button>

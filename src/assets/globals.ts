@@ -25,6 +25,7 @@ export type Hospital = {
     phone: string;
     website: string;
     rating: number;
+    hours: string;
     occupancy: {
       current: number;
       capacity: number;

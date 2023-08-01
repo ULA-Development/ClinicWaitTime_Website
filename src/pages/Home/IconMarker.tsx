@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "./IconMarker.css";
 
 interface IconMarkerProps {
@@ -7,11 +6,11 @@ interface IconMarkerProps {
   isActive: boolean;
 }
 
-const IconMarker: React.FC<IconMarkerProps> = ({
+const IconMarker = ({
   busyness,
   index,
   isActive,
-}) => {
+}: IconMarkerProps) => {
   const getColor = () => {
     // busyness ranges between 1 and 6
     if (busyness <= 2) {

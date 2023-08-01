@@ -9,7 +9,6 @@ const BusynessIndicator: React.FC<BusynessIndicatorProps> = ({
   greyBarColor,
 }) => {
   const getBarColor = (busyness: number) => {
-    // Business ranges between 1 and 6
     if (busyness <= 2) {
       return "#7FC175";
     } else if (busyness <= 4) {
