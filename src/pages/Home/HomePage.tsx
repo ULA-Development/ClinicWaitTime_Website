@@ -188,17 +188,8 @@ const HomePage = () => {
         {selectedClinic < 0 ? null : (
           <div className="info-popup">
             <ClinicInfoSection
+              data={topHospitals[selectedClinic]}
               setShowInfo={setShowInfo}
-              name={topHospitals[selectedClinic].info.name}
-              totalTime={topHospitals[selectedClinic].totalTime}
-              waitTime={topHospitals[selectedClinic].totalWaitTime}
-              travelTime={topHospitals[selectedClinic].travelTime}
-              email={topHospitals[selectedClinic].info.email}
-              website={topHospitals[selectedClinic].info.website}
-              phone={topHospitals[selectedClinic].info.phone}
-              address={topHospitals[selectedClinic].info.address}
-              rating={topHospitals[selectedClinic].info.rating}
-              location={topHospitals[selectedClinic].location}
               currLocation={locationCoords}
               seedState={selectedClinic}
             />
@@ -287,16 +278,7 @@ const HomePage = () => {
                     onClick={() => setShowInfo(false)}
                   />
                   <ClinicInfoSection
-                    name={topHospitals[selectedClinic].info.name}
-                    totalTime={topHospitals[selectedClinic].totalTime}
-                    waitTime={topHospitals[selectedClinic].totalWaitTime}
-                    travelTime={topHospitals[selectedClinic].travelTime}
-                    email={topHospitals[selectedClinic].info.email}
-                    website={topHospitals[selectedClinic].info.website}
-                    phone={topHospitals[selectedClinic].info.phone}
-                    address={topHospitals[selectedClinic].info.address}
-                    rating={topHospitals[selectedClinic].info.rating}
-                    location={topHospitals[selectedClinic].location}
+                    data={topHospitals[selectedClinic]}
                     currLocation={locationCoords}
                     setShowInfo={setShowInfo}
                     seedState={selectedClinic}

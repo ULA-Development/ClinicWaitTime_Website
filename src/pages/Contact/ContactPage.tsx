@@ -101,7 +101,7 @@ const Contact = () => {
   return (
     <>
       <Header />
-      {!submitted ? (
+      {submitted ? (
         <SuccessSubmit cookie={["contactedAlready"]} />
       ) : (
         contactForm()

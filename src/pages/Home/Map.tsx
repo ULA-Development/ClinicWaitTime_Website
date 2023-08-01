@@ -38,19 +38,19 @@ function GoogleMapComponent({
     }
   };
   const processMap = async () => {
-    // const marker = new google.maps.Marker({
-    //   position: UserLocation,
-    //   map: map,
-    //   icon: {
-    //     path: google.maps.SymbolPath.CIRCLE,
-    //     scale: 12,
-    //     fillColor: "#4285F4",
-    //     fillOpacity: 1,
-    //     strokeColor: "#fff",
-    //     strokeWeight: 4,
-    //   },
-    // });
-    // markerRef.current = marker;
+    const marker = new google.maps.Marker({
+      position: UserLocation,
+      map: map,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 12,
+        fillColor: "#4285F4",
+        fillOpacity: 1,
+        strokeColor: "#fff",
+        strokeWeight: 4,
+      },
+    });
+    markerRef.current = marker;
   };
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function GoogleMapComponent({
   
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {/* <GoogleMap
+      <GoogleMap
         onLoad={handleMapLoad}
         center={
           selectedClinic < 0
@@ -117,7 +117,7 @@ function GoogleMapComponent({
               </div>
             </OverlayViewF>
           ))}
-      </GoogleMap> */}
+      </GoogleMap>
     </div>
   );
 }

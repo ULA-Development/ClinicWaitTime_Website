@@ -1,68 +1,56 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { ReactComponent as CloseIcon } from "../../../assets/icons/times-solid.svg";
 import StarRating from "../StarRating";
-import "./ClinicInfoSection.css";
 import ContactInfo from "./ContacInfo";
 import ClinicData from "./ClinicData";
-import { ReactComponent as CloseIcon } from "../../../assets/icons/times-solid.svg";
+import "./ClinicInfoSection.css";
+import { Hospital, HospitalWithTime } from "../../../assets/globals";
 
 interface ClinicInfoProps {
-  name: string;
-  rating: number;
-  waitTime: number;
-  travelTime: number;
-  totalTime: number;
-  email?: string;
-  website?: string;
-  phone?: string;
-  address: string;
-  location: Location;
+  data: HospitalWithTime;
   currLocation: Location;
   seedState?: number;
   isMobile?: boolean;
-  setShowInfo: (arg0: boolean) => void
+  setShowInfo: (arg0: boolean) => void;
 }
 type Location = {
   lat: number;
   lng: number;
 };
 
-const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
-  name,
-  waitTime,
-  travelTime,
-  totalTime,
-  email,
-  website,
-  phone,
-  address,
-  rating,
-  location,
+const ClinicInfoSection = ({
+  data,
   currLocation,
   seedState,
   isMobile = false,
-  setShowInfo
-}) => {
+  setShowInfo,
+}: ClinicInfoProps) => {
   const [focusData, setFocusData] = useState(true);
-  const [hourly, setHourly] = useState(hourlyData())
-  function hourlyData(){
-    let test: any = []
-    for(var i = 0; i < 5; i++){
-      test.push(Math.floor(Math.random() * (60 - 15 + 1) + 15))
+  const [hourly, setHourly] = useState(hourlyData());
+  function hourlyData() {
+    let test: any = [];
+    for (var i = 0; i < 5; i++) {
+      test.push(Math.floor(Math.random() * (60 - 15 + 1) + 15));
     }
-    return test
+    return test;
   }
 
   useEffect(() => {
-    setHourly(hourlyData)
-    setFocusData(true)
-  }, [seedState])
-  
+    setHourly(hourlyData);
+    setFocusData(true);
+  }, [seedState]);
+
   return (
     <div className="info-section-container">
-      {!isMobile ? null :<CloseIcon className="clinic-close-button" onClick={() => setShowInfo(false)}/>}
+      {!isMobile ? null : (
+        <CloseIcon
+          className="clinic-close-button"
+          onClick={() => setShowInfo(false)}
+        />
+      )}
       <div className="clinic-info-heading">
-        <h3 className="clinic-title">{name}</h3>
-        <StarRating rating={rating} />
+        <h3 className="clinic-title">{data.info.name}</h3>
+        <StarRating rating={data.info.rating} />
       </div>
       <div className="options">
         <div
@@ -119,21 +107,12 @@ const ClinicInfoSection: React.FC<ClinicInfoProps> = ({
       <div className="option-background">
         {focusData ? (
           <ClinicData
-            waitTime={waitTime}
-            travelTime={travelTime}
-            totalTime={totalTime}
+            data={data}
             currLocation={currLocation}
-            location={location}
             hourlyData={hourly}
           />
         ) : (
-          <ContactInfo
-            email={email}
-            website={website}
-            phone={phone}
-            address={address}
-            
-          />
+          <ContactInfo data={data} />
         )}
       </div>
     </div>

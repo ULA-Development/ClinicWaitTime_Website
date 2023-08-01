@@ -1,7 +1,7 @@
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-import "./MobileSelection.css"
 import { useState } from "react";
+import "./MobileSelection.css";
 
 const MobileSelection = () => {
   const options = [
@@ -10,7 +10,7 @@ const MobileSelection = () => {
     // "Hospitals",
     // "Family Physicians",
   ];
-  const [focus, setFocus] = useState(false)
+  const [focus, setFocus] = useState(false);
   return (
     <Dropdown
       options={options}

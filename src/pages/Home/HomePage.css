@@ -14,7 +14,7 @@
   flex-direction: column;
 }
 .map-container {
-  width: max(60%, calc(100% - 430px));
+  width: max(min(60%, calc(100vw - 430px)), calc(100vw - 630px));
   height: calc(100% - 151px);
   margin-top: 73px;
   margin-bottom: -50px;
@@ -38,17 +38,6 @@
   width: calc(100% - 3px);
   padding-bottom: 0px;
   overflow-y: auto;
-}
-::-webkit-scrollbar {
-  background: transparent;
-  height: 0px;
-}
-::-webkit-scrollbar-track {
-  background: var(--hover-grey);
-}
-::-webkit-scrollbar-thumb {
-  background-color: var(--main);
-  border-radius: 9px;
 }
 .clinic-option {
   position: relative;

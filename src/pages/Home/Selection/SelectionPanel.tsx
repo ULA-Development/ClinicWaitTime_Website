@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "./SelectionPanel.css";
 import MobileSelection from "./MobileSelection";
+import "./SelectionPanel.css";
 
 const SelectionPanel: React.FC = () => {
-  const [resize, setResize] = useState(window.innerWidth <= 410);
-  window.addEventListener("resize", () => setResize(window.innerWidth <= 410)); //1030
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 410);
+  window.addEventListener("resize", () => setIsMobile(window.innerWidth <= 410));
   const [selectedRadioBtn, setSelectedRadioBtn] =
     React.useState("Walk-In Clinics"); //sets default selection
   const isRadioSelected = (value: string): boolean =>
@@ -13,12 +13,12 @@ const SelectionPanel: React.FC = () => {
     setSelectedRadioBtn(e.currentTarget.value);
 
   return (
-    <div className={resize ? "" :"selection-panel"}>
+    <div className={isMobile ? "" : " selection-panel"}>
       <h2 className="panel-heading">Select healthcare</h2>
-      {resize ? (
-          <MobileSelection />
+      {isMobile ? (
+        <MobileSelection />
       ) : (
-        <div className = "selection-panel">
+        <div className="selection-panel">
           <label>
             <input
               type="radio"

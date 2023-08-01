@@ -1,4 +1,3 @@
-@import url("../../../assets/common.css");
 .data-container {
   width: inherit;
   height: inherit;
@@ -32,7 +31,6 @@
   display: flex;
   justify-content: center;
   align-items: self-end;
-  /* background-color: red; */
   height: 60px;
 }
 .chart {
@@ -54,5 +52,5 @@
   margin-top: 37px;
 }
 .directions-button:hover {
-  background-color: #1a8b7e;
+  background-color: var(--main-hover);
 }
