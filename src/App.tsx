@@ -1,51 +1,44 @@
-import React from 'react';
-import { initializeApp } from "firebase/app"
-import { getDatabase, ref, set, onValue } from "firebase/database"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
-import firebaseConfig from './config';
-import './App.css';
-
-const app = initializeApp(firebaseConfig)
-const db = getDatabase(app)
-const auth = getAuth(app)
-
-function writeToDatabase() {
-  const randomData = Math.random()
-  set(ref(db, 'users/EthanTestDB'), {
-    'randNum': randomData
-  }).then(() => {
-    console.log("WROTE TO DB")
-  })
-}
-
-function readDatabase() {
-  const info = ref(db, 'users/EthanTestDB/randNum')
-  onValue(info, (snapshot) => {
-    const data = snapshot.val()
-    console.log("READING FROM DB:", data)
-  })
-}
-
-function createUser() {
-  createUserWithEmailAndPassword(auth, 'ula@gmail.com', 'password')
-    .then((userCredential) => {
-      console.log("CREATED USER")
-    })
-    .catch((error) => {
-      console.log(error.message)
-    })
-} 
+import HomePage from "./pages/Home/HomePage";
+import LoginPage from "./pages/Signin/SigninPage";
+import SignupPage from "./pages/Signup/SignupPage";
+import ContactPage from "./pages/Contact/ContactPage";
+import RegisterPage from "./pages/Register/RegisterPage";
+import FeedbackPage from "./pages/Feedback/FeedbackPage";
+import TermsPopUp from "./components/TermsPopUp";
+import { useSelector } from "react-redux";
 
 function App() {
+  const showTerms = useSelector((state: any) => state.termsReducer.value)
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={writeToDatabase}>Write </button>
-        <button onClick={readDatabase}>Read </button>
-        <button onClick={createUser}>Create user </button>
-      </header>
+    <div>
+      {renderContent(window.location.pathname)}
+      { showTerms ? <TermsPopUp/> : null}
     </div>
   );
+}
+
+// Conditional Rendering
+function renderContent(path: string | null) {
+  switch (path?.replace("/", "")) {
+    case "signin": {
+      return <LoginPage />;
+    }
+    case "signup": {
+      return <SignupPage />;
+    }
+    case "contact": {
+      return <ContactPage />;
+    }
+    case "feedback": {
+      return <FeedbackPage />;
+    }
+    case "register": {
+      return <RegisterPage />;
+    }
+    default: {
+      return <HomePage />;
+    }
+  }
 }
 
 export default App;

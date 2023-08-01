@@ -1,0 +1,153 @@
+@keyframes slideRight {
+  from {
+    left: 0px;
+    width: 180px;
+  }
+  to {
+    width: 210px;
+    left: 190px;
+  }
+}
+@keyframes slideLeft {
+  from {
+    width: 210px;
+    left: 190px;
+  }
+  to {
+    left: 0px;
+    width: 180px;
+  }
+}
+.info-section-container {
+  width: 400px;
+  height: 600px;
+  border-radius: 30px;
+  display: flex;
+  margin-top: 20px;
+  background-color: white;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  position: relative;
+}
+.clinic-title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 22px;
+  margin-bottom: 5px;
+  width: 300px;
+}
+.clinic-info-heading {
+  margin-left: 35px;
+  margin-top: 13px;
+}
+.options p {
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  padding: 5px;
+  position: relative;
+}
+.options {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+}
+.option-background {
+  position: relative;
+  width: inherit;
+  height: inherit;
+  background-color: var(--main);
+  border-top-right-radius: 25px;
+  border-top-left-radius: 25px;
+}
+
+/* Slider */
+.section-changer-left,
+.section-changer-start,
+.section-changer-right {
+  top: 7px;
+  border-bottom-width: 100px;
+  background-color: var(--main);
+  height: 100px;
+  position: absolute;
+  border-radius: 30px 30px 0px 0px;
+}
+.section-changer-left {
+  width: 180px;
+  animation-name: slideLeft;
+  animation-duration: 200ms;
+  left: 0px;
+}
+.section-changer-right {
+  animation-name: slideRight;
+  animation-duration: 200ms;
+  width: 210px;
+  left: 190px;
+}
+
+.section-changer-tail-left.active,
+.section-changer-tail-right.active {
+  width: 50px;
+  height: 100px;
+  background-color: var(--main);
+  position: absolute;
+  top: 10px;
+  border-radius: 18px;
+}
+.section-changer-tail-left.active {
+  left: -14px;
+  rotate: 24deg;
+}
+.section-changer-tail-right.active {
+  rotate: -24deg;
+  right: -14px;
+}
+
+.section-changer-tail-end-left.active,
+.section-changer-tail-end-right.active {
+  border-radius: 18px;
+  position: absolute;
+  height: 50px;
+  width: 60px;
+  bottom: 13px; /*13*/
+  background-color: var(--main);
+}
+.section-changer-tail-end-left.active {
+  left: -33px;
+}
+.section-changer-tail-end-right.active {
+  right: -33px;
+}
+
+.section-curve-tail-left.active,
+.section-curve-tail-right.active {
+  width: 52px;
+  height: 70px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: white;
+  bottom: 47px;
+}
+/*LEFT SIDE*/
+.section-curve-tail-right.active {
+  right: -53px;
+}
+
+.section-curve-tail-left {
+  left: -53px;
+}
+.clinic-close-button {
+  margin-top: 23px;
+  width: 20px;
+  position: absolute;
+  height: 20px;
+  right: 23px;
+  fill: var(--main);
+  cursor: pointer;
+}

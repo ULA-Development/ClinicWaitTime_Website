@@ -1,0 +1,29 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+}
+
+.navbar-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--grey-text);
+  text-decoration: inherit;
+  outline: none;
+  white-space: nowrap;
+  background-color: transparent;
+  width: 100px;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.navbar-item.selected {
+  background-color: var(--main-dark);
+  background: linear-gradient(to right, var(--main-dark), var(--main));
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: var(--secondary);
+  border: 1px solid var(--main-dark);
+}

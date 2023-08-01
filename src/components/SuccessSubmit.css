@@ -1,0 +1,21 @@
+.success-subtitle {
+  color: var(--grey-text);
+  font-weight: 100;
+}
+.success-content {
+  display: block;
+  height: 100%;
+  width: 700px;
+  padding: 50px 0px;
+}
+.success-main-container {
+  display: flex;
+  justify-content: center;
+}
+.check-icon {
+  width: 70px;
+  height: 70px;
+  fill: green;
+  display: block;
+  margin-top: 40px;
+}

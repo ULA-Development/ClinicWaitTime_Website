@@ -1,0 +1,18 @@
+.center-container {
+  display: flex;
+  justify-content: space-evenly;
+  height: inherit;
+  width: inherit;
+  background-color: inherit;
+  border-radius: 30px;
+  padding-top: 10px;
+}
+.contact-info-container {
+  width: fit-content;
+  padding: 10px 30px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

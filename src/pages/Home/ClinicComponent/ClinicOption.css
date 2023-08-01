@@ -1,0 +1,61 @@
+.clinic-component,
+.clinic-component-active {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 55px;
+  width: calc(100% - 80px);
+  padding: 10px 20px;
+  border-radius: 23px;
+  cursor: pointer;
+}
+
+.clinic-component-active {
+  background-color: var(--main);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.clinic-component:hover {
+  background-color: var(--light-hover-grey);
+}
+.circle-num {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+.clinic-secondary-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 0px;
+}
+.clinic-info {
+  flex-direction: column;
+  justify-items: center;
+  width: calc(100% - 130px);
+}
+.clinic-info h3 {
+  margin: 0px auto;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.clinic-info p {
+  color: var(--grey-text);
+  font-size: 15px;
+  margin: -2px 0px 0px 7px;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.measure-bars {
+  margin-left: auto;
+}
