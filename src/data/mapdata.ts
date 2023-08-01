@@ -108,11 +108,11 @@ export async function getTopHospitals(
 ) {
   var platform = new H.service.Platform({ apikey: HERE_MAPS_KEY });
   const hospitalWithTimesPromises = hospitals.map(async (hospital) => {
-    let { time: travelTime, distance: routeDistance } = 
-      await getTravelTimeAndDistance(userLocation, hospital.location, platform); // Comment out for development
+    // let { time: travelTime, distance: routeDistance } = 
+    //   await getTravelTimeAndDistance(userLocation, hospital.location, platform); // Comment out for development
 
-    // let routeDistance = hospital.location.distance || 0; // Comment out for production
-    // let travelTime = routeDistance / 0.66; // Comment out for production
+    let routeDistance = hospital.location.distance || 0; // Comment out for production
+    let travelTime = routeDistance / 0.66; // Comment out for production
 
     let totalWaitTime =
       hospital.info.occupancy.current * hospital.info.occupancy.avgWaitTime;

@@ -22,7 +22,7 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (message.length !== 0 && cookies.contactedAlready === undefined) {
       setCookie("contactedAlready", true, { maxAge: 60 * 60 * 24 });
-      sendEmail(e, form, setSubmitted);
+      // sendEmail(e, form, setSubmitted);
     }
   };
 
